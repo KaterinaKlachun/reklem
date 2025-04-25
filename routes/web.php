@@ -4,6 +4,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\AboutController;
 use App\Models\CatalogProduct;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -37,10 +38,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 });
 
+
+
 Route::get('/catalog', function () {
     return Inertia::render('CatalogPage');
 });
-
 Route::get('/catalog-products', function (Request $request) {
     $category = $request->query('category');
 
@@ -50,9 +52,8 @@ Route::get('/catalog-products', function (Request $request) {
 
     return CatalogProduct::all();
 });
-
 Route::get('/popular-products', [ProductController::class, 'popular']);
-
 Route::get('/news', [NewsController::class, 'index']);
+Route::get('/about', [AboutController::class, 'index']);
 
 require __DIR__.'/auth.php';

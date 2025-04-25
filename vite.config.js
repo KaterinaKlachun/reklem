@@ -29,7 +29,7 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'resources/js'),
-            '~fonts': path.resolve(__dirname, 'public/assets/fonts'),
+            '~fonts': path.resolve(__dirname, 'public/assets/font'),
         }
     },
     optimizeDeps: {

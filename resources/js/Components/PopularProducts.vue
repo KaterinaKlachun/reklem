@@ -172,51 +172,30 @@ function formatPrice(price) {
     color: white;
     transform: translateY(-2px);
 }
-
-/* Адаптив для планшетов (768px - 1024px) */
-@media (max-width: 1024px) {
-    .products-grid {
-        gap: 20px;
-    }
-
+/* 1200px и ниже — 3 в ряд → 2 */
+@media (max-width: 1200px) {
     .product-card {
-        width: calc(50% - 10px); /* 2 колонки */
-    }
-
-    .section-header h2 {
-        font-size: 1.8rem;
-        margin-bottom: 25px;
+        width: calc(50% - 12.5px); /* 2 карточки в ряд с gap */
     }
 }
 
-/* Адаптив для мобильных (до 768px) */
+/* 768px и ниже — 2 в ряд → 1 */
 @media (max-width: 768px) {
-    .wrapper {
-        padding: 0 15px;
-    }
-
     .products-grid {
-        gap: 15px;
         justify-content: center;
     }
 
     .product-card {
         width: 100%;
-        max-width: 300px;
-    }
-
-    .section-header h2 {
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-    }
-
-    .section-header h2 span::after {
-        height: 4px;
-        bottom: 3px;
+        max-width: 420px;
     }
 
     .product-info {
         padding: 12px;
+    }
+
+    .product-title {
+        font-size: 15px;
     }
 
     .product-price {
@@ -224,30 +203,27 @@ function formatPrice(price) {
     }
 
     .product-button {
-        padding: 6px 12px;
         font-size: 13px;
+        padding: 8px 12px;
     }
 }
 
-/* Адаптив для очень маленьких экранов (iPhone X - 375px) */
-@media (max-width: 400px) {
+/* Микроадаптив под iPhone SE / X / Mini */
+@media (max-width: 480px) {
     .section-header h2 {
-        font-size: 1.3rem;
-    }
-
-    .product-title {
-        font-size: 15px;
-    }
-
-    .product-footer {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
+        font-size: 1.6rem;
     }
 
     .product-button {
         width: 100%;
         text-align: center;
     }
+
+    .product-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
 }
+
 </style>

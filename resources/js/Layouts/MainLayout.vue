@@ -54,22 +54,6 @@ body {
     margin: 0 auto;
 }
 
-/* info */
-
-.info{
-    display: flex;
-    width: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: absolute;
-}
-
-.pagination{
-    margin-left: 20%;
-    margin-top: 2%;
-}
-
 .pagination a{
     text-decoration: none;
     font-family: medium;

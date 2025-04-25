@@ -1,5 +1,4 @@
 <template>
-    <div>
         <!-- Main Banner -->
         <section class="modern-banner">
             <div class="wrapper">
@@ -43,7 +42,6 @@
                     <div class="about-text">
                         <h2><span>Пара слов</span> о нас, производстве и брендинге</h2>
                         <p>В своём стремлении улучшить пользовательский опыт мы упускаем, что ключевые особенности структуры проекта опыт мы упускаем, что ключевые особенности структуры проекта.</p>
-                        <button class="modern-about-button" @click="goToAbout">О компании</button>
                     </div>
                     <div class="about-visual">
                         <img src="@/assets/img/main/key_cup.svg" alt="Продукция" class="about-image">
@@ -180,7 +178,6 @@
                 </button>
             </div>
         </section>
-    </div>
 </template>
 
 <script>
@@ -249,13 +246,11 @@ export default {
 </script>
 
 <style scoped>
-/* Base Styles (1920px and above) */
 
 /* Main Banner */
 .modern-banner {
     position: relative;
     background-color: #F2F2F2;
-    padding: 120px 0;
     overflow: hidden;
     min-height: 80vh;
     display: flex;
@@ -700,63 +695,6 @@ export default {
     color: white;
 }
 
-/* Responsive Styles */
-@media (max-width: 1200px) {
-    .reviews-slider {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .review-card:last-child {
-        display: none;
-    }
-}
-
-@media (max-width: 768px) {
-    .modern-reviews-section {
-        padding: 60px 0;
-    }
-
-    .reviews-header h2 {
-        font-size: 32px;
-    }
-
-    .reviews-slider {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
-    .review-card {
-        padding: 30px;
-    }
-
-    .reviews-footer {
-        flex-direction: column;
-        gap: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .reviews-container {
-        padding: 0 20px;
-    }
-
-    .reviews-header h2 {
-        font-size: 28px;
-    }
-
-    .reviews-header p {
-        font-size: 16px;
-    }
-
-    .review-card {
-        padding: 24px;
-    }
-
-    .review-text {
-        font-size: 15px;
-    }
-}
-
 /* News */
 .modern-news {
     padding: 100px 0;
@@ -836,68 +774,83 @@ export default {
     color: white;
 }
 
-/* Responsive Styles */
-@media (max-width: 1440px) {
-    .wrapper {
-        padding: 0 30px;
+/* ---------- Адаптив от 1440 до 1025px ---------- */
+@media screen and (max-width: 1440px) {
+    .banner-content {
+        gap: 40px;
     }
 
     .modern-banner h1 {
         font-size: 48px;
     }
 
-    .modern-about h2,
-    .modern-services h2,
-    .modern-news h2 {
-        font-size: 36px;
+    .banner-description {
+        font-size: 18px;
     }
-}
 
-@media (max-width: 1200px) {
-    .services-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .button-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
     }
 
     .about-content {
-        gap: 40px;
+        gap: 60px;
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .reviews-slider {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 992px) {
-    .modern-banner {
-        padding: 80px 0;
-        min-height: auto;
-    }
-
+/* ---------- Планшеты: 1024 до 768px ---------- */
+@media screen and (max-width: 1024px) {
     .banner-content {
-        flex-direction: column;
-        gap: 40px;
+        flex-direction: column-reverse;
+        text-align: center;
+        gap: 30px;
     }
 
     .banner-text {
         max-width: 100%;
-        text-align: center;
     }
 
-    .button-group {
-        justify-content: center;
-    }
-
-    .modern-about {
-        padding: 60px 0;
+    .banner-image {
+        max-width: 100%;
     }
 
     .about-content {
         flex-direction: column;
+        text-align: center;
     }
 
-    .about-text {
-        max-width: 100%;
-        text-align: center;
+    .modern-about h2,
+    .modern-services h2,
+    .modern-news h2,
+    .reviews-header h2 {
+        font-size: 32px;
+    }
+
+    .modern-about p,
+    .banner-description {
+        font-size: 16px;
     }
 
     .modern-features {
         grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .reviews-slider {
+        grid-template-columns: 1fr;
     }
 
     .news-grid {
@@ -905,104 +858,83 @@ export default {
     }
 }
 
-@media (max-width: 768px) {
-    .modern-banner h1 {
-        font-size: 36px;
-    }
-
-    .banner-description {
-        font-size: 18px;
-    }
-
-    .modern-about h2,
-    .modern-services h2,
-    .modern-news h2 {
-        font-size: 28px;
-    }
-
-    .modern-features {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-
-    .feature-card {
-        padding: 30px;
-    }
-
-    .modern-reviews {
-        padding: 100px 0;
-        margin: 60px 0;
-    }
-
-    .reviews-content {
-        justify-content: center;
-    }
-}
-
-@media (max-width: 576px) {
-    .wrapper {
-        padding: 0 20px;
-    }
-
+/* ---------- Мобилки: 767px и меньше ---------- */
+@media screen and (max-width: 767px) {
     .modern-banner {
+        min-height: auto;
         padding: 60px 0;
     }
 
+    .banner-content {
+        flex-direction: column-reverse;
+        gap: 20px;
+    }
+
     .modern-banner h1 {
         font-size: 28px;
     }
 
     .banner-description {
-        font-size: 16px;
+        font-size: 15px;
     }
 
     .button-group {
         flex-direction: column;
-        gap: 16px;
+        align-items: center;
+        gap: 10px;
     }
 
     .cta-button,
     .secondary-button,
     .modern-about-button,
-    .reviews-button,
+    .all-reviews-button,
     .news-button {
         width: 100%;
-        justify-content: center;
+        padding: 14px 24px;
+        font-size: 14px;
+    }
+
+    .about-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .about-text {
+        max-width: 100%;
+    }
+
+    .about-image {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .modern-features {
+        grid-template-columns: 1fr;
     }
 
     .services-grid {
         grid-template-columns: 1fr;
     }
 
-    .service-card {
-        padding: 30px 20px;
+    .review-card {
+        padding: 20px;
     }
 
-    .modern-reviews {
-        padding: 80px 0;
-    }
-}
-
-/* iPhone X and similar (375px) */
-@media (max-width: 375px) {
-    .modern-banner h1 {
-        font-size: 24px;
+    .reviews-header p {
+        font-size: 14px;
     }
 
-    .modern-about h2,
-    .modern-services h2,
-    .modern-news h2 {
-        font-size: 24px;
-    }
-
-    .feature-card,
     .news-card {
-        padding: 24px 16px;
+        padding: 20px;
     }
 
-    .feature-icon {
-        width: 60px;
-        height: 60px;
+    .modern-services,
+    .modern-about,
+    .modern-news,
+    .modern-reviews-section {
+        padding: 60px 0;
     }
 }
+
 </style>

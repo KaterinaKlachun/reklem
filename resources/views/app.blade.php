@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Предзагрузка только основных шрифтов -->
-    <link rel="preload" href="{{ asset('assets/fonts/Inter-Regular.woff2') }}" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="{{ asset('assets/fonts/Inter-SemiBold.woff2.woff2') }}" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="{{ asset('assets/fonts/Inter-Medium.woff2.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ asset('assets/font/Inter-Regular.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ asset('assets/font/Inter-SemiBold.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ asset('assets/font/Inter-Medium.woff2') }}" as="font" type="font/woff2" crossorigin>
 
     <!-- Локальное подключение шрифтов Inter -->
     <style>
@@ -16,21 +16,21 @@
             font-style: normal;
             font-weight: 400;
             font-display: swap;
-            src: url("{{ asset('assets/fonts/Inter-Regular.woff2') }}") format('woff2');
+            src: url("{{ asset('assets/font/Inter-Regular.woff2') }}") format('woff2');
         }
         @font-face {
             font-family: 'Inter';
             font-style: normal;
             font-weight: 500;
             font-display: swap;
-            src: url("{{ asset('assets/fonts/Inter-Medium.woff2') }}") format('woff2');
+            src: url("{{ asset('assets/font/Inter-Medium.woff2') }}") format('woff2');
         }
         @font-face {
             font-family: 'Inter';
             font-style: normal;
             font-weight: 600;
             font-display: swap;
-            src: url("{{ asset('assets/fonts/Inter-SemiBold.woff2') }}") format('woff2');
+            src: url("{{ asset('assets/font/Inter-SemiBold.woff2') }}") format('woff2');
         }
     </style>
 

@@ -39,7 +39,7 @@ const formatDate = (dateString) => {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 24px;
     max-width: 1200px;
-    padding: 40px 20px;
+    padding: 40px 0px;
     margin: 0 auto;
 }
 
@@ -53,7 +53,6 @@ const formatDate = (dateString) => {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
 }
 
 .news-card:hover {

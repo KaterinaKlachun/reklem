@@ -40,7 +40,6 @@
     </section>
 </template>
 
-
 <script setup>
 import { ref, onMounted } from 'vue'
 import { router } from '@inertiajs/vue3'
@@ -105,9 +104,6 @@ onMounted(fetchProducts)
 </script>
 
 <style scoped>
-.wrapper {
-    background-color: #fff; /* Белый фон для страницы */
-}
 
 .category-buttons {
     display: flex;
@@ -158,7 +154,6 @@ onMounted(fetchProducts)
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
 }
 
 .product-card:hover {
@@ -375,6 +370,3 @@ onMounted(fetchProducts)
     }
 }
 </style>
-
-
-

@@ -76,12 +76,6 @@ header {
     border-bottom: solid #e5e5e5 2px;
 }
 
-.wrapper {
-    width: 100%;
-    max-width: 1180px;
-    margin: 0 auto;
-}
-
 #head {
     display: flex;
     align-items: center;
@@ -131,65 +125,6 @@ header {
     height: 50px;
 }
 
-.search-container {
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    width: 100%;
-    max-width: 1180px;
-    background: #f2f2f2;
-    z-index: 10;
-    padding-bottom: 10px;
-}
-
-.search-container input {
-    width: 100%;
-    padding: 12px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.search-results {
-    margin-top: 10px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.search-results ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.search-results li {
-    padding: 12px;
-    border-bottom: 1px solid #eee;
-}
-
-.search-results li:last-child {
-    border-bottom: none;
-}
-
-.search-results a {
-    text-decoration: none;
-    color: #333;
-    display: block;
-}
-
-.search-results a:hover {
-    text-decoration: underline;
-}
-
-.no-results {
-    margin-top: 10px;
-    color: #999;
-    padding: 12px;
-}
-
 /* Мобильное меню (скрыто на десктопе) */
 .burger {
     display: none;
@@ -210,53 +145,144 @@ header {
 }
 
 /* Адаптивность */
-@media (max-width: 1440px) {
-    .wrapper {
-        max-width: 1100px;
-        padding: 0 20px;
+/* Планшеты и small ноутбуки: 771–1024 */
+@media screen and (max-width: 1024px) and (min-width: 771px) {
+    #head {
+        padding: 10px 30px;
+        gap: 20px;
+    }
+
+    .logo img {
+        max-width: 150px;
     }
 
     .nav-links {
         gap: 15px;
     }
 
-    .construct {
-        padding: 10px 20px;
+    .nav-links p {
+        font-size: 0.95rem;
+    }
+
+    .burger {
+        display: none; /* Бургер пока не нужен — меню в линию */
+    }
+
+    .mobile-icons {
+        display: flex;
+        gap: 15px;
+    }
+
+    .mobile-icons img {
+        width: 50px;
+        height: 50px;
     }
 }
 
-@media (max-width: 992px) {
-    .wrapper {
-        max-width: 720px;
-    }
-
-    .nav-links {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 70%;
-        height: 100vh;
-        background: #f2f2f2;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 80px 30px 30px;
-        gap: 25px;
-        transition: right 0.3s ease;
-        z-index: 99;
-    }
-
-    .nav-links.mobile-active {
-        right: 0;
+@media screen and (max-width: 768px) {
+    #head {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 15px 20px; /* Добавили отступы слева/справа */
     }
 
     .burger {
         display: flex;
     }
 
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #f2f2f2;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 20px;
+        display: none;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        z-index: 99;
+    }
+
+    .nav-links.mobile-active {
+        display: flex;
+    }
+
+    .nav-links li {
+        width: 100%;
+        padding: 12px 10px;
+        border-bottom: 1px solid #e5e5e5;
+        text-align: left;
+    }
+
+    .nav-links p {
+        font-size: 1rem;
+        margin: 0;
+    }
+
+    .logo img {
+        max-width: 120px;
+    }
+
     .mobile-icons {
         display: flex;
-        gap: 20px;
-        margin-top: 20px;
+        gap: 15px;
+        margin-top: 10px;
+        padding-left: 10px;
+    }
+
+    .mobile-icons img {
+        width: 50px;
+        height: 50px;
+    }
+}
+/* Мобилки и планшеты вертикально: до 770px */
+@media screen and (max-width: 770px) {
+    #head {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 15px 20px;
+    }
+
+    .burger {
+        display: flex;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #f2f2f2;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 20px;
+        display: none;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        z-index: 99;
+    }
+
+    .nav-links.mobile-active {
+        display: flex;
+    }
+
+    .nav-links li {
+        width: 100%;
+        padding: 12px 10px;
+        border-bottom: 1px solid #e5e5e5;
+        text-align: left;
+    }
+
+    .nav-links p {
+        font-size: 1rem;
+        margin: 0;
+    }
+
+    .mobile-icons {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+        padding-left: 10px;
     }
 
     .mobile-icons img {
@@ -264,59 +290,38 @@ header {
         height: 50px;
     }
 
-    .search-icon {
-        order: -1;
-        margin-bottom: 20px;
-    }
-
-    .burger.active span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 5px);
-    }
-
-    .burger.active span:nth-child(2) {
-        opacity: 0;
-    }
-
-    .burger.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(7px, -6px);
+    .logo img {
+        max-width: 120px;
     }
 }
 
-@media (max-width: 576px) {
-    .wrapper {
-        width: 100%;
-        padding: 0 10px;
-    }
-
+/* iPhone X и меньше */
+@media screen and (max-width: 480px) {
     #head {
-        padding: 10px 0;
+        padding: 10px 15px;
     }
 
     .logo img {
-        max-width: 130px;
+        max-width: 100px;
     }
 
-    .nav-links {
-        width: 85%;
-        padding: 70px 20px 20px;
+    .burger {
+        width: 25px;
+        height: 18px;
     }
 
-    .construct {
-        padding: 8px 12px;
-        font-size: 0.65rem;
+    .burger span {
+        height: 2px;
     }
 
-    .construct img {
-        width: 16px;
-        height: 16px;
+    .nav-links p {
+        font-size: 0.9rem;
     }
 
-    .search-container input {
-        padding: 10px;
-    }
-
-    .search-results li {
-        padding: 10px;
+    .mobile-icons img {
+        width: 45px;
+        height: 45px;
     }
 }
+
 </style>
