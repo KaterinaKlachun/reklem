@@ -19,7 +19,6 @@
                 <ul class="nav-links" :class="{ 'mobile-active': isMobileMenuOpen }">
                     <li><Link href="/about" @click="closeMobileMenu"><p>О компании</p></Link></li>
                     <li><Link href="/catalog" @click="closeMobileMenu"><p>Каталог</p></Link></li>
-                    <li><Link href="/services" @click="closeMobileMenu"><p>Услуги</p></Link></li>
                     <li><Link href="/contacts" @click="closeMobileMenu"><p>Контакты</p></Link></li>
                     <li><Link href="/portfolio" @click="closeMobileMenu"><p>Портфолио</p></Link></li>
                     <li><Link href="/constructor" @click="closeMobileMenu"><p>Конструктор</p></Link></li>
@@ -51,7 +50,6 @@ export default {
             pages: [
                 { page: "О компании", link: "/about", content: "Информация о компании" },
                 { page: "Каталог", link: "/catalog", content: "Список товаров" },
-                { page: "Услуги", link: "/services", content: "Описание услуг" },
                 { page: "Контакты", link: "/contacts", content: "Свяжитесь с нами" },
                 { page: "Портфолио", link: "/portfolio", content: "Готовые работы" },
                 { page: "Конструктор", link: "/construct", content: "Конструктор" },
