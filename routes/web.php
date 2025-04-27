@@ -6,7 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
-
+use App\Http\Controllers\ReviewController;
 
 
 use App\Models\CatalogProduct;
@@ -59,5 +59,8 @@ Route::get('/popular-products', [ProductController::class, 'popular']);
 Route::get('/news', [NewsController::class, 'index']);
 Route::get('/about', [AboutController::class, 'index']);
 Route::get('/contacts', [ContactController::class, 'index']);
+Route::get('/reviews', [ReviewController::class, 'index'])
+    ->name('reviews.index');
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 
 require __DIR__.'/auth.php';

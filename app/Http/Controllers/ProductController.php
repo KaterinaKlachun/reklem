@@ -18,17 +18,15 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = \App\Models\CatalogProduct::findOrFail($id);
-
-        return Inertia::render('ProductShow', [
-            'product' => $product,
-        ]);
+        $product = Product::with('category', 'colors')->findOrFail($id);
+        return response()->json($product);
     }
 
-
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::paginate(16); // 16 товаров на страницу
+        // Пагинация с загрузкой категорий и цветов
+        $products = Product::with(['category', 'colors']) // Загружаем связанные категории и цвета
+        ->paginate(16); // 16 товаров на страницу
 
         return response()->json($products);
     }

@@ -226,7 +226,7 @@ export default {
         const goToPortfolio = () => router.visit('/portfolio');
         const goToNews = () => router.visit('/news');
         const goToService = (serviceId) => router.visit(`/service/${serviceId}`);
-        const goToReview = () => router.visit('/review');
+        const goToReview = () => router.visit('/reviews');
 
         return {
             products,

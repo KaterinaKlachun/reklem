@@ -86,7 +86,7 @@ function formatPrice(price) {
     display: flex;
     flex-direction: column;
     width: calc(33.333% - 17px); /* 3 колонки с учетом gap */
-    min-width: 220px;
+    min-width: 150px;
 }
 
 .product-card:hover {
