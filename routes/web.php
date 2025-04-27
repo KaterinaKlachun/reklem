@@ -7,6 +7,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\PortfolioController;
 
 
 use App\Models\CatalogProduct;
@@ -62,5 +63,6 @@ Route::get('/contacts', [ContactController::class, 'index']);
 Route::get('/reviews', [ReviewController::class, 'index'])
     ->name('reviews.index');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
+Route::get('/portfolio', [PortfolioController::class, 'index']);
 
 require __DIR__.'/auth.php';
