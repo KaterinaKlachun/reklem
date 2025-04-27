@@ -18,8 +18,13 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::with('category', 'colors')->findOrFail($id);
-        return response()->json($product);
+        // Загружаем продукт по id и связанные с ним цвета
+        $product = Product::with('productColors')->findOrFail($id);
+
+        // Возвращаем данные через Inertia
+        return Inertia::render('ProductPage', [
+            'product' => $product
+        ]);
     }
 
     public function index(Request $request)

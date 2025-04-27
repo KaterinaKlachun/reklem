@@ -19,8 +19,7 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    // Связь с таблицей product_colors
-    public function colors()
+    public function productColors()
     {
         return $this->hasMany(ProductColor::class);
     }

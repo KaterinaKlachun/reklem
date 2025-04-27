@@ -1,23 +1,9 @@
 <template>
-    <!-- Информация о странице -->
-    <section class="info">
-        <div class="pagination">
-            <router-link to="/">Главная / </router-link>
-            <router-link to="/catalog">Каталог /</router-link>
-        </div>
-    </section>
-
-    <!-- Информация о продукте -->
     <section v-if="product" class="wrapper">
         <div class="product">
             <div class="product_left">
-                <!-- Ленивая загрузка изображения продукта -->
-                <img
-                    :src="selectedColorImage"
-                    :alt="product.name"
-                    class="product-image"
-                    loading="lazy"
-                />
+                <!-- Изображение продукта -->
+                <img :src="selectedColorImage" :alt="product.name" class="product-image" loading="lazy" />
             </div>
             <div class="product_right">
                 <p>{{ product.name }}</p>
@@ -29,11 +15,7 @@
                     <div class="options">
                         <p>Цвет</p>
                         <select @change="updateColorImage($event.target.value)">
-                            <option
-                                v-for="color in product.product_colors"
-                                :key="color.color"
-                                :value="color.color"
-                            >
+                            <option v-for="color in product.product_colors" :key="color.color" :value="color.color">
                                 {{ color.color }}
                             </option>
                         </select>
@@ -41,42 +23,22 @@
                 </div>
                 <p id="product-price" class="product-price">{{ product.price }} ₽</p>
                 <div class="add-to-cart-container">
-                    <button
-                        class="add-to-cart-button"
-                        @click="addToCart"
-                        aria-label="Добавить в корзину"
-                    >
+                    <button class="add-to-cart-button" @click="addToCart" aria-label="Добавить в корзину">
                         В корзину
                     </button>
                     <div class="quantity-counter">
-                        <!-- Ленивая загрузка иконок -->
-                        <button
-                            @click="selectedQuantity = Math.max(1, selectedQuantity - 1)"
-                            class="decrement-button"
-                            aria-label="Уменьшить количество"
-                        >
-                            <img
-                                src="@/assets/img/product/minus.svg"
-                                alt="Уменьшить количество"
-                                loading="lazy"
-                            />
+                        <button @click="selectedQuantity = Math.max(1, selectedQuantity - 1)" class="decrement-button" aria-label="Уменьшить количество">
+                            <img src="@/assets/img/product/minus.svg" alt="Уменьшить количество" loading="lazy" />
                         </button>
                         <span>{{ selectedQuantity }}</span>
-                        <button
-                            @click="selectedQuantity++"
-                            class="increment-button"
-                            aria-label="Увеличить количество"
-                        >
-                            <img
-                                src="@/assets/img/product/plus.svg"
-                                alt="Увеличить количество"
-                                loading="lazy"
-                            />
+                        <button @click="selectedQuantity++" class="increment-button" aria-label="Увеличить количество">
+                            <img src="@/assets/img/product/plus.svg" alt="Увеличить количество" loading="lazy" />
                         </button>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="product_info">
             <h1>Описание</h1>
             <p>{{ product.description }}</p>
@@ -89,54 +51,26 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
-    name: "ProductPage",
-    props: ["id"], // id передаётся как пропс
+    props: {
+        product: Object,  // Данные о продукте, полученные через props
+    },
     data() {
         return {
-            product: null,
-            selectedColorImage: null,
-            selectedQuantity: 1,
+            selectedColorImage: this.product.product_colors[0]?.image_url,  // Устанавливаем первое изображение
+            selectedQuantity: 1,  // Начальное количество товара
         };
     },
     methods: {
-        async loadProduct() {
-            try {
-                // Запрос к API Laravel
-                const response = await axios.get(`/api/products/${this.id}`);
-                this.product = response.data;
-
-                // Установка изображения для первого цвета
-                if (this.product.product_colors && this.product.product_colors.length > 0) {
-                    this.selectedColorImage = this.product.product_colors[0].image_url;
-                } else {
-                    this.selectedColorImage = null;
-                }
-            } catch (error) {
-                console.error("Ошибка при загрузке продукта:", error);
-            }
-        },
         updateColorImage(selectedColor) {
-            const selectedColorData = this.product.product_colors?.find(
+            const selectedColorData = this.product.product_colors.find(
                 (color) => color.color === selectedColor
             );
-            if (selectedColorData) {
-                this.selectedColorImage = selectedColorData.image_url;
-            } else {
-                this.selectedColorImage = null;
-            }
+            this.selectedColorImage = selectedColorData ? selectedColorData.image_url : null;
         },
         addToCart() {
             console.log(`Добавлено в корзину: ${this.selectedQuantity} шт. товара "${this.product.name}"`);
         },
-    },
-    created() {
-        this.loadProduct();
-    },
-    watch: {
-        "$route.params.id": "loadProduct", // Следим за изменением id в URL
     },
 };
 </script>
