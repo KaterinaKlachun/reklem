@@ -11,12 +11,6 @@
                 </div>
                 <div class="product-info">
                     <h3 class="product-title">{{ product.title }}</h3>
-                    <div class="product-footer">
-                        <p class="product-price">{{ formatPrice(product.price) }} ₽</p>
-                        <button class="product-button" @click.stop="goToProduct(product)">
-                            Выбрать вид
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -141,37 +135,6 @@ function formatPrice(price) {
     flex-grow: 1;
 }
 
-.product-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: auto;
-}
-
-.product-price {
-    font-size: 18px;
-    font-weight: 700;
-    color: #00997a;
-}
-
-.product-button {
-    background-color: white;
-    color: #00997a;
-    border: 1px solid #00997a;
-    border-radius: 8px;
-    padding: 8px 15px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
-
-.product-button:hover {
-    background-color: #00997a;
-    color: white;
-    transform: translateY(-2px);
-}
 /* 1200px и ниже — 3 в ряд → 2 */
 @media (max-width: 1200px) {
     .product-card {

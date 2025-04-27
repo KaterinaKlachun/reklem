@@ -8,6 +8,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\ServiceController;
 
 
 use App\Models\CatalogProduct;
@@ -64,5 +65,6 @@ Route::get('/reviews', [ReviewController::class, 'index'])
     ->name('reviews.index');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 Route::get('/portfolio', [PortfolioController::class, 'index']);
+Route::get('/services', [ServiceController::class, 'index']);
 
 require __DIR__.'/auth.php';

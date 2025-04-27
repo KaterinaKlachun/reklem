@@ -65,12 +65,6 @@
                         </div>
                         <h3>{{ service.name }}</h3>
                         <p>{{ service.description }}</p>
-                        <button @click="goToService(service.id)" class="service-link">
-                            Подробнее
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z" fill="#10BB87"/>
-                            </svg>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -225,7 +219,7 @@ export default {
         const goToAbout = () => router.visit('/about');
         const goToPortfolio = () => router.visit('/portfolio');
         const goToNews = () => router.visit('/news');
-        const goToService = (serviceId) => router.visit(`/service/${serviceId}`);
+        const goToService = () => router.visit(`/services`);
         const goToReview = () => router.visit('/reviews');
 
         return {
@@ -414,22 +408,6 @@ export default {
     color: #555;
 }
 
-.modern-about-button {
-    background-color: #10BB87;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 16px 32px;
-    font-family: 'bold', sans-serif;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.modern-about-button:hover {
-    background-color: #0E9D75;
-}
-
 .about-visual {
     position: relative;
     flex: 1;
@@ -557,24 +535,6 @@ export default {
     line-height: 1.6;
     color: #B3B3B3;
     margin-bottom: 24px;
-}
-
-.service-link {
-    font-family: 'medium', sans-serif;
-    font-size: 16px;
-    color: #10BB87;
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 0;
-    transition: color 0.3s ease;
-}
-
-.service-link:hover {
-    color: #0E9D75;
 }
 
 /* Reviews */
@@ -774,7 +734,7 @@ export default {
     color: white;
 }
 
-/* ---------- Адаптив от 1440 до 1025px ---------- */
+/* Адаптив от 1440 до 1025px */
 @media screen and (max-width: 1440px) {
     .banner-content {
         gap: 40px;
@@ -807,7 +767,7 @@ export default {
     }
 }
 
-/* ---------- Планшеты: 1024 до 768px ---------- */
+/* Планшеты: 1024 до 768px */
 @media screen and (max-width: 1024px) {
     .banner-content {
         flex-direction: column-reverse;
@@ -858,7 +818,7 @@ export default {
     }
 }
 
-/* ---------- Мобилки: 767px и меньше ---------- */
+/* Мобилки: 767px и меньше */
 @media screen and (max-width: 767px) {
     .modern-banner {
         min-height: auto;
