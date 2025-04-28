@@ -1,60 +1,54 @@
 <template>
-
     <PageBanner
         page-title="Наши услуги"
         current-page-name="Услуги"
     />
     <div class="services-2025">
         <div class="services-header">
+            <h2>Наши услуги</h2>
             <p>Инновационные решения для вашего бренда</p>
         </div>
 
-        <div class="services-accordion">
+        <div class="services-grid">
             <div
                 v-for="(service, index) in services"
                 :key="service.id"
                 class="service-card"
-                :class="{ 'active': activeService === service.id }"
                 :style="{'--accent-color': getAccentColor(index)}"
+                @mouseenter="flippedCard = service.id"
+                @mouseleave="flippedCard = null"
             >
-                <div class="service-preview" @click="toggleService(service.id)">
-                    <div class="service-meta">
-                        <div class="service-icon">
-                            <img :src="service.image" :alt="service.title">
-                        </div>
+                <div class="card-inner" :class="{ 'is-flipped': flippedCard === service.id }">
+                    <!-- Лицевая сторона -->
+                    <div class="card-face card-front">
                         <h3>{{ service.title }}</h3>
+                        <p class="service-summary">{{ service.shortDescription }}</p>
+                        <ul class="features-list">
+                            <li v-for="(feature, i) in service.advantages" :key="i">
+                                {{ feature.title }}
+                            </li>
+                        </ul>
                     </div>
-                    <div class="service-indicator">
-                        <div class="indicator-line"></div>
-                        <div class="indicator-arrow">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2"/>
-                            </svg>
+
+                    <!-- Обратная сторона -->
+                    <div class="card-face card-back">
+                        <div class="back-header">
+                            <h4>{{ service.title }}</h4>
+                            <p class="back-description">{{ service.description }}</p>
                         </div>
-                    </div>
-                </div>
-
-                <transition name="service-expand">
-                    <div v-if="activeService === service.id" class="service-details">
-                        <div class="service-content">
-                            <p class="service-description">{{ service.shortDescription }}</p>
-
-                            <div class="service-features">
-                                <div
-                                    v-for="(feature, i) in service.advantages"
-                                    :key="i"
-                                    class="feature-item"
-                                >
+                        <div class="back-scrollable">
+                            <div class="back-features">
+                                <div v-for="(feature, i) in service.advantages" :key="i" class="back-feature">
                                     <div class="feature-number">{{ i+1 }}</div>
-                                    <div>
-                                        <h4>{{ feature.title }}</h4>
+                                    <div class="feature-content">
+                                        <h5>{{ feature.title }}</h5>
                                         <p>{{ feature.text }}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </transition>
+                </div>
             </div>
         </div>
     </div>
@@ -68,11 +62,7 @@ const props = defineProps({
     services: Array
 });
 
-const activeService = ref(null);
-
-const toggleService = (id) => {
-    activeService.value = activeService.value === id ? null : id;
-};
+const flippedCard = ref(null);
 
 const getAccentColor = (index) => {
     const colors = ['#FFA630', '#00997a', '#007b5e'];
@@ -81,7 +71,7 @@ const getAccentColor = (index) => {
 </script>
 
 <style scoped>
-/* Base Styles (1920px+) */
+/* Основные стили (1920px+) */
 .services-2025 {
     max-width: 1440px;
     margin: 0 auto;
@@ -91,14 +81,14 @@ const getAccentColor = (index) => {
 
 .services-header {
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: 80px;
 }
 
 .services-header h2 {
     font-size: 42px;
     font-weight: 700;
     color: #333;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
 
 .services-header p {
@@ -108,313 +98,255 @@ const getAccentColor = (index) => {
     margin: 0 auto;
 }
 
-.services-accordion {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
 }
 
 .service-card {
-    background: white;
+    perspective: 1200px;
+    height: 420px;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    padding: 32px;
+    box-sizing: border-box;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.service-card.active {
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-}
-
-.service-preview {
+.card-front {
+    background: white;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 32px 40px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    flex-direction: column;
 }
 
-.service-card.active .service-preview {
+.card-back {
+    background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 80%, #333));
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    color: #fff; /* Белый текст для лучшей читаемости */
+}
+
+.is-flipped {
+    transform: rotateY(180deg);
+}
+
+/* Стили для лицевой стороны */
+.service-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #333;
+}
+
+.service-summary {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.features-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex-grow: 1;
+}
+
+.features-list li {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 12px;
+    font-size: 15px;
+    color: #555;
+}
+
+.features-list li:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 12px;
+    height: 2px;
     background-color: var(--accent-color);
 }
 
-.service-meta {
-    display: flex;
-    align-items: center;
-    gap: 24px;
+/* Стили для обратной стороны */
+.back-header {
+    margin-bottom: 20px;
 }
 
-.service-icon {
-    width: 56px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f2f2f2;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-}
-
-.service-card.active .service-icon {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.service-icon img {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-}
-
-.service-card h3 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #333;
-    transition: all 0.3s ease;
-}
-
-.service-card.active h3 {
+.back-header h4 {
+    font-size: 22px;
     color: white;
+    margin-bottom: 12px;
 }
 
-.service-indicator {
+.back-description {
+    color: rgba(255,255,255,0.9);
+    font-size: 15px;
+}
+
+.back-scrollable {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 32px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.3) transparent;
+}
+
+.back-scrollable::-webkit-scrollbar {
+    width: 6px;
+}
+
+.back-scrollable::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.back-scrollable::-webkit-scrollbar-thumb {
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 3px;
+}
+
+
+.back-features {
     display: flex;
-    align-items: center;
-    gap: 16px;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.indicator-line {
-    width: 40px;
-    height: 2px;
-    background: #ddd;
-    transition: all 0.3s ease;
-}
-
-.service-card.active .indicator-line {
-    background: rgba(255, 255, 255, 0.5);
-    width: 60px;
-}
-
-.indicator-arrow svg {
-    transition: all 0.3s ease;
-}
-
-.service-card.active .indicator-arrow svg {
-    transform: rotate(180deg);
-    stroke: white;
-}
-
-.service-details {
-    overflow: hidden;
-}
-
-.service-content {
-    padding: 0 40px 40px;
-}
-
-.service-description {
-    font-size: 18px;
-    line-height: 1.6;
-    color: #555;
-    margin-bottom: 32px;
-    padding-top: 16px;
-}
-
-.service-features {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-    margin-top: 40px;
-}
-
-.feature-item {
+.back-feature {
     display: flex;
-    gap: 16px;
+    gap: 12px;
 }
 
 .feature-number {
-    width: 32px;
-    height: 32px;
-    background: var(--accent-color);
-    color: white;
-    border-radius: 8px;
+    width: 26px;
+    height: 26px;
+    background: white;
+    color: var(--accent-color);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
     flex-shrink: 0;
-    margin-top: 4px;
 }
 
-.feature-item h4 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 8px;
-}
-
-.feature-item p {
+.feature-content h5 {
     font-size: 16px;
-    line-height: 1.6;
-    color: #777;
+    color: white;
+    margin-bottom: 6px;
 }
 
-/* Animations */
-.service-expand-enter-active,
-.service-expand-leave-active {
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+.feature-content p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    margin: 0;
 }
 
-.service-expand-enter-from,
-.service-expand-leave-to {
-    opacity: 0;
-    transform: translateY(-20px);
+/* Адаптив */
+@media (max-width: 1440px) {
+    .services-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+    }
 }
 
-/* Responsive Styles */
 @media (max-width: 1200px) {
-    .services-2025 {
-        padding: 80px 40px;
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .service-features {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 992px) {
-    .services-header h2 {
-        font-size: 36px;
-    }
-
-    .service-preview {
-        padding: 24px 32px;
-    }
-
-    .service-content {
-        padding: 0 32px 32px;
+    .service-card {
+        height: 380px;
     }
 }
 
 @media (max-width: 768px) {
     .services-2025 {
-        padding: 60px 24px;
+        padding: 80px 30px;
+    }
+
+    .services-header {
+        margin-bottom: 60px;
+    }
+
+    .service-card {
+        height: 360px;
+    }
+
+    .card-face {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .services-2025 {
+        padding: 60px 20px;
     }
 
     .services-header h2 {
         font-size: 32px;
     }
 
-    .services-header p {
-        font-size: 16px;
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
 
-    .service-preview {
-        padding: 20px 24px;
+    .service-card {
+        height: 340px;
+        min-height: auto;
     }
 
-    .service-meta {
-        gap: 16px;
-    }
-
-    .service-icon {
-        width: 48px;
-        height: 48px;
-    }
-
-    .service-icon img {
-        width: 24px;
-        height: 24px;
-    }
-
-    .service-card h3 {
-        font-size: 18px;
-    }
-
-    .service-content {
-        padding: 0 24px 24px;
-    }
-
-    .service-description {
-        font-size: 16px;
+    .card-face {
+        padding: 20px;
     }
 }
 
-@media (max-width: 480px) {
+/* iPhone X и меньше */
+@media (max-width: 375px) {
     .services-2025 {
-        padding: 40px 16px;
+        padding: 50px 16px;
     }
 
     .services-header h2 {
         font-size: 28px;
     }
 
-    .service-preview {
-        padding: 16px 20px;
+    .service-card {
+        height: 320px;
     }
 
-    .service-meta {
-        gap: 12px;
+    .service-card h3,
+    .back-header h4 {
+        font-size: 20px;
     }
 
-    .service-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 8px;
-    }
-
-    .indicator-line {
-        width: 20px;
-    }
-
-    .service-card.active .indicator-line {
-        width: 40px;
-    }
-
-    .feature-item {
-        gap: 12px;
-    }
-
-    .feature-number {
-        width: 28px;
-        height: 28px;
+    .service-summary,
+    .back-description {
         font-size: 14px;
     }
 
-    .feature-item h4 {
-        font-size: 16px;
-    }
-
-    .feature-item p {
+    .features-list li {
         font-size: 14px;
-    }
-}
-
-/* iPhone X (375px) specific */
-@media (max-width: 375px) {
-    .service-preview {
-        padding: 14px 16px;
-    }
-
-    .service-content {
-        padding: 0 16px 16px;
-    }
-
-    .service-meta {
-        gap: 10px;
-    }
-
-    .service-icon {
-        width: 36px;
-        height: 36px;
-    }
-
-    .service-card h3 {
-        font-size: 16px;
-    }
-
-    .service-description {
-        font-size: 15px;
     }
 }
 </style>
