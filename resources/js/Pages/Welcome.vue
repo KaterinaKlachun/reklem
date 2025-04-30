@@ -1,177 +1,177 @@
 <template>
-        <!-- Main Banner -->
-        <section class="modern-banner">
-            <div class="wrapper">
-                <div class="banner-content">
-                    <div class="banner-text">
-                        <h1>Планируете сделать <span>принт?</span><br>Вы пришли по адресу</h1>
-                        <p class="banner-description">
-                            Reklem - только оптовая работа высокого качества с индивидуальным подходом. Работаем с 2008 года.
-                        </p>
-                        <div class="button-group">
-                            <button class="cta-button" @click="goToCatalog">Перейти в каталог</button>
-                            <button class="secondary-button" @click="goToAbout">О компании</button>
-                        </div>
+    <!-- Main Banner -->
+    <section class="modern-banner">
+        <div class="wrapper">
+            <div class="banner-content">
+                <div class="banner-text">
+                    <h1>Планируете сделать <span>принт?</span><br>Вы пришли по адресу</h1>
+                    <p class="banner-description">
+                        Reklem - только оптовая работа высокого качества с индивидуальным подходом. Работаем с 2008 года.
+                    </p>
+                    <div class="button-group">
+                        <button class="cta-button" @click="goToCatalog">Перейти в каталог</button>
+                        <button class="secondary-button" @click="goToAbout">О компании</button>
                     </div>
-                    <div class="banner-image">
-                        <div class="image-container">
-                            <img src="@/assets/img/main/background.svg" alt="Пример продукции" class="product-image">
-                        </div>
+                </div>
+                <div class="banner-image">
+                    <div class="image-container">
+                        <img src="@/assets/img/main/background.svg" alt="Пример продукции" class="product-image">
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Features -->
-        <section class="wrapper">
-            <div class="modern-features">
-                <div class="feature-card" v-for="(item, index) in aboutCards" :key="index">
-                    <div class="feature-icon">
-                        <img :src="item.image" :alt="item.title">
-                    </div>
-                    <h3>{{ item.title }}</h3>
-                    <p>{{ item.description }}</p>
+    <!-- Features -->
+    <section class="wrapper">
+        <div class="modern-features">
+            <div class="feature-card" v-for="(item, index) in aboutCards" :key="index">
+                <div class="feature-icon">
+                    <img :src="item.image" :alt="item.title">
+                </div>
+                <h3>{{ item.title }}</h3>
+                <p>{{ item.description }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us -->
+    <section class="wrapper">
+        <div class="modern-about">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2><span>Пара слов</span> о нас, производстве и брендинге</h2>
+                    <p>В своём стремлении улучшить пользовательский опыт мы упускаем, что ключевые особенности структуры проекта опыт мы упускаем, что ключевые особенности структуры проекта.</p>
+                </div>
+                <div class="about-visual">
+                    <img src="@/assets/img/main/key_cup.svg" alt="Продукция" class="about-image">
+                    <div class="about-shape"></div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- About Us -->
-        <section class="wrapper">
-            <div class="modern-about">
-                <div class="about-content">
-                    <div class="about-text">
-                        <h2><span>Пара слов</span> о нас, производстве и брендинге</h2>
-                        <p>В своём стремлении улучшить пользовательский опыт мы упускаем, что ключевые особенности структуры проекта опыт мы упускаем, что ключевые особенности структуры проекта.</p>
+    <!-- Popular Products -->
+    <PopularProducts :products="products" />
+
+    <!-- Services -->
+    <section class="wrapper">
+        <div class="modern-services">
+            <h2>Популярные услуги</h2>
+            <div class="services-grid">
+                <div class="service-card" v-for="(service, index) in services" :key="index">
+                    <div class="service-icon">
+                        <img :src="service.image" :alt="service.name">
                     </div>
-                    <div class="about-visual">
-                        <img src="@/assets/img/main/key_cup.svg" alt="Продукция" class="about-image">
-                        <div class="about-shape"></div>
-                    </div>
+                    <h3>{{ service.name }}</h3>
+                    <p>{{ service.description }}</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Popular Products -->
-        <PopularProducts :products="products" />
-
-        <!-- Services -->
-        <section class="wrapper">
-            <div class="modern-services">
-                <h2>Популярные услуги</h2>
-                <div class="services-grid">
-                    <div class="service-card" v-for="(service, index) in services" :key="index">
-                        <div class="service-icon">
-                            <img :src="service.image" :alt="service.name">
-                        </div>
-                        <h3>{{ service.name }}</h3>
-                        <p>{{ service.description }}</p>
-                    </div>
+    <!-- Reviews -->
+    <section class="modern-reviews-section">
+        <div class="wrapper">
+            <div class="reviews-container">
+                <div class="reviews-header">
+                    <h2>Отзывы наших <span>клиентов</span></h2>
+                    <p>Узнайте, что говорят о нас те, кто уже воспользовался нашими услугами</p>
                 </div>
-            </div>
-        </section>
 
-        <!-- Reviews -->
-        <section class="modern-reviews-section">
-            <div class="wrapper">
-                <div class="reviews-container">
-                    <div class="reviews-header">
-                        <h2>Отзывы наших <span>клиентов</span></h2>
-                        <p>Узнайте, что говорят о нас те, кто уже воспользовался нашими услугами</p>
-                    </div>
-
-                    <div class="reviews-slider">
-                        <!-- Review Card 1 -->
-                        <div class="review-card">
-                            <div class="review-content">
-                                <div class="review-rating">
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                </div>
-                                <p class="review-text">"Отличное качество печати! Заказывали фирменные ручки для всей компании. Сделали быстро, даже раньше срока. Буем обращаться еще!"</p>
-                                <div class="review-author">
-                                    <img src="@/assets/img/main/ivan_avatar.svg" alt="Аватар" class="author-avatar">
-                                    <div class="author-info">
-                                        <h4>Иван Петров</h4>
-                                        <p>Директор ООО "ТехноПром"</p>
-                                    </div>
-                                </div>
+                <div class="reviews-slider">
+                    <!-- Review Card 1 -->
+                    <div class="review-card">
+                        <div class="review-content">
+                            <div class="review-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
                             </div>
-                        </div>
-
-                        <!-- Review Card 2 -->
-                        <div class="review-card">
-                            <div class="review-content">
-                                <div class="review-rating">
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                </div>
-                                <p class="review-text">"Работаем с Reklem уже 5 лет. Всегда стабильное качество и индивидуальный подход. Рекомендую как надежного поставщика."</p>
-                                <div class="review-author">
-                                    <img src="@/assets/img/main/helen_avatar.svg" alt="Аватар" class="author-avatar">
-                                    <div class="author-info">
-                                        <h4>Елена Смирнова</h4>
-                                        <p>Маркетинг-директор "БрендГрупп"</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Review Card 3 -->
-                        <div class="review-card">
-                            <div class="review-content">
-                                <div class="review-rating">
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                </div>
-                                <p class="review-text">"Заказали срочный тираж буклетов - выполнили в срок, несмотря на сложности. Качество на высоте, цены адекватные."</p>
-                                <div class="review-author">
-                                    <img src="@/assets/img/main/alex_avatar.svg" alt="Аватар" class="author-avatar">
-                                    <div class="author-info">
-                                        <h4>Алексей Козлов</h4>
-                                        <p>ИП "Козлов и Партнеры"</p>
-                                    </div>
+                            <p class="review-text">"Отличное качество печати! Заказывали фирменные ручки для всей компании. Сделали быстро, даже раньше срока. Буем обращаться еще!"</p>
+                            <div class="review-author">
+                                <img src="@/assets/img/main/ivan_avatar.svg" alt="Аватар" class="author-avatar">
+                                <div class="author-info">
+                                    <h4>Иван Петров</h4>
+                                    <p>Директор ООО "ТехноПром"</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="reviews-footer">
-                        <button class="all-reviews-button" @click="goToReview">
-                            Все отзывы
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z" fill="#10BB87"/>
-                            </svg>
-                        </button>
+                    <!-- Review Card 2 -->
+                    <div class="review-card">
+                        <div class="review-content">
+                            <div class="review-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <p class="review-text">"Работаем с Reklem уже 5 лет. Всегда стабильное качество и индивидуальный подход. Рекомендую как надежного поставщика."</p>
+                            <div class="review-author">
+                                <img src="@/assets/img/main/helen_avatar.svg" alt="Аватар" class="author-avatar">
+                                <div class="author-info">
+                                    <h4>Елена Смирнова</h4>
+                                    <p>Маркетинг-директор "БрендГрупп"</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- News -->
-        <section class="wrapper">
-            <div class="modern-news">
-                <h2>Оставайтесь <span>в курсе</span> <span>событий</span></h2>
-                <div class="news-grid">
-                    <div class="news-card" v-for="(event, index) in events" :key="index">
-                        <h3>{{ event.title }}</h3>
-                        <p>{{ event.description }}</p>
+                    <!-- Review Card 3 -->
+                    <div class="review-card">
+                        <div class="review-content">
+                            <div class="review-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <p class="review-text">"Заказали срочный тираж буклетов - выполнили в срок, несмотря на сложности. Качество на высоте, цены адекватные."</p>
+                            <div class="review-author">
+                                <img src="@/assets/img/main/alex_avatar.svg" alt="Аватар" class="author-avatar">
+                                <div class="author-info">
+                                    <h4>Алексей Козлов</h4>
+                                    <p>ИП "Козлов и Партнеры"</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <button @click="goToNews" class="news-button">
-                    Все новости
-                    <img src="@/assets/img/main/new.svg" alt="Новости">
-                </button>
+
+                <div class="reviews-footer">
+                    <button class="all-reviews-button" @click="goToReview">
+                        Все отзывы
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z" fill="#10BB87"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
+
+    <!-- News -->
+    <section class="wrapper">
+        <div class="modern-news">
+            <h2>Оставайтесь <span>в курсе</span> <span>событий</span></h2>
+            <div class="news-grid">
+                <div class="news-card" v-for="(event, index) in events" :key="index">
+                    <h3>{{ event.title }}</h3>
+                    <p>{{ event.description }}</p>
+                </div>
+            </div>
+            <button @click="goToNews" class="news-button">
+                Все новости
+                <img src="@/assets/img/main/new.svg" alt="Новости">
+            </button>
+        </div>
+    </section>
 </template>
 
 <script>
