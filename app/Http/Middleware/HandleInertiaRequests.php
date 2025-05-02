@@ -14,9 +14,6 @@ class HandleInertiaRequests extends Middleware
      */
     protected $rootView = 'app';
 
-    /**
-     * Determine the current asset version.
-     */
     public function version(Request $request): ?string
     {
         return parent::version($request);
@@ -32,8 +29,9 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => fn () => $request->user() ? $request->user()->fresh() : null,
             ],
+            'csrf_token' => fn () => csrf_token(), // 👈 добавляем CSRF-токен
         ];
     }
 }

@@ -1,113 +1,246 @@
+<template>
+    <div class="auth-container">
+        <Head title="Регистрация" />
+
+        <div class="auth-header">
+            <h2>Создайте аккаунт</h2>
+            <p>Заполните форму для регистрации</p>
+        </div>
+
+        <form @submit.prevent="submit" class="auth-form">
+            <div class="input-group">
+                <label>ФИО</label>
+                <input v-model="form.name" type="text" placeholder="Иванов Иван Иванович" />
+                <div v-if="form.errors.name" class="error-message">
+                    <span>{{ form.errors.name }}</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Email</label>
+                <input v-model="form.email" type="email" placeholder="example@mail.com" />
+                <div v-if="form.errors.email" class="error-message">
+                    <span>{{ form.errors.email }}</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Пароль</label>
+                <input v-model="form.password" type="password" placeholder="••••••••" />
+                <div v-if="form.errors.password" class="error-message">
+                    <span>{{ form.errors.password }}</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Повторите пароль</label>
+                <input v-model="form.password_confirmation" type="password" placeholder="••••••••" />
+            </div>
+
+            <button :disabled="form.processing" class="auth-button">
+                <span v-if="!form.processing">Зарегистрироваться</span>
+                <span v-else class="loading">...</span>
+            </button>
+
+            <div class="auth-footer">
+                <p>Уже есть аккаунт? <Link href="/login" class="auth-link">Войти</Link></p>
+            </div>
+        </form>
+    </div>
+</template>
+
 <script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3'
 
 const form = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
-});
+})
 
-const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
-    });
-};
+function submit() {
+    form.post(route('register'))
+}
 </script>
 
-<template>
-    <GuestLayout>
-        <Head title="Register" />
+<style scoped>
+/* Основные стили */
+.auth-container {
+    max-width: 480px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 155, 122, 0.1);
+}
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="name" value="Name" />
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
 
-                <TextInput
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
+.auth-header h2 {
+    color: #007b5e;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
 
-                <InputError class="mt-2" :message="form.errors.name" />
-            </div>
+.auth-header p {
+    color: #666;
+    font-size: 1rem;
+}
 
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
 
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+label {
+    color: #007b5e;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #f2f2f2;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s;
+    background-color: #f9f9f9;
+}
 
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
+input:focus {
+    border-color: #FFA630;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 166, 48, 0.2);
+}
 
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
+.auth-button {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(to right, #00997a, #007b5e);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 1rem;
+}
 
-            <div class="mt-4">
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirm Password"
-                />
+.auth-button:hover {
+    background: linear-gradient(to right, #007b5e, #00634e);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 155, 122, 0.3);
+}
 
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
+.auth-button:disabled {
+    background: #cccccc;
+    transform: none;
+    box-shadow: none;
+    cursor: not-allowed;
+}
 
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.password_confirmation"
-                />
-            </div>
+.loading {
+    display: inline-block;
+    animation: pulse 1.5s infinite;
+}
 
-            <div class="mt-4 flex items-center justify-end">
-                <Link
-                    :href="route('login')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                    Already registered?
-                </Link>
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
 
-                <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Register
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout>
-</template>
+.auth-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #666;
+}
+
+.auth-link {
+    color: #FFA630;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.auth-link:hover {
+    color: #e69100;
+}
+
+.error-message {
+    color: #e3342f;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    padding: 0.5rem;
+    background-color: rgba(227, 52, 47, 0.1);
+    border-radius: 5px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .auth-container {
+        margin: 1rem;
+        padding: 1.5rem;
+        border-radius: 12px;
+    }
+
+    .auth-header h2 {
+        font-size: 1.5rem;
+    }
+
+    input, .auth-button {
+        padding: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-container {
+        margin: 0.5rem;
+        padding: 1.2rem;
+        border-radius: 10px;
+    }
+
+    .auth-header h2 {
+        font-size: 1.3rem;
+    }
+
+    input {
+        padding: 0.7rem;
+    }
+
+    .auth-button {
+        padding: 0.8rem;
+    }
+}
+
+@media (max-width: 375px) {
+    .auth-container {
+        padding: 1rem;
+    }
+
+    .auth-header p {
+        font-size: 0.9rem;
+    }
+
+    label {
+        font-size: 0.9rem;
+    }
+
+    input {
+        font-size: 0.9rem;
+    }
+}
+</style>

@@ -1,4 +1,6 @@
 <template>
+    <Head title="Каталог" />
+
     <PageBanner
         page-title="Каталог"
         current-page-name="Каталог"
@@ -42,7 +44,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { router } from '@inertiajs/vue3'
+import {Head, router} from '@inertiajs/vue3'
 import axios from 'axios'
 import PageBanner from '@/Components/PageBanner.vue';
 

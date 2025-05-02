@@ -1,4 +1,7 @@
 <template>
+    <Head title="Услуги" />
+
+
     <PageBanner
         page-title="Наши услуги"
         current-page-name="Услуги"
@@ -57,6 +60,7 @@
 <script setup>
 import { ref } from 'vue';
 import PageBanner from "@/Components/PageBanner.vue";
+import {Head} from "@inertiajs/vue3";
 
 const props = defineProps({
     services: Array

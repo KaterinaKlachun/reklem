@@ -9,6 +9,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+    // Миграция для таблицы users
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
@@ -17,6 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('profile_photo_path')->nullable();  // Добавлено поле для фото
             $table->rememberToken();
             $table->timestamps();
         });

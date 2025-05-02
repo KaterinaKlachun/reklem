@@ -9,7 +9,7 @@ import MainLayout from './Layouts/MainLayout.vue'; // импортируй layou
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
-    title: (title) => `${title} ${appName}`,
+    title: (title) => `${title} - ${appName}`,
     resolve: (name) => {
         const pages = import.meta.glob('./Pages/**/*.vue');
         return pages[`./Pages/${name}.vue`]().then((module) => {

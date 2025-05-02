@@ -1,4 +1,6 @@
 <template>
+    <Head title="Новости" />
+
     <PageBanner
         page-title="Новости компании"
         current-page-name="Новости"
@@ -16,7 +18,7 @@
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import {Head, Link} from '@inertiajs/vue3';
 import PageBanner from '@/Components/PageBanner.vue';
 
 // Получаем props из Inertia

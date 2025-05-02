@@ -1,4 +1,6 @@
 <template>
+    <Head title="Контакты" />
+
     <PageBanner
         page-title="Контакты"
         current-page-name="Свяжитесь с нами"
@@ -112,10 +114,11 @@
 
 <script>
 import PageBanner from '@/Components/PageBanner.vue';
+import {Head} from "@inertiajs/vue3";
 
 export default {
     name: "ContactsPage",
-    components: { PageBanner },
+    components: {Head, PageBanner },
     data() {
         return {
             buttons: [

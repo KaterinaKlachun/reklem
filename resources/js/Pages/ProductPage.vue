@@ -1,4 +1,6 @@
 <template>
+    <Head title="Продукт" />
+
     <PageBannerProduct
         page-title="Наша продукция"
         current-page-name="Продукт"
@@ -66,9 +68,10 @@
 
 <script>
 import PageBannerProduct from "@/Components/PageBannerProduct.vue";
+import {Head} from "@inertiajs/vue3";
 
 export default {
-    components: { PageBannerProduct },
+    components: {Head, PageBannerProduct },
     props: {
         product: Object,
     },

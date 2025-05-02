@@ -1,8 +1,72 @@
+<!-- UpdatePasswordForm.vue -->
+<template>
+    <div class="profile-section password-section">
+        <h2 class="section-title">СМЕНА ПАРОЛЯ</h2>
+        <p class="section-description">
+            Поставь нормальный пароль, чтобы не взломали.
+        </p>
+
+        <form @submit.prevent="updatePassword">
+            <div class="form-group">
+                <label class="form-label">ТЕКУЩИЙ ПАРОЛЬ</label>
+                <div class="input-wrapper">
+                    <input
+                        ref="currentPasswordInput"
+                        v-model="form.current_password"
+                        type="password"
+                        class="form-input"
+                        autocomplete="current-password"
+                    >
+                    <div class="input-decoration"></div>
+                </div>
+                <div v-if="form.errors.current_password" class="form-error">
+                    {{ form.errors.current_password }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">НОВЫЙ ПАРОЛЬ</label>
+                <div class="input-wrapper">
+                    <input
+                        ref="passwordInput"
+                        v-model="form.password"
+                        type="password"
+                        class="form-input"
+                        autocomplete="new-password"
+                    >
+                    <div class="input-decoration"></div>
+                </div>
+                <div v-if="form.errors.password" class="form-error">
+                    {{ form.errors.password }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">ПОВТОРИ ПАРОЛЬ</label>
+                <div class="input-wrapper">
+                    <input
+                        v-model="form.password_confirmation"
+                        type="password"
+                        class="form-input"
+                        autocomplete="new-password"
+                    >
+                    <div class="input-decoration"></div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-save" :disabled="form.processing">
+                    СОХРАНИТЬ ПАРОЛЬ
+                </button>
+                <p v-if="form.recentlySuccessful" class="success-message">
+                    Пароль успешно изменён!
+                </p>
+            </div>
+        </form>
+    </div>
+</template>
+
 <script setup>
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
@@ -33,90 +97,180 @@ const updatePassword = () => {
 };
 </script>
 
-<template>
-    <section>
-        <header>
-            <h2 class="text-lg font-medium text-gray-900">
-                Update Password
-            </h2>
+<style scoped>
+.password-section {
+    background-color: var(--white);
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow-sm);
+    border: 2px solid rgba(0, 123, 94, 0.1);
+}
 
-            <p class="mt-1 text-sm text-gray-600">
-                Ensure your account is using a long, random password to stay
-                secure.
-            </p>
-        </header>
+.section-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 1rem;
+}
 
-        <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
-            <div>
-                <InputLabel for="current_password" value="Current Password" />
+.section-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 4px;
+}
 
-                <TextInput
-                    id="current_password"
-                    ref="currentPasswordInput"
-                    v-model="form.current_password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    autocomplete="current-password"
-                />
+.section-description {
+    color: var(--text-medium);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.05rem;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
 
-                <InputError
-                    :message="form.errors.current_password"
-                    class="mt-2"
-                />
-            </div>
+.form-group {
+    margin-bottom: 2rem;
+}
 
-            <div>
-                <InputLabel for="password" value="New Password" />
+.form-label {
+    display: block;
+    margin-bottom: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--primary);
+}
 
-                <TextInput
-                    id="password"
-                    ref="passwordInput"
-                    v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    autocomplete="new-password"
-                />
+.input-wrapper {
+    position: relative;
+}
 
-                <InputError :message="form.errors.password" class="mt-2" />
-            </div>
+.form-input {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    border: 2px solid var(--light-bg);
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.05rem;
+    transition: var(--transition);
+    background-color: var(--white);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 1;
+}
 
-            <div>
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirm Password"
-                />
+.input-decoration {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(0, 123, 94, 0.1), rgba(0, 153, 122, 0.1));
+    z-index: 0;
+    transform: translate(4px, 4px);
+    transition: var(--transition);
+}
 
-                <TextInput
-                    id="password_confirmation"
-                    v-model="form.password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    autocomplete="new-password"
-                />
+.form-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255, 166, 48, 0.2);
+}
 
-                <InputError
-                    :message="form.errors.password_confirmation"
-                    class="mt-2"
-                />
-            </div>
+.form-input:focus ~ .input-decoration {
+    transform: translate(6px, 6px);
+    background: linear-gradient(135deg, rgba(0, 123, 94, 0.15), rgba(0, 153, 122, 0.15));
+}
 
-            <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+.form-error {
+    color: #e3342f;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+    font-weight: 600;
+}
 
-                <Transition
-                    enter-active-class="transition ease-in-out"
-                    enter-from-class="opacity-0"
-                    leave-active-class="transition ease-in-out"
-                    leave-to-class="opacity-0"
-                >
-                    <p
-                        v-if="form.recentlySuccessful"
-                        class="text-sm text-gray-600"
-                    >
-                        Saved.
-                    </p>
-                </Transition>
-            </div>
-        </form>
-    </section>
-</template>
+.form-actions {
+    margin-top: 2.5rem;
+}
+
+.btn-save {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: var(--white);
+    box-shadow: 0 4px 12px rgba(0, 123, 94, 0.3);
+    padding: 1.25rem 2rem;
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+.btn-save:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 123, 94, 0.4);
+}
+
+.success-message {
+    color: var(--primary-light);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 1.05rem;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 992px) {
+    .password-section {
+        padding: 2rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .password-section {
+        padding: 1.75rem;
+    }
+
+    .form-input {
+        padding: 1.1rem 1.25rem;
+    }
+
+    .btn-save {
+        padding: 1.1rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .password-section {
+        padding: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+    }
+
+    .form-label {
+        font-size: 0.95rem;
+    }
+}
+</style>

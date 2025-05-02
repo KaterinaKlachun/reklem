@@ -3,19 +3,38 @@
         <HeaderPage />
         <main>
             <slot />
-            <FAQ />
-            <ContactForm />
+            <FAQ v-if="showExtras" />
+            <ContactForm v-if="showExtras" />
         </main>
         <FooterPage />
     </div>
 </template>
 
 <script setup>
-import HeaderPage from '@/Components/HeaderPage.vue'
-import FooterPage from '@/Components/FooterPage.vue'
-import FAQ from '@/Components/FAQ.vue'
-import ContactForm from '@/Components/ContactForm.vue'
+import HeaderPage from '@/Components/HeaderPage.vue';
+import FooterPage from '@/Components/FooterPage.vue';
+import FAQ from '@/Components/FAQ.vue';
+import ContactForm from '@/Components/ContactForm.vue';
+
+import { usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
+
+const page = usePage();
+
+const showExtras = computed(() => {
+    const component = page.component;
+    if (!component) return true;
+
+    const lower = component.toLowerCase();
+
+    return !(
+        lower.includes('auth/') ||
+        lower.includes('profile/') ||
+        lower.includes('dashboard')
+    );
+});
 </script>
+
 
 <style lang="css">
 

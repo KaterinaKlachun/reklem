@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -19,8 +19,10 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'user' => $request->user(),
+            'mustVerifyEmail' => $request->user()->hasVerifiedEmail(),
             'status' => session('status'),
+            'profile_photo_path' => $request->user(),
         ]);
     }
 
@@ -37,7 +39,50 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit');
+        return Redirect::route('profile.edit')->with('status', 'Данные обновлены');
+    }
+
+    /**
+     * Upload profile photo.
+     */
+    public function updateProfilePhoto(Request $request)
+    {
+        try {
+            // Валидация файла
+            $request->validate([
+                'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:1024', // до 10MB
+            ]);
+
+            $user = $request->user();
+            $file = $request->file('photo');
+
+            // Удаление старого файла, если есть
+            if ($user->profile_photo_path && Storage::disk('public')->exists($user->profile_photo_path)) {
+                Storage::disk('public')->delete($user->profile_photo_path);
+            }
+
+            // Генерация уникального имени файла
+            $filename = 'user_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+
+            // Сохранение файла
+            $path = $file->storeAs('profile-photos', $filename, 'public');
+
+            // ОБНОВЛЕНИЕ МОДЕЛИ вручную
+            $user->profile_photo_path = $path;
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'path' => Storage::url($path), // Для отображения
+                'message' => 'Фото профиля обновлено'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ошибка: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

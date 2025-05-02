@@ -1,11 +1,10 @@
 <template>
-    <!-- Шапка сайта -->
     <header>
         <section class="wrapper">
             <nav id="head">
                 <!-- Логотип -->
                 <div class="logo">
-                    <Link href="/"><img alt="Logo" src="@/assets/img/header/logo.svg"/></Link>
+                    <Link href="/"><img alt="Logo" src="@/assets/img/header/logo.svg" /></Link>
                 </div>
 
                 <!-- Мобильное меню (бургер) -->
@@ -15,7 +14,7 @@
                     <span></span>
                 </div>
 
-                <!-- Ссылки навигации -->
+                <!-- Навигация -->
                 <ul class="nav-links" :class="{ 'mobile-active': isMobileMenuOpen }">
                     <li><Link href="/about" @click="closeMobileMenu"><p>О компании</p></Link></li>
                     <li><Link href="/catalog" @click="closeMobileMenu"><p>Каталог</p></Link></li>
@@ -23,51 +22,51 @@
                     <li><Link href="/contacts" @click="closeMobileMenu"><p>Контакты</p></Link></li>
                     <li><Link href="/portfolio" @click="closeMobileMenu"><p>Портфолио</p></Link></li>
                     <li><Link href="/constructor" @click="closeMobileMenu"><p>Конструктор</p></Link></li>
+
+                    <!-- Иконки: Личный кабинет / Корзина -->
                     <li class="mobile-icons">
-                        <Link href="/account" @click="closeMobileMenu"><img src="@/assets/img/header/user.svg" alt="Личный кабинет" /></Link>
-                        <Link href="/basket" @click="closeMobileMenu"><img src="@/assets/img/header/shop.svg" alt="Корзина" /></Link>
+
+                            <template v-if="$page.props.auth.user">
+                                <span class="inline-flex rounded-md">
+                                    <Link
+                                        :href="route('dashboard')"
+                                        class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                    >
+                                        {{ $page.props.auth.user.name }}
+                                    </Link>
+                                </span>
+                            </template>
+
+
+                        <Link v-else href="/login" @click="closeMobileMenu">
+                            <img src="@/assets/img/header/user.svg" alt="Личный кабинет" />
+                        </Link>
+
+                        <Link href="/basket" @click="closeMobileMenu">
+                            <img src="@/assets/img/header/shop.svg" alt="Корзина" />
+                        </Link>
                     </li>
                 </ul>
-
             </nav>
         </section>
     </header>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
 
-export default {
-    name: "HeaderPage",
-    components: {
-        Link,
-    },
-    data() {
-        return {
-            isSearchVisible: false,
-            isMobileMenuOpen: false,
-            searchQuery: "",
-            results: [],
-            pages: [
-                { page: "О компании", link: "/about", content: "Информация о компании" },
-                { page: "Каталог", link: "/catalog", content: "Список товаров" },
-                { page: "Услуги", link: "/services", content: "О наших услугах" },
-                { page: "Контакты", link: "/contacts", content: "Свяжитесь с нами" },
-                { page: "Портфолио", link: "/portfolio", content: "Готовые работы" },
-                { page: "Конструктор", link: "/construct", content: "Конструктор" },
-            ],
-        };
-    },
-    methods: {
-        toggleMobileMenu() {
-            this.isMobileMenuOpen = !this.isMobileMenuOpen;
-        },
-        closeMobileMenu() {
-            this.isMobileMenuOpen = false; // Закрываем меню при переходе
-        },
-    },
-};
+const isMobileMenuOpen = ref(false);
+
+function toggleMobileMenu() {
+    isMobileMenuOpen.value = !isMobileMenuOpen.value;
+}
+
+function closeMobileMenu() {
+    isMobileMenuOpen.value = false;
+}
 </script>
+
 
 <style scoped>
 /* Базовые стили (1920px и больше) */

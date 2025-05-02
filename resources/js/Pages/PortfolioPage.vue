@@ -1,4 +1,6 @@
 <template>
+    <Head title="Портфолио" />
+
     <PageBanner
         page-title="Портфолио"
         current-page-name="Наши работы"
@@ -33,10 +35,11 @@
 
 <script>
 import PageBanner from "@/Components/PageBanner.vue";
+import {Head} from "@inertiajs/vue3";
 
 export default {
     name: "PortfolioPage",
-    components: {PageBanner},
+    components: {Head, PageBanner},
     data() {
         return {
             products: [

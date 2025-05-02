@@ -1,4 +1,6 @@
 <template>
+    <Head title="Отзывы" />
+
     <PageBanner
         page-title="Отзывы клиентов"
         current-page-name="Реальные мнения о нашей работе"
@@ -112,10 +114,10 @@
 
 <script>
 import PageBanner from '@/Components/PageBanner.vue'
-import { router } from '@inertiajs/vue3'
+import {Head, router} from '@inertiajs/vue3'
 
 export default {
-    components: { PageBanner },
+    components: {Head, PageBanner },
 
     props: {
         reviews: Object,

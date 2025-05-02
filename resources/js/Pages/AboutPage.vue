@@ -1,4 +1,6 @@
 <template>
+    <Head title="О компании" />
+
     <PageBanner
         page-title="Немного о нас"
         current-page-name="О компании"
@@ -107,9 +109,10 @@
 
 <script>
 import PageBanner from '@/Components/PageBanner.vue';
+import {Head} from "@inertiajs/vue3";
 export default {
     name: "AboutPage",
-    components: {PageBanner},
+    components: {Head, PageBanner},
 };
 </script>
 

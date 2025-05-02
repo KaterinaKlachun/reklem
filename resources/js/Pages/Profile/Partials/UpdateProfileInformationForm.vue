@@ -1,9 +1,71 @@
+<!-- UpdateProfileInformationForm.vue -->
+<template>
+    <div class="profile-section info-section">
+        <h2 class="section-title">НАСТРОЙКИ ПРОФИЛЯ</h2>
+        <p class="section-description">
+            Обнови данные, если что-то поменялось.
+        </p>
+
+        <form @submit.prevent="form.patch(route('profile.update'))">
+            <div class="form-group">
+                <label class="form-label">ИМЯ</label>
+                <div class="input-wrapper">
+                    <input
+                        v-model="form.name"
+                        type="text"
+                        class="form-input"
+                        required
+                        autofocus
+                        autocomplete="name"
+                    >
+                    <div class="input-decoration"></div>
+                </div>
+                <div v-if="form.errors.name" class="form-error">
+                    {{ form.errors.name }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">EMAIL</label>
+                <div class="input-wrapper">
+                    <input
+                        v-model="form.email"
+                        type="email"
+                        class="form-input"
+                        required
+                        autocomplete="username"
+                    >
+                    <div class="input-decoration"></div>
+                </div>
+                <div v-if="form.errors.email" class="form-error">
+                    {{ form.errors.email }}
+                </div>
+            </div>
+
+            <div v-if="mustVerifyEmail && user.email_verified_at === null" class="verification-message">
+                <p class="verification-text">Почта не подтверждена.</p>
+                <a :href="route('verification.send')" class="verification-link">
+                    Отправить подтверждение
+                </a>
+                <p v-if="status === 'verification-link-sent'" class="verification-success">
+                    Письмо отправлено!
+                </p>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-save" :disabled="form.processing">
+                    СОХРАНИТЬ ИЗМЕНЕНИЯ
+                </button>
+                <p v-if="form.recentlySuccessful" class="success-message">
+                    Данные успешно обновлены!
+                </p>
+            </div>
+        </form>
+    </div>
+</template>
+
 <script setup>
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Link, useForm, usePage } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 
 defineProps({
     mustVerifyEmail: {
@@ -22,91 +84,216 @@ const form = useForm({
 });
 </script>
 
-<template>
-    <section>
-        <header>
-            <h2 class="text-lg font-medium text-gray-900">
-                Profile Information
-            </h2>
+<style scoped>
+.info-section {
+    background-color: var(--white);
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow-sm);
+    border: 2px solid rgba(255, 166, 48, 0.15);
+}
 
-            <p class="mt-1 text-sm text-gray-600">
-                Update your account's profile information and email address.
-            </p>
-        </header>
+.section-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 1rem;
+}
 
-        <form
-            @submit.prevent="form.patch(route('profile.update'))"
-            class="mt-6 space-y-6"
-        >
-            <div>
-                <InputLabel for="name" value="Name" />
+.section-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: var(--primary);
+    border-radius: 4px;
+}
 
-                <TextInput
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
+.section-description {
+    color: var(--text-medium);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.05rem;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
 
-                <InputError class="mt-2" :message="form.errors.name" />
-            </div>
+.form-group {
+    margin-bottom: 2rem;
+}
 
-            <div>
-                <InputLabel for="email" value="Email" />
+.form-label {
+    display: block;
+    margin-bottom: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent);
+}
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
+.input-wrapper {
+    position: relative;
+}
 
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+.form-input {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    border: 2px solid var(--light-bg);
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.05rem;
+    transition: var(--transition);
+    background-color: var(--white);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 1;
+}
 
-            <div v-if="mustVerifyEmail && user.email_verified_at === null">
-                <p class="mt-2 text-sm text-gray-800">
-                    Your email address is unverified.
-                    <Link
-                        :href="route('verification.send')"
-                        method="post"
-                        as="button"
-                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                        Click here to re-send the verification email.
-                    </Link>
-                </p>
+.input-decoration {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(255, 166, 48, 0.1), rgba(255, 166, 48, 0.15));
+    z-index: 0;
+    transform: translate(4px, 4px);
+    transition: var(--transition);
+}
 
-                <div
-                    v-show="status === 'verification-link-sent'"
-                    class="mt-2 text-sm font-medium text-green-600"
-                >
-                    A new verification link has been sent to your email address.
-                </div>
-            </div>
+.form-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255, 166, 48, 0.2);
+}
 
-            <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+.form-input:focus ~ .input-decoration {
+    transform: translate(6px, 6px);
+    background: linear-gradient(135deg, rgba(255, 166, 48, 0.15), rgba(255, 166, 48, 0.2));
+}
 
-                <Transition
-                    enter-active-class="transition ease-in-out"
-                    enter-from-class="opacity-0"
-                    leave-active-class="transition ease-in-out"
-                    leave-to-class="opacity-0"
-                >
-                    <p
-                        v-if="form.recentlySuccessful"
-                        class="text-sm text-gray-600"
-                    >
-                        Saved.
-                    </p>
-                </Transition>
-            </div>
-        </form>
-    </section>
-</template>
+.form-error {
+    color: #e3342f;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+    font-weight: 600;
+}
+
+.verification-message {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.verification-text {
+    color: var(--text-medium);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.verification-link {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: none;
+    transition: var(--transition);
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    background-color: rgba(255, 166, 48, 0.1);
+}
+
+.verification-link:hover {
+    color: var(--white);
+    background-color: var(--accent);
+    text-decoration: none;
+}
+
+.verification-success {
+    color: var(--primary-light);
+    font-weight: 600;
+    margin-top: 1rem;
+}
+
+.form-actions {
+    margin-top: 2.5rem;
+}
+
+.btn-save {
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    color: var(--white);
+    box-shadow: 0 4px 12px rgba(255, 166, 48, 0.3);
+    padding: 1.25rem 2rem;
+    font-weight: 800;
+    font-size: 1.1rem;
+    width: 100%;
+}
+
+.btn-save:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(255, 166, 48, 0.4);
+}
+
+.success-message {
+    color: var(--primary-light);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 1.05rem;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 992px) {
+    .info-section {
+        padding: 2rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .info-section {
+        padding: 1.75rem;
+    }
+
+    .form-input {
+        padding: 1.1rem 1.25rem;
+    }
+
+    .btn-save {
+        padding: 1.1rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .info-section {
+        padding: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+    }
+
+    .form-label {
+        font-size: 0.95rem;
+    }
+}
+</style>
