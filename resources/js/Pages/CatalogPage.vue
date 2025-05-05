@@ -36,7 +36,7 @@
                 <img :src="product.image_url" :alt="product.title" />
                 <h3>{{ product.title }}</h3>
                 <p>{{ product.price }} ₽</p>
-                <button @click="viewProduct(product.id)">Выбрать вид</button>
+                <button @click="viewProduct(product.id)">Подробнее</button>
             </div>
         </div>
     </section>

@@ -22,7 +22,7 @@ class ProfileController extends Controller
             'user' => $request->user(),
             'mustVerifyEmail' => $request->user()->hasVerifiedEmail(),
             'status' => session('status'),
-            'profile_photo_path' => $request->user(),
+            'profile_photo_path' => $request->user()->profile_photo_path ? Storage::url($request->user()->profile_photo_path) : null,
         ]);
     }
 
@@ -50,7 +50,7 @@ class ProfileController extends Controller
         try {
             // Валидация файла
             $request->validate([
-                'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:1024', // до 10MB
+                'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:1024', // до 1MB
             ]);
 
             $user = $request->user();

@@ -9,11 +9,21 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'phone', 'address', 'comment', 'user_id'];
+    protected $fillable = [
+        'user_id',
+        'total_price',
+        'status',
+    ];
 
-    // Связь с таблицей users
-    public function user()
+    // Связь с пользователем
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    // Связь с товаром через OrderItem
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }

@@ -222,7 +222,6 @@ export default {
 }
 </script>
 
-
 <style scoped>
 .wrapper {
     max-width: 1200px;

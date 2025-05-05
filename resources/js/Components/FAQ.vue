@@ -179,8 +179,18 @@ details p {
     }
 }
 
+@media (max-width: 1919px) {
+    .faq{
+        margin: 20px;
+    }
+}
+
 /* Планшеты и средние экраны */
 @media (max-width: 1024px) {
+    .faq{
+        margin: 20px;
+    }
+
     .faq h1 {
         font-size: 2.5rem;
     }

@@ -1,15 +1,11 @@
 <template>
     <Head title="Продукт" />
 
-    <PageBannerProduct
-        page-title="Наша продукция"
-        current-page-name="Продукт"
-    />
+    <PageBannerProduct page-title="Наша продукция" current-page-name="Продукт" />
 
     <section v-if="product" class="product-wrapper">
         <div class="product-container">
             <div class="product-left">
-                <!-- Изображение продукта -->
                 <div class="image-container">
                     <img :src="selectedColorImage" :alt="product.name" class="product-image" loading="lazy" />
                 </div>
@@ -24,7 +20,7 @@
 
                 <div class="color-selector">
                     <label>Цвет:</label>
-                    <select @change="updateColorImage($event.target.value)" class="styled-select">
+                    <select v-model="selectedColor" @change="updateColorImage" class="styled-select">
                         <option v-for="color in product.product_colors" :key="color.color" :value="color.color">
                             {{ color.color }}
                         </option>
@@ -47,9 +43,17 @@
                             +
                         </button>
                     </div>
-                    <button class="add-to-cart-button" @click="addToCart" aria-label="Добавить в корзину">
+                    <button
+                        v-if="$page.props.auth.user"
+                        class="add-to-cart-button"
+                        @click="addToCart"
+                        aria-label="Добавить в корзину"
+                    >
                         В корзину
                     </button>
+                    <Link v-else href="/login" class="add-to-cart-button">
+                        Войти, чтобы добавить в корзину
+                    </Link>
                 </div>
             </div>
         </div>
@@ -67,31 +71,53 @@
 </template>
 
 <script>
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import PageBannerProduct from "@/Components/PageBannerProduct.vue";
-import {Head} from "@inertiajs/vue3";
 
 export default {
-    components: {Head, PageBannerProduct },
+    components: { Head, PageBannerProduct, Link },
     props: {
         product: Object,
     },
     data() {
         return {
+            selectedColor: this.product?.product_colors[0]?.color || '',
             selectedColorImage: this.product?.product_colors[0]?.image_url || '',
             selectedQuantity: 1,
         };
     },
     methods: {
-        updateColorImage(selectedColor) {
+        updateColorImage() {
             const selectedColorData = this.product.product_colors.find(
-                (color) => color.color === selectedColor
+                (color) => color.color === this.selectedColor
             );
             this.selectedColorImage = selectedColorData ? selectedColorData.image_url : null;
         },
         addToCart() {
-            console.log(`Добавлено в корзину: ${this.selectedQuantity} шт. товара "${this.product.name}"`);
-        },
+            if (!usePage().props.auth.user) {
+                this.$inertia.visit('/login');
+                return;
+            }
+
+            this.$inertia.post('/cart/add', {
+                product_id: this.product.id,
+                quantity: this.selectedQuantity,
+                color: this.selectedColor, // передаём выбранный цвет
+            }, {
+                preserveScroll: true,
+                onSuccess: () => {
+                    alert('Товар добавлен в корзину');
+                },
+                onError: (errors) => {
+                    console.error('Ошибка при добавлении в корзину:', errors);
+                    alert('Не удалось добавить товар в корзину');
+                }
+            });
+        }
     },
+    mounted() {
+        this.updateColorImage();
+    }
 };
 </script>
 

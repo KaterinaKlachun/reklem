@@ -14,7 +14,7 @@ class Product extends Model
     ];
 
     // Связь с таблицей categories
-    public function category()
+    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Category::class);
     }

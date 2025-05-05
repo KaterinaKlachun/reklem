@@ -10,7 +10,7 @@ class ProductColor extends Model
         'product_id', 'color', 'image_url'
     ];
 
-    public function product()
+    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Product::class);
     }

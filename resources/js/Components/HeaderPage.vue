@@ -42,7 +42,7 @@
                             <img src="@/assets/img/header/user.svg" alt="Личный кабинет" />
                         </Link>
 
-                        <Link href="/basket" @click="closeMobileMenu">
+                        <Link href="/cart" @click="closeMobileMenu">
                             <img src="@/assets/img/header/shop.svg" alt="Корзина" />
                         </Link>
                     </li>
@@ -66,7 +66,6 @@ function closeMobileMenu() {
     isMobileMenuOpen.value = false;
 }
 </script>
-
 
 <style scoped>
 /* Базовые стили (1920px и больше) */
