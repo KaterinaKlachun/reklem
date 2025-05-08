@@ -26,21 +26,15 @@
         <!-- Вкладки -->
         <div class="tabs">
             <button :class="{ active: activeTab === 'active' }" @click="activeTab = 'active'">
-                <svg class="tab-icon" viewBox="0 0 24 24">
-                    <path d="M12 2L4 7v10l8 5 8-5V7L12 2zm0 2.8L18 8v8l-6 3.8L6 16V8l6-5.2z"/>
-                </svg>
+                <img src="@/assets/img/icons/active_orders.svg" class="btn-icons">
                 Активные заказы
             </button>
             <button :class="{ active: activeTab === 'completed' }" @click="activeTab = 'completed'">
-                <svg class="tab-icon" viewBox="0 0 24 24">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-                </svg>
+                <img src="@/assets/img/icons/checkmark.svg" class="btn-icons">
                 Завершённые
             </button>
             <button :class="{ active: activeTab === 'settings' }" @click="activeTab = 'settings'">
-                <svg class="tab-icon" viewBox="0 0 24 24">
-                    <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
-                </svg>
+                <img src="@/assets/img/icons/settings.svg" class="btn-icons">
                 Настройки
             </button>
         </div>
@@ -51,17 +45,13 @@
             <div v-if="activeTab === 'active'" class="active-orders">
                 <div v-if="activeOrders.length === 0" class="empty-state">
                     <div class="empty-icon">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.25-.11-.25-.25z"/>
-                        </svg>
+                        <img src="@/assets/img/icons/shopping-cart.svg">
                     </div>
                     <h3>У вас пока нет активных заказов</h3>
                     <p>Начните оформлять заказы, и они появятся здесь</p>
                     <Link href="/catalog" class="btn primary">
                         Перейти в каталог
-                        <svg viewBox="0 0 24 24" class="btn-icon">
-                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                        </svg>
+                        <img src="@/assets/img/icons/arrow-right.svg" class="btn-icon">
                     </Link>
                 </div>
                 <div v-else class="orders-grid">
@@ -115,12 +105,6 @@
                                 <span>Итого:</span>
                                 <span class="total-price">{{ formatPrice(order.total_price) }} ₽</span>
                             </div>
-                            <button class="order-action" @click="showOrderDetails(order)">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                                </svg>
-                                Подробнее
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -130,17 +114,13 @@
             <div v-else-if="activeTab === 'completed'" class="completed-orders">
                 <div v-if="completedOrders.length === 0" class="empty-state">
                     <div class="empty-icon">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
-                        </svg>
+                        <img src="@/assets/img/icons/box.svg" class="btn-iconS">
                     </div>
                     <h3>Вы ещё не завершили ни одного заказа</h3>
                     <p>После завершения заказы появятся здесь</p>
                     <Link href="/catalog" class="btn primary">
                         Перейти в каталог
-                        <svg viewBox="0 0 24 24" class="btn-icon">
-                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                        </svg>
+                        <img src="@/assets/img/icons/arrow-right.svg" class="btn-icon">
                     </Link>
                 </div>
                 <div v-else class="orders-grid">
@@ -169,14 +149,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="product-review">
-                                    <button class="review-btn" @click="leaveReview(item)">
-                                        <svg viewBox="0 0 24 24">
-                                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                        </svg>
-                                        Оценить
-                                    </button>
-                                </div>
                             </div>
                         </div>
 
@@ -185,12 +157,6 @@
                                 <span>Итого:</span>
                                 <span class="total-price">{{ formatPrice(order.total_price) }} ₽</span>
                             </div>
-                            <button class="order-action" @click="showOrderDetails(order)">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                                </svg>
-                                Подробнее
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -202,9 +168,7 @@
                     <h3>Профиль</h3>
                     <Link :href="route('profile.edit')" class="btn primary">
                         Редактировать профиль
-                        <svg viewBox="0 0 24 24" class="btn-icon">
-                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                        </svg>
+                        <img src="@/assets/img/icons/edit.svg" class="btn-icon">
                     </Link>
                 </div>
                 <div class="settings-section">
@@ -213,9 +177,7 @@
                         <input type="hidden" name="_token" :value="$page.props.csrf_token">
                         <button type="submit" class="btn danger">
                             Выйти из аккаунта
-                            <svg viewBox="0 0 24 24" class="btn-icon">
-                                <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
-                            </svg>
+                            <img src="@/assets/img/icons/exit.svg" class="btn-icon">
                         </button>
                     </form>
                 </div>
@@ -254,14 +216,6 @@ const getStatusText = (status) => {
 const getRandomColor = () => {
     const colors = ['#FFA630', '#00997a', '#007b5e', '#FF7043', '#5C6BC0', '#26A69A'];
     return colors[Math.floor(Math.random() * colors.length)];
-};
-
-const showOrderDetails = (order) => {
-    alert(`Детали заказа #${order.id}\nСтатус: ${getStatusText(order.status)}\nИтого: ${formatPrice(order.total_price)} ₽`);
-};
-
-const leaveReview = (item) => {
-    alert(`Оставить отзыв для товара: ${item.product?.name || 'Товар'}`);
 };
 
 // Отладочный вывод
@@ -492,11 +446,6 @@ onMounted(() => {
 
 .order-card.completed {
     border-left: 4px solid var(--primary);
-}
-
-.order-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
 }
 
 .order-header {
@@ -771,10 +720,15 @@ onMounted(() => {
 }
 
 .btn-icon {
-    width: 16px;
-    height: 16px;
+    width: 22px;
+    height: 22px;
     fill: var(--white);
     margin-left: 10px;
+}
+
+.btn-icons{
+    width: 24px;
+    height: 24px;
 }
 
 .settings-section {
