@@ -90,6 +90,7 @@ export default {
 .faq {
     margin-top: 8%;
     padding: 0;
+
 }
 
 /* Заголовок */

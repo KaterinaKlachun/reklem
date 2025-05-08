@@ -26,15 +26,18 @@ const showExtras = computed(() => {
     if (!component) return true;
 
     const lower = component.toLowerCase();
+    const excludedRoutes = [
+        'auth/',
+        'profile/',
+        'checkout',
+        'cart',
+        'dashboard',
+        'payment' // Добавляем страницу оплаты
+    ];
 
-    return !(
-        lower.includes('auth/') ||
-        lower.includes('profile/') ||
-        lower.includes('dashboard')
-    );
+    return !excludedRoutes.some(route => lower.includes(route));
 });
 </script>
-
 
 <style lang="css">
 

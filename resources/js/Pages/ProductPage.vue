@@ -68,6 +68,27 @@
         <div class="loader"></div>
         <p>Загрузка данных о продукте...</p>
     </section>
+
+    <!-- Модальное окно добавления в корзину -->
+    <div v-if="showCartModal" class="cart-modal-overlay">
+        <div class="cart-modal-content">
+            <div class="cart-modal-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48">
+                    <path fill="#007b5e" d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12zm-7-8c-1.66 0-3-1.34-3-3H7c0 2.76 2.24 5 5 5s5-2.24 5-5h-2c0 1.66-1.34 3-3 3z"/>
+                </svg>
+            </div>
+            <h3 class="cart-modal-title">Товар добавлен в корзину</h3>
+            <p class="cart-modal-text">Вы можете продолжить покупки или перейти в корзину</p>
+            <div class="cart-modal-buttons">
+                <button @click="continueShopping" class="cart-modal-button continue">
+                    Продолжить покупки
+                </button>
+                <Link href="/cart" class="cart-modal-button checkout">
+                    Перейти в корзину
+                </Link>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -84,6 +105,7 @@ export default {
             selectedColor: this.product?.product_colors[0]?.color || '',
             selectedColorImage: this.product?.product_colors[0]?.image_url || '',
             selectedQuantity: 1,
+            showCartModal: false
         };
     },
     methods: {
@@ -102,17 +124,20 @@ export default {
             this.$inertia.post('/cart/add', {
                 product_id: this.product.id,
                 quantity: this.selectedQuantity,
-                color: this.selectedColor, // передаём выбранный цвет
+                color: this.selectedColor,
             }, {
                 preserveScroll: true,
                 onSuccess: () => {
-                    alert('Товар добавлен в корзину');
+                    this.showCartModal = true;
                 },
                 onError: (errors) => {
                     console.error('Ошибка при добавлении в корзину:', errors);
                     alert('Не удалось добавить товар в корзину');
                 }
             });
+        },
+        continueShopping() {
+            this.showCartModal = false;
         }
     },
     mounted() {
@@ -334,11 +359,117 @@ export default {
     margin-bottom: 1rem;
 }
 
+/* Стили модального окна */
+.cart-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.cart-modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.cart-modal-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #007b5e, #00997a, #FFA630);
+    border-radius: 12px 12px 0 0;
+}
+
+.cart-modal-icon {
+    margin-bottom: 1rem;
+}
+
+.cart-modal-icon svg {
+    animation: bounceIn 0.5s ease;
+}
+
+.cart-modal-title {
+    color: #007b5e;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.cart-modal-text {
+    color: #555;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.cart-modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.cart-modal-button {
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.cart-modal-button.continue {
+    background: #f2f2f2;
+    color: #333;
+}
+
+.cart-modal-button.continue:hover {
+    background: #e0e0e0;
+}
+
+.cart-modal-button.checkout {
+    background: #007b5e;
+    color: white;
+}
+
+.cart-modal-button.checkout:hover {
+    background: #00997a;
+}
+
+/* Анимации */
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+/* Адаптивность */
 @media screen and (max-width: 768px) {
     .product-container {
         flex-direction: column;
@@ -381,6 +512,36 @@ export default {
 
     .product-info {
         padding: 1.5rem;
+    }
+
+    .cart-modal-buttons {
+        flex-direction: column;
+    }
+
+    .cart-modal-button {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .product-wrapper {
+        padding: 1rem;
+    }
+
+    .product-container {
+        padding: 1rem;
+    }
+
+    .product-title {
+        font-size: 1.4rem;
+    }
+
+    .product-price {
+        font-size: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.3rem;
     }
 }
 </style>

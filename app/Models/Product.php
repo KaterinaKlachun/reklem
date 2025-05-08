@@ -19,8 +19,16 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    // Связь с цветами товара
     public function productColors()
     {
         return $this->hasMany(ProductColor::class);
     }
+
+    // Связь с услугами через категорию
+    public function services()
+    {
+        return $this->category->services();
+    }
+
 }

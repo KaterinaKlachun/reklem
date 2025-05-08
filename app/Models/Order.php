@@ -15,6 +15,12 @@ class Order extends Model
         'status',
     ];
 
+    protected $table = 'orders';
+
+    protected $casts = [
+        'total_price' => 'float',
+    ];
+
     // Связь с пользователем
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

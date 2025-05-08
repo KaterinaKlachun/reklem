@@ -5,20 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CartItem;
-use App\Models\Order;
-use App\Models\OrderItem;
 use Inertia\Inertia;
 
 class CartController extends Controller
 {
     // Отображение корзины
-
     public function index()
     {
         $cartItems = CartItem::with('product.productColors')
             ->where('user_id', auth()->id())
             ->get();
 
+        // CartController@index
         return inertia('CartPage', [
             'cartItems' => $cartItems->map(function ($item) {
                 $colorImage = $item->product->productColors
@@ -28,6 +26,8 @@ class CartController extends Controller
                     'id' => $item->id,
                     'quantity' => $item->quantity,
                     'color' => $item->color,
+                    'service_type' => $item->service_type,
+                    'service_price' => $item->service_price,
                     'product' => [
                         'id' => $item->product->id,
                         'name' => $item->product->name,
@@ -38,7 +38,6 @@ class CartController extends Controller
             }),
         ]);
     }
-
 
     // Добавление товара в корзину
     public function add(Request $request)
@@ -71,62 +70,44 @@ class CartController extends Controller
         return back()->with('success', 'Товар добавлен в корзину');
     }
 
-    // Оформление заказа
+    // Переход на страницу оплаты (без создания заказа)
     public function checkout(Request $request)
     {
         $cartItems = CartItem::where('user_id', auth()->id())->get();
 
         if ($cartItems->isEmpty()) {
-            return redirect()->route('cart.index')->with('error', 'Корзина пуста');
+            return redirect()->route('cart.index')->with('error', 'Корзина пуста.');
         }
 
-        // Создаем заказ
-        $order = Order::create([
-            'user_id' => auth()->id(),
-            'status' => 'pending',  // Заказ в статусе "Ожидает"
-            'total_price' => $cartItems->sum(function ($item) {
-                return $item->quantity * $item->product->price;
-            }),
-        ]);
-
-        // Создаем записи для товаров в заказе
-        foreach ($cartItems as $item) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $item->product_id,
-                'quantity' => $item->quantity,
-                'price' => $item->product->price,
-                'color' => $item->color,
-            ]);
-        }
-
-        // Очищаем корзину после оформления
-        CartItem::where('user_id', auth()->id())->delete();
-
-        return redirect()->route('cart.index')->with('success', 'Заказ оформлен!');
+        return Inertia::render('PaymentPage');
     }
 
-    // Обновление количества товара в корзине
+    // Обновление количества товара
+
     public function update(Request $request, CartItem $cartItem)
     {
         $this->authorizeCartItem($cartItem);
 
         $request->validate([
-            'quantity' => 'required|integer|min:1'
+            'quantity' => 'required|integer|min:1',
+            'service_type' => 'nullable|string',
+            'service_price' => 'nullable|numeric'
         ]);
 
         $cartItem->update([
-            'quantity' => $request->quantity
+            'quantity' => $request->quantity,
+            'service_type' => $request->service_type,
+            'service_price' => $request->service_price
         ]);
 
         return back();
     }
 
-    // Удаление товара из корзины
+
+    // Удаление товара
     public function remove(CartItem $cartItem)
     {
         $this->authorizeCartItem($cartItem);
-
         $cartItem->delete();
         return back();
     }

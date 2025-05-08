@@ -49,7 +49,13 @@
                                         >
                                     </button>
                                 </div>
-                                <p class="item-price">{{ item.product.price * item.quantity }} ₽</p>
+                                <p class="item-price">
+                                    {{ item.product.price * item.quantity }} ₽
+                                    <template v-if="item.service_price">
+                                        + Услуга: {{ item.service_price * item.quantity }} ₽
+                                    </template>
+                                </p>
+
                             </div>
                         </div>
                     </div>
@@ -64,7 +70,7 @@
                         <span>Итого:</span>
                         <span class="total-price">{{ totalPrice }} ₽</span>
                     </div>
-                    <button @click="checkout" class="checkout-button">
+                    <button @click="submitOrder" class="checkout-button">
                         Оформить заказ
                     </button>
                 </div>
@@ -103,12 +109,16 @@ export default {
         cartItems: {
             type: Array,
             default: () => []
-        }
+        },
+        errors: Object,
+        auth: Object,
+        csrf_token: String
     },
     computed: {
         totalPrice() {
             return this.cartItems.reduce((total, item) => {
-                return total + (item.product.price * item.quantity);
+                const serviceTotal = item.service_price ? item.service_price * item.quantity : 0;
+                return total + (item.product.price * item.quantity) + serviceTotal;
             }, 0);
         }
     },
@@ -135,9 +145,15 @@ export default {
                 });
             }
         },
-        checkout() {
-            this.$inertia.post('/cart/checkout');
-        }
+
+        async submitOrder(){
+            try {
+                const response = await this.$inertia.post('/cart/checkout');
+                console.log('Заказ отправлен:', response);
+            } catch (error) {
+                console.log('Ошибка при оформлении заказа:', error);
+            }
+        },
     }
 };
 </script>
@@ -145,7 +161,6 @@ export default {
 <style scoped>
 .cart {
     padding: 60px 0;
-    background-color: #f8fafc;
 }
 
 .wrapper {

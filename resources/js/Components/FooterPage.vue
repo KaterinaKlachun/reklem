@@ -68,7 +68,6 @@ footer {
     background-color: #f9f9f9;
     padding: 60px 20px 40px;
     font-family: 'Inter', sans-serif;
-    margin-top: 10%;
     color: #2e2e2e;
 }
 

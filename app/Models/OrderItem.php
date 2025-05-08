@@ -17,6 +17,11 @@ class OrderItem extends Model
         'color',
     ];
 
+    protected $casts = [
+        'quantity' => 'integer',
+        'price' => 'float',
+    ];
+
     public function order(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Order::class);
@@ -26,4 +31,5 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
 }

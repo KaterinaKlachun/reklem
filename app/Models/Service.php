@@ -15,4 +15,12 @@ class Service extends Model
     protected $casts = [
         'advantages' => 'array', // Преобразуем преимущества в массив
     ];
+
+    public function orderItems()
+    {
+        return $this->belongsToMany(OrderItem::class)
+            ->withPivot('price')
+            ->withTimestamps();
+    }
+
 }

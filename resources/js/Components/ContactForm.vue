@@ -45,6 +45,7 @@ export default {
     border-radius: 30px;
     padding: 60px 80px;
     margin-top: 10%;
+    margin-bottom: 10%;
     gap: 40px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(2px);

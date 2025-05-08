@@ -1,45 +1,46 @@
 <template>
     <Head title="Личный кабинет" />
-
-    <PageBanner
-        page-title="Личный кабинет"
-        current-page-name="Личный кабинет"
-    />
-
+    <PageBanner page-title="Личный кабинет" current-page-name="Личный кабинет" />
     <div class="dashboard-wrapper">
         <!-- Профиль -->
         <div class="profile-card" v-if="$page.props.auth.user">
             <div class="profile-avatar">
-                <img
-                    :src="$page.props.profile_photo_url || '/images/default-avatar.png'"
-                    :alt="$page.props.auth.user.name"
-                    class="profile-img"
-                />
+                <img :src="$page.props.profile_photo_url || '/images/default-avatar.png'" :alt="$page.props.auth.user.name" class="profile-img" />
             </div>
             <div class="profile-info">
                 <h2>{{ $page.props.auth.user.name }}</h2>
                 <p>{{ $page.props.auth.user.email }}</p>
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-number">{{ activeOrders.length }}</span>
+                        <span class="stat-label">Активных</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">{{ completedOrders.length }}</span>
+                        <span class="stat-label">Завершённых</span>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Вкладки -->
         <div class="tabs">
-            <button
-                :class="{ active: activeTab === 'active' }"
-                @click="activeTab = 'active'"
-            >
+            <button :class="{ active: activeTab === 'active' }" @click="activeTab = 'active'">
+                <svg class="tab-icon" viewBox="0 0 24 24">
+                    <path d="M12 2L4 7v10l8 5 8-5V7L12 2zm0 2.8L18 8v8l-6 3.8L6 16V8l6-5.2z"/>
+                </svg>
                 Активные заказы
             </button>
-            <button
-                :class="{ active: activeTab === 'completed' }"
-                @click="activeTab = 'completed'"
-            >
+            <button :class="{ active: activeTab === 'completed' }" @click="activeTab = 'completed'">
+                <svg class="tab-icon" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                </svg>
                 Завершённые
             </button>
-            <button
-                :class="{ active: activeTab === 'settings' }"
-                @click="activeTab = 'settings'"
-            >
+            <button :class="{ active: activeTab === 'settings' }" @click="activeTab = 'settings'">
+                <svg class="tab-icon" viewBox="0 0 24 24">
+                    <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+                </svg>
                 Настройки
             </button>
         </div>
@@ -49,66 +50,149 @@
             <!-- Активные заказы -->
             <div v-if="activeTab === 'active'" class="active-orders">
                 <div v-if="activeOrders.length === 0" class="empty-state">
+                    <div class="empty-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.25-.11-.25-.25z"/>
+                        </svg>
+                    </div>
                     <h3>У вас пока нет активных заказов</h3>
                     <p>Начните оформлять заказы, и они появятся здесь</p>
+                    <Link href="/catalog" class="btn primary">
+                        Перейти в каталог
+                        <svg viewBox="0 0 24 24" class="btn-icon">
+                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                        </svg>
+                    </Link>
                 </div>
-                <div v-else>
-                    <ul>
-                        <li v-for="order in activeOrders" :key="order.id" class="order-item">
-                            <div class="order-header">
-                                <h4>Заказ №{{ order.id }}</h4>
-                                <span class="order-status" :class="'status-' + order.status">
-                                    {{ getStatusText(order.status) }}
-                                </span>
+                <div v-else class="orders-grid">
+                    <div v-for="order in activeOrders" :key="order.id" class="order-card">
+                        <div class="order-header">
+                            <div class="order-number">Заказ #{{ order.id }}</div>
+                            <div class="order-status" :class="'status-' + order.status">
+                                {{ getStatusText(order.status) }}
                             </div>
-                            <div class="order-products">
-                                <div v-for="item in order.order_items" :key="item.id" class="product-item">
-                                    <div class="product-details">
-                                        <p>{{ item.product?.name || 'Товар' }}</p>
-                                        <p>Цвет: {{ item.color || 'не указан' }}</p>
-                                        <p>Количество: {{ item.quantity || 0 }}</p>
-                                        <p>Цена: {{ formatPrice(item.price * item.quantity) }} ₽</p>
+                        </div>
+
+                        <div class="order-timeline">
+                            <div class="timeline-step" :class="{'active': order.status === 'pending'}">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-label">Оформлен</div>
+                            </div>
+                            <div class="timeline-step" :class="{'active': order.status === 'active'}">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-label">В пути</div>
+                            </div>
+                            <div class="timeline-step" :class="{'active': order.status === 'completed'}">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-label">Доставлен</div>
+                            </div>
+                        </div>
+
+                        <div class="order-products">
+                            <div v-for="item in order.order_items" :key="item.id" class="product-item">
+                                <div class="product-image-wrapper">
+                                    <div class="product-image-placeholder" :style="{ backgroundColor: getRandomColor() }">
+                                        {{ item.product?.name.charAt(0) || 'T' }}
+                                    </div>
+                                </div>
+                                <div class="product-details">
+                                    <div class="product-name">{{ item.product?.name || 'Товар' }}</div>
+                                    <div class="product-meta">
+                                        <span class="product-quantity">{{ item.quantity || 0 }} шт.</span>
+                                        <span class="product-price">{{ formatPrice(item.price * item.quantity) }} ₽</span>
+                                    </div>
+                                    <div v-if="item.services && item.services.length" class="product-services">
+                                        <div class="service-tag" v-for="service in item.services" :key="service.id">
+                                            {{ service.name }} (+{{ formatPrice(service.pivot.price * item.quantity) }} ₽)
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="order-footer">
-                                <p class="order-total">Итого: {{ formatPrice(order.total_price) }} ₽</p>
+                        </div>
+
+                        <div class="order-footer">
+                            <div class="order-total">
+                                <span>Итого:</span>
+                                <span class="total-price">{{ formatPrice(order.total_price) }} ₽</span>
                             </div>
-                        </li>
-                    </ul>
+                            <button class="order-action" @click="showOrderDetails(order)">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                </svg>
+                                Подробнее
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Завершённые заказы -->
             <div v-else-if="activeTab === 'completed'" class="completed-orders">
                 <div v-if="completedOrders.length === 0" class="empty-state">
+                    <div class="empty-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+                        </svg>
+                    </div>
                     <h3>Вы ещё не завершили ни одного заказа</h3>
                     <p>После завершения заказы появятся здесь</p>
+                    <Link href="/catalog" class="btn primary">
+                        Перейти в каталог
+                        <svg viewBox="0 0 24 24" class="btn-icon">
+                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                        </svg>
+                    </Link>
                 </div>
-                <div v-else>
-                    <ul>
-                        <li v-for="order in completedOrders" :key="order.id" class="order-item">
-                            <div class="order-header">
-                                <h4>Заказ №{{ order.id }}</h4>
-                                <span class="order-status status-completed">
-                                    Завершён
-                                </span>
-                            </div>
-                            <div class="order-products">
-                                <div v-for="item in order.order_items" :key="item.id" class="product-item">
-                                    <div class="product-details">
-                                        <p>{{ item.product?.name || 'Товар' }}</p>
-                                        <p>Цвет: {{ item.color || 'не указан' }}</p>
-                                        <p>Количество: {{ item.quantity || 0 }}</p>
-                                        <p>Цена: {{ formatPrice(item.price * item.quantity) }} ₽</p>
+                <div v-else class="orders-grid">
+                    <div v-for="order in completedOrders" :key="order.id" class="order-card completed">
+                        <div class="order-header">
+                            <div class="order-number">Заказ #{{ order.id }}</div>
+                            <div class="order-date">{{ formatDate(order.created_at) }}</div>
+                        </div>
+
+                        <div class="order-products">
+                            <div v-for="item in order.order_items" :key="item.id" class="product-item">
+                                <div class="product-image-wrapper">
+                                    <div class="product-image-placeholder" :style="{ backgroundColor: getRandomColor() }">
+                                        {{ item.product?.name.charAt(0) || 'T' }}
                                     </div>
                                 </div>
+                                <div class="product-details">
+                                    <div class="product-name">{{ item.product?.name || 'Товар' }}</div>
+                                    <div class="product-meta">
+                                        <span class="product-quantity">{{ item.quantity || 0 }} шт.</span>
+                                        <span class="product-price">{{ formatPrice(item.price * item.quantity) }} ₽</span>
+                                    </div>
+                                    <div v-if="item.services && item.services.length" class="product-services">
+                                        <div class="service-tag" v-for="service in item.services" :key="service.id">
+                                            {{ service.name }} (+{{ formatPrice(service.pivot.price * item.quantity) }} ₽)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-review">
+                                    <button class="review-btn" @click="leaveReview(item)">
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                        </svg>
+                                        Оценить
+                                    </button>
+                                </div>
                             </div>
-                            <div class="order-footer">
-                                <p class="order-total">Итого: {{ formatPrice(order.total_price) }} ₽</p>
+                        </div>
+
+                        <div class="order-footer">
+                            <div class="order-total">
+                                <span>Итого:</span>
+                                <span class="total-price">{{ formatPrice(order.total_price) }} ₽</span>
                             </div>
-                        </li>
-                    </ul>
+                            <button class="order-action" @click="showOrderDetails(order)">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                </svg>
+                                Подробнее
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -118,6 +202,9 @@
                     <h3>Профиль</h3>
                     <Link :href="route('profile.edit')" class="btn primary">
                         Редактировать профиль
+                        <svg viewBox="0 0 24 24" class="btn-icon">
+                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                        </svg>
                     </Link>
                 </div>
                 <div class="settings-section">
@@ -126,6 +213,9 @@
                         <input type="hidden" name="_token" :value="$page.props.csrf_token">
                         <button type="submit" class="btn danger">
                             Выйти из аккаунта
+                            <svg viewBox="0 0 24 24" class="btn-icon">
+                                <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+                            </svg>
                         </button>
                     </form>
                 </div>
@@ -147,6 +237,11 @@ const formatPrice = (price) => {
     return isNaN(num) ? '0.00' : num.toFixed(2);
 };
 
+const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('ru-RU', options);
+};
+
 const getStatusText = (status) => {
     const statuses = {
         'pending': 'В обработке',
@@ -154,6 +249,19 @@ const getStatusText = (status) => {
         'completed': 'Завершён'
     };
     return statuses[status] || 'Неизвестно';
+};
+
+const getRandomColor = () => {
+    const colors = ['#FFA630', '#00997a', '#007b5e', '#FF7043', '#5C6BC0', '#26A69A'];
+    return colors[Math.floor(Math.random() * colors.length)];
+};
+
+const showOrderDetails = (order) => {
+    alert(`Детали заказа #${order.id}\nСтатус: ${getStatusText(order.status)}\nИтого: ${formatPrice(order.total_price)} ₽`);
+};
+
+const leaveReview = (item) => {
+    alert(`Оставить отзыв для товара: ${item.product?.name || 'Товар'}`);
 };
 
 // Отладочный вывод
@@ -184,6 +292,7 @@ onMounted(() => {
 .dashboard-wrapper {
     max-width: 1200px;
     margin: 40px auto;
+    padding: 0 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -247,6 +356,33 @@ onMounted(() => {
     font-size: 16px;
 }
 
+.stats {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 15px;
+    background: rgba(0, 123, 94, 0.05);
+    border-radius: 8px;
+    min-width: 80px;
+}
+
+.stat-number {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.stat-label {
+    font-size: 14px;
+    color: var(--text-medium);
+}
+
 /* Вкладки */
 .tabs {
     display: flex;
@@ -282,6 +418,12 @@ onMounted(() => {
     background: rgba(0, 123, 94, 0.1);
 }
 
+.tab-icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
 /* Контент вкладок */
 .tab-content {
     background: var(--white);
@@ -301,6 +443,23 @@ onMounted(() => {
     padding: 60px 20px;
 }
 
+.empty-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 123, 94, 0.05);
+    border-radius: 50%;
+}
+
+.empty-icon svg {
+    width: 40px;
+    height: 40px;
+    fill: var(--primary);
+}
+
 .empty-state h3 {
     font-size: 20px;
     color: var(--primary);
@@ -314,13 +473,30 @@ onMounted(() => {
 }
 
 /* Стили для заказов */
-.order-item {
-    background: white;
+.orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.order-card {
+    background: var(--white);
     border-radius: 12px;
     padding: 20px;
-    margin-bottom: 20px;
     box-shadow: var(--shadow-sm);
     transition: var(--transition);
+    border: 1px solid rgba(0, 123, 94, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.order-card.completed {
+    border-left: 4px solid var(--primary);
+}
+
+.order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
 }
 
 .order-header {
@@ -328,14 +504,19 @@ onMounted(() => {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 123, 94, 0.1);
 }
 
-.order-header h4 {
-    margin: 0;
+.order-number {
+    font-weight: 700;
+    color: var(--primary);
     font-size: 18px;
-    color: var(--text-dark);
+}
+
+.order-date {
+    color: var(--text-medium);
+    font-size: 14px;
 }
 
 .order-status {
@@ -360,8 +541,63 @@ onMounted(() => {
     color: #155724;
 }
 
+/* Таймлайн заказа */
+.order-timeline {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.order-timeline::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e0e0e0;
+    z-index: 1;
+}
+
+.timeline-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    flex: 1;
+}
+
+.timeline-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.timeline-step.active .timeline-dot {
+    background: var(--primary);
+    box-shadow: 0 0 0 4px rgba(0, 123, 94, 0.2);
+}
+
+.timeline-label {
+    font-size: 12px;
+    color: var(--text-medium);
+    text-align: center;
+}
+
+.timeline-step.active .timeline-label {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* Товары в заказе */
 .order-products {
-    margin-bottom: 15px;
+    margin: 15px 0;
 }
 
 .product-item {
@@ -369,7 +605,7 @@ onMounted(() => {
     gap: 15px;
     margin-bottom: 15px;
     padding-bottom: 15px;
-    border-bottom: 1px solid #f5f5f5;
+    border-bottom: 1px solid rgba(0, 123, 94, 0.05);
 }
 
 .product-item:last-child {
@@ -378,38 +614,123 @@ onMounted(() => {
     padding-bottom: 0;
 }
 
-.product-image {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
+.product-image-wrapper {
+    flex-shrink: 0;
+}
+
+.product-image-placeholder {
+    width: 60px;
+    height: 60px;
     border-radius: 8px;
-    border: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    box-shadow: var(--shadow-sm);
 }
 
 .product-details {
     flex: 1;
 }
 
-.product-details p {
-    margin: 4px 0;
+.product-name {
+    font-weight: 600;
+    margin-bottom: 5px;
     color: var(--text-dark);
 }
 
-.product-details p:first-child {
-    font-weight: 600;
+.product-meta {
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-medium);
+    margin-bottom: 8px;
 }
 
+.product-services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.service-tag {
+    background: rgba(255, 166, 48, 0.1);
+    color: var(--accent);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.product-review {
+    display: flex;
+    align-items: center;
+}
+
+.review-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.review-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--accent);
+}
+
+/* Подвал заказа */
 .order-footer {
-    text-align: right;
-    font-weight: 600;
-    font-size: 18px;
-    padding-top: 10px;
-    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0, 123, 94, 0.1);
 }
 
 .order-total {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.total-price {
     color: var(--primary);
-    margin: 0;
+    font-size: 18px;
+    margin-left: 5px;
+}
+
+.order-action {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: var(--transition);
+}
+
+.order-action:hover {
+    background: rgba(0, 123, 94, 0.1);
+}
+
+.order-action svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--primary);
 }
 
 /* Кнопки */
@@ -424,6 +745,7 @@ onMounted(() => {
     border: none;
     cursor: pointer;
     transition: var(--transition);
+    text-decoration: none;
 }
 
 .btn.primary {
@@ -433,6 +755,8 @@ onMounted(() => {
 
 .btn.primary:hover {
     background-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .btn.danger {
@@ -442,13 +766,15 @@ onMounted(() => {
 
 .btn.danger:hover {
     background-color: var(--accent-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .btn-icon {
     width: 16px;
     height: 16px;
     fill: var(--white);
-    margin-right: 10px;
+    margin-left: 10px;
 }
 
 .settings-section {
@@ -492,15 +818,17 @@ onMounted(() => {
         margin-left: 0;
     }
 
+    .stats {
+        justify-content: center;
+    }
+
     .tabs {
         overflow-x: auto;
         padding-bottom: 5px;
     }
 
-    .order-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
+    .orders-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -522,14 +850,25 @@ onMounted(() => {
         flex-direction: column;
     }
 
-    .product-image {
+    .product-image-placeholder {
         width: 100%;
-        height: auto;
-        max-height: 200px;
+        height: 120px;
+        margin-bottom: 10px;
     }
 
     .btn {
         width: 100%;
+    }
+
+    .order-footer {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .order-action {
+        width: 100%;
+        justify-content: center;
     }
 }
 </style>

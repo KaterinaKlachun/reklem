@@ -28,9 +28,7 @@ Route::get('/', function () {
 });
 
 // Public routes
-Route::get('/catalog', function () {
-    return Inertia::render('CatalogPage');
-});
+Route::get('/catalog', fn () => Inertia::render('CatalogPage'));
 Route::get('/catalog-products', function (Request $request) {
     $category = $request->query('category');
     return $category
@@ -49,13 +47,14 @@ Route::get('/services', [ServiceController::class, 'index']);
 // Auth routes
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/photo', [ProfileController::class, 'updateProfilePhoto'])->name('profile.photo.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Cart routes
+    // Cart & Payment routes
     Route::prefix('cart')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('cart.index');
         Route::post('/add', [CartController::class, 'add'])->name('cart.add');

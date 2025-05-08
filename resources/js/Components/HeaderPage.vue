@@ -4,46 +4,48 @@
             <nav id="head">
                 <!-- Логотип -->
                 <div class="logo">
-                    <Link href="/"><img alt="Logo" src="@/assets/img/header/logo.svg" /></Link>
+                    <Link href="/"><img alt="Logo" src="@/assets/img/header/logo.svg" class="clickable" /></Link>
                 </div>
 
                 <!-- Мобильное меню (бургер) -->
-                <div class="burger" @click="toggleMobileMenu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <div class="burger" @click="toggleMobileMenu" @mousedown="startBurgerPress" @mouseup="endBurgerPress" @mouseleave="endBurgerPress">
+                    <span :class="{ 'burger-pressed': isBurgerPressed }"></span>
+                    <span :class="{ 'burger-pressed': isBurgerPressed }"></span>
+                    <span :class="{ 'burger-pressed': isBurgerPressed }"></span>
                 </div>
 
                 <!-- Навигация -->
                 <ul class="nav-links" :class="{ 'mobile-active': isMobileMenuOpen }">
-                    <li><Link href="/about" @click="closeMobileMenu"><p>О компании</p></Link></li>
-                    <li><Link href="/catalog" @click="closeMobileMenu"><p>Каталог</p></Link></li>
-                    <li><Link href="/services" @click="closeMobileMenu"><p>Услуги</p></Link></li>
-                    <li><Link href="/contacts" @click="closeMobileMenu"><p>Контакты</p></Link></li>
-                    <li><Link href="/portfolio" @click="closeMobileMenu"><p>Портфолио</p></Link></li>
-                    <li><Link href="/constructor" @click="closeMobileMenu"><p>Конструктор</p></Link></li>
+                    <li><Link href="/about" @click="closeMobileMenu" class="nav-link"><p>О компании</p></Link></li>
+                    <li><Link href="/catalog" @click="closeMobileMenu" class="nav-link"><p>Каталог</p></Link></li>
+                    <li><Link href="/services" @click="closeMobileMenu" class="nav-link"><p>Услуги</p></Link></li>
+                    <li><Link href="/contacts" @click="closeMobileMenu" class="nav-link"><p>Контакты</p></Link></li>
+                    <li><Link href="/portfolio" @click="closeMobileMenu" class="nav-link"><p>Портфолио</p></Link></li>
+                    <li><Link href="/constructor" @click="closeMobileMenu" class="nav-link"><p>Конструктор</p></Link></li>
 
                     <!-- Иконки: Личный кабинет / Корзина -->
                     <li class="mobile-icons">
+                        <template v-if="$page.props.auth.user">
+                            <span class="inline-flex rounded-md">
+                                <Link
+                                    :href="route('dashboard')"
+                                    class="user-button"
+                                    @mousedown="startButtonPress('user')"
+                                    @mouseup="endButtonPress('user')"
+                                    @mouseleave="endButtonPress('user')"
+                                    :class="{ 'button-pressed': isUserButtonPressed }"
+                                >
+                                    {{ $page.props.auth.user.name }}
+                                </Link>
+                            </span>
+                        </template>
 
-                            <template v-if="$page.props.auth.user">
-                                <span class="inline-flex rounded-md">
-                                    <Link
-                                        :href="route('dashboard')"
-                                        class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
-                                    >
-                                        {{ $page.props.auth.user.name }}
-                                    </Link>
-                                </span>
-                            </template>
-
-
-                        <Link v-else href="/login" @click="closeMobileMenu">
-                            <img src="@/assets/img/header/user.svg" alt="Личный кабинет" />
+                        <Link v-else href="/login" @click="closeMobileMenu" class="icon-link" @mousedown="startIconPress('user')" @mouseup="endIconPress('user')" @mouseleave="endIconPress('user')">
+                            <img src="@/assets/img/header/user.svg" alt="Личный кабинет" :class="{ 'icon-pressed': isUserIconPressed }" />
                         </Link>
 
-                        <Link href="/cart" @click="closeMobileMenu">
-                            <img src="@/assets/img/header/shop.svg" alt="Корзина" />
+                        <Link href="/cart" @click="closeMobileMenu" class="icon-link" @mousedown="startIconPress('cart')" @mouseup="endIconPress('cart')" @mouseleave="endIconPress('cart')">
+                            <img src="@/assets/img/header/shop.svg" alt="Корзина" :class="{ 'icon-pressed': isCartIconPressed }" />
                         </Link>
                     </li>
                 </ul>
@@ -57,6 +59,10 @@ import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
 
 const isMobileMenuOpen = ref(false);
+const isBurgerPressed = ref(false);
+const isUserIconPressed = ref(false);
+const isCartIconPressed = ref(false);
+const isUserButtonPressed = ref(false);
 
 function toggleMobileMenu() {
     isMobileMenuOpen.value = !isMobileMenuOpen.value;
@@ -64,6 +70,32 @@ function toggleMobileMenu() {
 
 function closeMobileMenu() {
     isMobileMenuOpen.value = false;
+}
+
+function startBurgerPress() {
+    isBurgerPressed.value = true;
+}
+
+function endBurgerPress() {
+    isBurgerPressed.value = false;
+}
+
+function startIconPress(icon) {
+    if (icon === 'user') isUserIconPressed.value = true;
+    if (icon === 'cart') isCartIconPressed.value = true;
+}
+
+function endIconPress(icon) {
+    if (icon === 'user') isUserIconPressed.value = false;
+    if (icon === 'cart') isCartIconPressed.value = false;
+}
+
+function startButtonPress(button) {
+    if (button === 'user') isUserButtonPressed.value = true;
+}
+
+function endButtonPress(button) {
+    if (button === 'user') isUserButtonPressed.value = false;
 }
 </script>
 
@@ -85,6 +117,7 @@ header {
 .logo img {
     width: 100%;
     max-width: 180px;
+    transition: transform 0.1s ease;
 }
 
 .nav-links {
@@ -121,6 +154,46 @@ header {
 .icons img {
     width: 50px;
     height: 50px;
+}
+
+/* Эффекты нажатия */
+.clickable:active {
+    transform: scale(0.95);
+}
+
+.burger-pressed {
+    background-color: #666 !important;
+    transform: scale(0.9);
+}
+
+.nav-link {
+    transition: transform 0.1s ease, color 0.1s ease;
+}
+
+.nav-link:active p {
+    color: #666;
+    transform: scale(0.95);
+}
+
+.icon-link img {
+    transition: transform 0.1s ease;
+}
+
+.icon-pressed {
+    transform: scale(0.85);
+}
+
+.user-button {
+    transition: all 0.1s ease;
+    border: 1px solid #ddd;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+.button-pressed {
+    transform: scale(0.95);
+    background-color: #f0f0f0;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
 }
 
 /* Мобильное меню (скрыто на десктопе) */
@@ -321,5 +394,4 @@ header {
         height: 45px;
     }
 }
-
 </style>
