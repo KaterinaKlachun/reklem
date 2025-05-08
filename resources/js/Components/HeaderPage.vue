@@ -140,7 +140,7 @@ header {
 }
 
 .nav-links p {
-    font-family: medium;
+    font-family: medium, Inter,serif;
     font-size: 1rem;
     color: black;
     margin: 0;

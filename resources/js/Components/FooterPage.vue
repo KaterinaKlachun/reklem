@@ -27,7 +27,7 @@
           <div class="footer-column">
             <h4>Клиентам</h4>
             <ul>
-              <li><Link href="#">Личный кабинет</Link></li>
+              <li><Link href="/dashboard">Личный кабинет</Link></li>
               <li><Link href="#">Партнерство</Link></li>
               <li><Link href="#">Гарантия</Link></li>
             </ul>
@@ -62,12 +62,11 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
 footer {
     background-color: #f9f9f9;
     padding: 60px 20px 40px;
-    font-family: 'Inter', sans-serif;
+    font-family: regular,Inter,serif;
     color: #2e2e2e;
 }
 

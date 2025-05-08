@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="layout-wrapper">
         <HeaderPage />
-        <main>
+        <main class="main-content">
             <slot />
             <FAQ v-if="showExtras" />
             <ContactForm v-if="showExtras" />
@@ -32,7 +32,7 @@ const showExtras = computed(() => {
         'checkout',
         'cart',
         'dashboard',
-        'payment' // Добавляем страницу оплаты
+        'payment'
     ];
 
     return !excludedRoutes.some(route => lower.includes(route));
@@ -40,7 +40,7 @@ const showExtras = computed(() => {
 </script>
 
 <style lang="css">
-
+/* Ваши существующие стили */
 @font-face {
     font-family: "bold";
     src: url("@/assets/font/Inter-SemiBold.woff2") format("woff2"),
@@ -62,12 +62,30 @@ const showExtras = computed(() => {
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
 }
 
 body {
     font-family: 'regular';
     line-height: 1.6;
     background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.layout-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex: 1 0 auto;
+    width: 100%;
 }
 
 .wrapper {
@@ -83,28 +101,6 @@ body {
     color: black;
 }
 
-.cat{
-    position: relative;
-    margin-top: 11%;
-    width: 450px;
-}
-
-.cat h1 span {
-    text-decoration: underline 5px;
-    text-decoration-color: #FFA630; /* Цвет подчеркивания */
-}
-
-.cat h1{
-    font-family: bold;
-    font-size: 36px;
-}
-
-.cat p{
-    margin-top: 20%;
-    font-family: regular;
-    font-size: 1rem;
-}
-
 button {
     transition: transform 0.1s ease;
 }
@@ -112,5 +108,4 @@ button {
 button:active {
     transform: scale(0.95);
 }
-
 </style>
