@@ -4,10 +4,12 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
+    use CrudTrait;
     protected $fillable = [
         'title', 'short_description', 'description', 'image', 'advantages',
     ];

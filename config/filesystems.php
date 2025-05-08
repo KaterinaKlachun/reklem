@@ -8,7 +8,8 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app/private'),
+            'root' => storage_path('app'),  // Корректный путь для локального хранилища
+            'visibility' => 'private',  // Можно также указать 'public' если вам нужно, чтобы файлы были общедоступны
             'serve' => true,
             'throw' => false,
             'report' => false,
