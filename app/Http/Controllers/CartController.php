@@ -6,17 +6,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CartItem;
 use Inertia\Inertia;
+use App\Models\ServiceType;
 
 class CartController extends Controller
 {
     // Отображение корзины
     public function index()
     {
-        $cartItems = CartItem::with('product.productColors')
-            ->where('user_id', auth()->id())
-            ->get();
+        $cartItems = CartItem::with('product.productColors')->where('user_id', auth()->id())->get();
 
-        // CartController@index
+        $services = ServiceType::all()->groupBy('category');
+
         return inertia('CartPage', [
             'cartItems' => $cartItems->map(function ($item) {
                 $colorImage = $item->product->productColors
@@ -36,6 +36,7 @@ class CartController extends Controller
                     ]
                 ];
             }),
+            'servicesByCategory' => $services,
         ]);
     }
 
@@ -71,7 +72,7 @@ class CartController extends Controller
     }
 
     // Переход на страницу оплаты (без создания заказа)
-    public function checkout(Request $request)
+    public function checkout()
     {
         $cartItems = CartItem::where('user_id', auth()->id())->get();
 
@@ -82,8 +83,7 @@ class CartController extends Controller
         return Inertia::render('PaymentPage');
     }
 
-    // Обновление количества товара
-
+    /// Обновление количества товара
     public function update(Request $request, CartItem $cartItem)
     {
         $this->authorizeCartItem($cartItem);
@@ -91,18 +91,18 @@ class CartController extends Controller
         $request->validate([
             'quantity' => 'required|integer|min:1',
             'service_type' => 'nullable|string',
-            'service_price' => 'nullable|numeric'
+            'service_price' => 'nullable|numeric',
         ]);
 
+        // Обновление данных товара и услуги
         $cartItem->update([
             'quantity' => $request->quantity,
             'service_type' => $request->service_type,
-            'service_price' => $request->service_price
+            'service_price' => $request->service_price,
         ]);
 
-        return back();
+        return redirect()->route('cart.index');
     }
-
 
     // Удаление товара
     public function remove(CartItem $cartItem)

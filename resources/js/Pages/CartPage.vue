@@ -31,6 +31,22 @@
                                 </button>
                             </div>
                             <p class="item-color">Цвет: {{ item.color }}</p>
+
+                            <!-- Выбор услуги -->
+                            <div class="item-service">
+                                <label for="service">Услуга:</label>
+                                <select v-model="item.service_type" @change="updateService(item)">
+                                    <option value="">Без услуги</option>
+                                    <option
+                                        v-for="service in availableServices(item.product.name)"
+                                        :key="service.id"
+                                        :value="service.name"
+                                    >
+                                        {{ service.label }} ({{ service.price }} ₽)
+                                    </option>
+                                </select>
+                            </div>
+
                             <div class="item-footer">
                                 <div class="quantity-control">
                                     <button @click="updateQuantity(item.id, item.quantity - 1)" class="quantity-btn">
@@ -55,7 +71,6 @@
                                         + Услуга: {{ item.service_price * item.quantity }} ₽
                                     </template>
                                 </p>
-
                             </div>
                         </div>
                     </div>
@@ -75,26 +90,6 @@
                     </button>
                 </div>
             </div>
-
-            <div v-else class="empty-cart">
-                <div class="empty-icon">
-                    <img
-                        src="@/assets/img/icons/shopping-cart.svg"
-                        alt="Корзина"
-                        class="icon icon-cart"
-                    >
-                </div>
-                <h3 class="empty-title">Ваша корзина пуста</h3>
-                <p class="empty-text">Добавьте товары из каталога</p>
-                <Link href="/catalog" class="continue-shopping">
-                    Перейти в каталог
-                    <img
-                        src="@/assets/img/icons/arrow-right.svg"
-                        alt=""
-                        class="icon icon-arrow"
-                    >
-                </Link>
-            </div>
         </div>
     </section>
 </template>
@@ -110,9 +105,10 @@ export default {
             type: Array,
             default: () => []
         },
+        servicesByCategory: Object,
         errors: Object,
         auth: Object,
-        csrf_token: String
+        csrf_token: String,
     },
     computed: {
         totalPrice() {
@@ -123,6 +119,39 @@ export default {
         }
     },
     methods: {
+        availableServices(productName) {
+            const categoryMap = {
+                'Кружка': 'Кружки',
+                'Термос': 'Термосы',
+                'Аксессуар': 'Аксессуары',
+                'Канцелярия': 'Канцелярия',
+            };
+
+            const category = Object.entries(categoryMap).find(([key]) =>
+                productName.toLowerCase().includes(key.toLowerCase())
+            )?.[1];
+
+            return this.servicesByCategory[category] || [];
+        },
+        async updateService(item) {
+            const service = this.availableServices(item.product.name).find(
+                s => s.name === item.service_type
+            );
+
+            const service_price = service ? service.price : null;
+
+            // Отправка данных на сервер для обновления
+            await this.$inertia.patch(`/cart/${item.id}`, {
+                quantity: item.quantity,
+                service_type: item.service_type,
+                service_price,
+            }, {
+                preserveScroll: true,
+            });
+
+            // После обновления, обновляем local state
+            item.service_price = service_price;
+        },
         fullImageUrl(path) {
             if (!path) return '/images/placeholder-product.jpg';
             return path.startsWith('http') ? path : `${window.location.origin}/${path.replace(/^\/+/, '')}`;
@@ -146,7 +175,7 @@ export default {
             }
         },
 
-        async submitOrder(){
+        async submitOrder() {
             try {
                 const response = await this.$inertia.post('/cart/checkout');
                 console.log('Заказ отправлен:', response);

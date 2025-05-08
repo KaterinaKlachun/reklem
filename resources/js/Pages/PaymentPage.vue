@@ -1,4 +1,5 @@
 <template>
+    <Head title="Личный кабинет" />
     <div class="payment-container">
         <div class="payment-card">
             <h1 class="payment-title">Подтверждение оплаты</h1>
@@ -109,8 +110,10 @@
 
 <script>
 import axios from 'axios';
+import {Head} from "@inertiajs/vue3";
 
 export default {
+    components: {Head},
     data() {
         return {
             payment: {

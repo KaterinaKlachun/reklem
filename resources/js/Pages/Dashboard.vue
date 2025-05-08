@@ -91,9 +91,10 @@
                                         <span class="product-quantity">{{ item.quantity || 0 }} шт.</span>
                                         <span class="product-price">{{ formatPrice(item.price * item.quantity) }} ₽</span>
                                     </div>
-                                    <div v-if="item.services && item.services.length" class="product-services">
-                                        <div class="service-tag" v-for="service in item.services" :key="service.id">
-                                            {{ service.name }} (+{{ formatPrice(service.pivot.price * item.quantity) }} ₽)
+                                    <!-- Отображение услуги для каждого товара -->
+                                    <div v-if="item.service_type" class="product-services">
+                                        <div class="service-tag">
+                                            {{ item.service_type }} (+{{ formatPrice(item.service_price * item.quantity) }} ₽)
                                         </div>
                                     </div>
                                 </div>
@@ -143,9 +144,10 @@
                                         <span class="product-quantity">{{ item.quantity || 0 }} шт.</span>
                                         <span class="product-price">{{ formatPrice(item.price * item.quantity) }} ₽</span>
                                     </div>
-                                    <div v-if="item.services && item.services.length" class="product-services">
-                                        <div class="service-tag" v-for="service in item.services" :key="service.id">
-                                            {{ service.name }} (+{{ formatPrice(service.pivot.price * item.quantity) }} ₽)
+                                    <!-- Отображение услуги для каждого товара -->
+                                    <div v-if="item.service_type" class="product-services">
+                                        <div class="service-tag">
+                                            {{ item.service_type }} (+{{ formatPrice(item.service_price * item.quantity) }} ₽)
                                         </div>
                                     </div>
                                 </div>

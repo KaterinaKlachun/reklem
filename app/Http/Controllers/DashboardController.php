@@ -12,20 +12,29 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        // Загружаем ВСЕ заказы с товарами и услугами
+        // Получаем заказы пользователя
         $orders = Order::with([
             'orderItems.product:id,name',
+            'orderItems.services' => function ($query) {
+                $query->withPivot('price');
+            },
         ])
             ->where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->get()
             ->map(function ($order) {
-                $order->total_price = (float)$order->total_price;
+                $order->total_price = 0;
 
-                if ($order->order_items) {
-                    foreach ($order->order_items as $item) {
-                        $item->price = (float)$item->price;
+                foreach ($order->orderItems as $item) {
+                    $item->services_total = 0;
+
+                    // Добавляем стоимость услуги к общему расчету
+                    if ($item->service_price) {
+                        $item->services_total = $item->service_price * $item->quantity;
                     }
+
+                    $item->total_price = ($item->price * $item->quantity) + $item->services_total;
+                    $order->total_price += $item->total_price;  // Суммируем стоимость товара и услуги для заказа
                 }
 
                 return $order;
@@ -37,4 +46,5 @@ class DashboardController extends Controller
             'completedOrders' => $orders->where('status', 'completed')->values(),
         ]);
     }
+
 }
