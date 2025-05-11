@@ -32,7 +32,10 @@ const showExtras = computed(() => {
         'checkout',
         'cart',
         'dashboard',
-        'payment'
+        'payment',
+        'constructor',
+        'returnexchange',
+        'dataprocessing'
     ];
 
     return !excludedRoutes.some(route => lower.includes(route));

@@ -18,8 +18,7 @@
             <h4>Компания</h4>
             <ul>
               <li><Link href="/contacts">Контакты</Link></li>
-              <li><Link href="#">Доставка и оплата</Link></li>
-              <li><Link href="#">Обмен и возврат</Link></li>
+              <li><Link href="/returnexchange">Обмен и возврат</Link></li>
             </ul>
           </div>
 
@@ -28,7 +27,6 @@
             <h4>Клиентам</h4>
             <ul>
               <li><Link href="/dashboard">Личный кабинет</Link></li>
-              <li><Link href="#">Партнерство</Link></li>
               <li><Link href="#">Гарантия</Link></li>
             </ul>
           </div>
@@ -37,7 +35,7 @@
           <div class="footer-column">
             <h4>Политика</h4>
             <ul>
-              <li><Link href="#">Обработка данных</Link></li>
+              <li><Link href="/dataprocessing">Обработка данных</Link></li>
               <li>
                 <img src="@/assets/img/footer/copyright.svg" alt="Copyright">
               </li>

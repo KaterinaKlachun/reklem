@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DataProcessingController;
+use App\Http\Controllers\ReturnExchangeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -43,6 +45,10 @@ Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index'
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 Route::get('/portfolio', [PortfolioController::class, 'index']);
 Route::get('/services', [ServiceController::class, 'index']);
+Route::get('/constructor', [ProductController::class, 'constructor'])->name('product.constructor');
+Route::post('/upload-user-image', [ProductController::class, 'uploadUserImage'])->name('product.uploadImage');
+Route::get('/returnexchange', [ReturnExchangeController::class, 'index']);
+Route::get('/dataprocessing', [DataProcessingController::class, 'index']);
 
 // Auth routes
 Route::middleware(['auth', 'verified'])->group(function () {

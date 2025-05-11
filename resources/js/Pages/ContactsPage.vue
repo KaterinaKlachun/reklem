@@ -10,7 +10,6 @@
     <section class="contact-section">
         <div class="wrapper">
             <div class="contact-header">
-                <h1>Контакты</h1>
                 <p class="contact-description">
                     Мы всегда рады новым проектам и сотрудничеству. Свяжитесь с нами удобным для вас способом.
                 </p>
@@ -26,7 +25,7 @@
                         </svg>
                     </div>
                     <h3>Адрес</h3>
-                    <p>Москва, м.Октябрьское поле<br>ул. Народного ополчения, д.34, стр.3, офис 8</p>
+                    <p>Владивосток<br>ул. Пушкинская, д. 38</p>
                 </div>
 
                 <!-- Phone Block -->
@@ -63,8 +62,8 @@
                     <img src="@/assets/img/contacts/photo.svg" alt="Менеджер по работе с клиентами">
                 </div>
                 <div class="manager-info">
-                    <h2>Попович Андрей Александрович</h2>
-                    <p class="manager-position">Менеджер по работе с клиентами г. Москва</p>
+                    <h2>Петров Дмитрий Владимирович</h2>
+                    <p class="manager-position">Менеджер по работе с клиентами г. Владивосток</p>
 
                     <div class="manager-contacts">
                         <div class="contact-item">
@@ -106,7 +105,13 @@
     <section class="map-section">
         <div class="wrapper">
             <div class="map-container">
-                <img src="@/assets/img/contacts/map.svg" alt="Карта расположения офиса">
+                <iframe
+                    src="https://yandex.ru/map-widget/v1/?ll=131.910146%2C43.114266&mode=whatshere&whatshere%5Bpoint%5D=131.910395%2C43.114996&whatshere%5Bzoom%5D=17&z=19.2"
+                    width="100%"
+                    height="400"
+                    style="border:0; position:relative;"
+                    allowfullscreen
+                ></iframe>
             </div>
         </div>
     </section>

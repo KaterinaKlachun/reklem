@@ -1,4 +1,5 @@
 <template>
+    <Head title="Главная страница" />
     <!-- Main Banner -->
     <section class="modern-banner">
         <div class="wrapper">
@@ -176,12 +177,13 @@
 
 <script>
 import { ref, onMounted } from 'vue';
-import { router } from '@inertiajs/vue3';
+import {Head, router} from '@inertiajs/vue3';
 import axios from "axios";
 import PopularProducts from '@/Components/PopularProducts.vue';
 
 export default {
     components: {
+        Head,
         PopularProducts,
     },
     setup() {
