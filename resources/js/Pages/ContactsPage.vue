@@ -19,10 +19,7 @@
                 <!-- Address Block -->
                 <div class="contact-card">
                     <div class="contact-icon" style="background-color: rgba(0, 123, 94, 0.1);">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="#007B5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="#007B5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <img src="@/assets/img/icons/mark.svg" alt="mark icon">
                     </div>
                     <h3>Адрес</h3>
                     <p>Владивосток<br>ул. Пушкинская, д. 38</p>
@@ -31,9 +28,7 @@
                 <!-- Phone Block -->
                 <div class="contact-card">
                     <div class="contact-icon" style="background-color: rgba(0, 153, 122, 0.1);">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22 16.92V19.92C22 20.47 21.55 20.92 21 20.92H19.92C10.38 20.92 3.07996 13.62 3.07996 4.08V3C3.07996 2.45 3.52996 2 4.07996 2H7.07996C7.62996 2 8.07996 2.45 8.07996 3V4.92C8.07996 5.47 7.62996 5.92 7.07996 5.92H5.31996C5.99996 10.31 9.68996 14 14.08 14.68V12.92C14.08 12.37 14.53 11.92 15.08 11.92H17.08C17.63 11.92 18.08 12.37 18.08 12.92V15.92C18.08 16.47 17.63 16.92 17.08 16.92H15.08" stroke="#00997A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <img src="@/assets/img/icons/phone.svg" alt="phone icon">
                     </div>
                     <h3>Телефон</h3>
                     <p>+7 (495) 226-26-61<br>+7 (495) 133-16-28</p>
@@ -67,9 +62,7 @@
 
                     <div class="manager-contacts">
                         <div class="contact-item">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M22 16.92V19.92C22 20.47 21.55 20.92 21 20.92H19.92C10.38 20.92 3.07996 13.62 3.07996 4.08V3C3.07996 2.45 3.52996 2 4.07996 2H7.07996C7.62996 2 8.07996 2.45 8.07996 3V4.92C8.07996 5.47 7.62996 5.92 7.07996 5.92H5.31996C5.99996 10.31 9.68996 14 14.08 14.68V12.92C14.08 12.37 14.53 11.92 15.08 11.92H17.08C17.63 11.92 18.08 12.37 18.08 12.92V15.92C18.08 16.47 17.63 16.92 17.08 16.92H15.08" stroke="#007B5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
+                            <img src="@/assets/img/icons/phone.svg" alt="phone icon">
                             <span>+7 (925) 272-87-48</span>
                         </div>
                         <div class="contact-item">
