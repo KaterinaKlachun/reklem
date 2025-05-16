@@ -22,7 +22,7 @@
             </div>
 
             <div class="upload-controls">
-                <input type="file" @change="onImageUpload" />
+                <input type="file" name="file" @change="onImageUpload" />
                 <button @click="resetImage">Сбросить</button>
             </div>
         </div>

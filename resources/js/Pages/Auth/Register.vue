@@ -10,7 +10,7 @@
         <form @submit.prevent="submit" class="auth-form">
             <div class="input-group">
                 <label>ФИО</label>
-                <input v-model="form.name" type="text" placeholder="Иванов Иван Иванович" />
+                <input v-model="form.name" type="text" name="name" placeholder="Иванов Иван Иванович" />
                 <div v-if="form.errors.name" class="error-message">
                     <span>{{ form.errors.name }}</span>
                 </div>
@@ -18,7 +18,7 @@
 
             <div class="input-group">
                 <label>Email</label>
-                <input v-model="form.email" type="email" placeholder="example@mail.com" />
+                <input v-model="form.email" type="email" name="email" placeholder="example@mail.com" />
                 <div v-if="form.errors.email" class="error-message">
                     <span>{{ form.errors.email }}</span>
                 </div>
@@ -26,7 +26,7 @@
 
             <div class="input-group">
                 <label>Пароль</label>
-                <input v-model="form.password" type="password" placeholder="••••••••" />
+                <input v-model="form.password" type="password" name="password" placeholder="••••••••" />
                 <div v-if="form.errors.password" class="error-message">
                     <span>{{ form.errors.password }}</span>
                 </div>
@@ -34,7 +34,7 @@
 
             <div class="input-group">
                 <label>Повторите пароль</label>
-                <input v-model="form.password_confirmation" type="password" placeholder="••••••••" />
+                <input v-model="form.password_confirmation" type="password" name="password_confirmation" placeholder="••••••••" />
             </div>
 
             <button :disabled="form.processing" class="auth-button">

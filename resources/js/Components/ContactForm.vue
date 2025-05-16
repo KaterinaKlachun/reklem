@@ -13,24 +13,61 @@
                 </p>
             </div>
             <!-- Форма ввода данных -->
-            <form>
-                <label for="name">Имя</label>
-                <input type="text" id="name" placeholder="Женя" required>
-                <label for="phone">Телефон</label>
-                <input type="tel" id="phone" placeholder="+7 000 000 00 00" required>
-                <button type="submit">
-                    Отправить
+            <form @submit.prevent="handleSubmit">
+                <label for="name">Имя
+                    <input type="text" id="name" name="name" placeholder="Женя" autocomplete="name" required v-model="form.name">
+                </label>
+                <label for="phone">Телефон
+                    <input type="tel" id="phone" name="phone" placeholder="+7 000 000 00 00" autocomplete="tel" required v-model="form.phone">
+                </label>
+                <button type="submit" :disabled="submitting">
+                    {{ submitting ? 'Отправка...' : 'Отправить' }}
                     <img src="@/assets/img/arrow_right_green.svg" alt="">
                 </button>
+
+                <p v-if="success" style="color: green; margin-top: 10px;">Спасибо! Мы свяжемся с вами.</p>
+                <p v-if="error" style="color: red; margin-top: 10px;">{{ error }}</p>
             </form>
         </div>
     </section>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     // Название компонента
     name: "ContactForm",
+    data() {
+        return {
+            form: {
+                name: '',
+                phone: '',
+            },
+            submitting: false,
+            error: null,
+            success: false
+        };
+    },
+    methods: {
+        async handleSubmit() {
+            this.submitting = true;
+            this.error = null;
+            this.success = false;
+
+            try {
+                const response = await axios.post('/contact', this.form);
+                this.success = true;
+                this.form.name = '';
+                this.form.phone = '';
+                console.log('Форма успешно отправлена', response.data);
+            } catch (err) {
+                this.error = 'Произошла ошибка при отправке формы.';
+                console.error(err);
+            } finally {
+                this.submitting = false;
+            }
+        }
+    }
 };
 </script>
 

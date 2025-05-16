@@ -11,6 +11,7 @@
                 <label class="form-label">ИМЯ</label>
                 <div class="input-wrapper">
                     <input
+                        name="name"
                         v-model="form.name"
                         type="text"
                         class="form-input"
@@ -29,6 +30,7 @@
                 <label class="form-label">EMAIL</label>
                 <div class="input-wrapper">
                     <input
+                        name="email"
                         v-model="form.email"
                         type="email"
                         class="form-input"

@@ -72,4 +72,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
+;
+
+Route::post('/contact', function (Request $request) {
+    // Валидация
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'phone' => 'required|string|max:20',
+    ]);
+
+    // Тут можешь отправить email, сохранить в БД и т.д.
+    \Log::info('Заявка с формы:', $data);
+
+    return response()->json(['message' => 'Спасибо, заявка получена!']);
+});
+
+
 require __DIR__.'/auth.php';

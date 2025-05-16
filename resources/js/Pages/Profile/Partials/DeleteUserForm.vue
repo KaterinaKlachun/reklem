@@ -26,6 +26,7 @@
                             ref="passwordInput"
                             v-model="form.password"
                             type="password"
+                            name="password"
                             class="form-input"
                             placeholder="Твой пароль"
                             @keyup.enter="deleteUser"

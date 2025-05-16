@@ -11,6 +11,7 @@
                 <label class="form-label">ТЕКУЩИЙ ПАРОЛЬ</label>
                 <div class="input-wrapper">
                     <input
+                        name="password"
                         ref="currentPasswordInput"
                         v-model="form.current_password"
                         type="password"
@@ -28,6 +29,7 @@
                 <label class="form-label">НОВЫЙ ПАРОЛЬ</label>
                 <div class="input-wrapper">
                     <input
+                        name="new_password"
                         ref="passwordInput"
                         v-model="form.password"
                         type="password"
@@ -45,6 +47,7 @@
                 <label class="form-label">ПОВТОРИ ПАРОЛЬ</label>
                 <div class="input-wrapper">
                     <input
+                        name="repeat_password"
                         v-model="form.password_confirmation"
                         type="password"
                         class="form-input"

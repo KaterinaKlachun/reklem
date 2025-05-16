@@ -19,7 +19,7 @@
                 <!-- Address Block -->
                 <div class="contact-card">
                     <div class="contact-icon" style="background-color: rgba(0, 123, 94, 0.1);">
-                        <img src="@/assets/img/icons/mark.svg" alt="mark icon">
+                        <img :src="icons.mark"  alt="mark"/>
                     </div>
                     <h3>Адрес</h3>
                     <p>Владивосток<br>ул. Пушкинская, д. 38</p>
@@ -28,7 +28,7 @@
                 <!-- Phone Block -->
                 <div class="contact-card">
                     <div class="contact-icon" style="background-color: rgba(0, 153, 122, 0.1);">
-                        <img src="@/assets/img/icons/phone.svg" alt="phone icon">
+                        <img :src="icons.phone"  alt="phone icon"/>
                     </div>
                     <h3>Телефон</h3>
                     <p>+7 (495) 226-26-61<br>+7 (495) 133-16-28</p>
@@ -117,6 +117,14 @@ import {Head} from "@inertiajs/vue3";
 export default {
     name: "ContactsPage",
     components: {Head, PageBanner },
+    computed: {
+        icons() {
+            return {
+                mark: new URL('@/assets/img/icons/mark.svg', import.meta.url).href,
+                phone: new URL('@/assets/img/icons/phone.svg', import.meta.url).href,
+            };
+        }
+    },
     data() {
         return {
             buttons: [

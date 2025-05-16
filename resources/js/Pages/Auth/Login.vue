@@ -24,7 +24,7 @@ function submit() {
         <form @submit.prevent="submit" class="auth-form">
             <div class="input-group">
                 <label>Email</label>
-                <input v-model="form.email" type="email" placeholder="example@mail.com" />
+                <input v-model="form.email" type="email" name="email" placeholder="example@mail.com"  autocomplete="username" />
                 <div v-if="form.errors.email" class="error-message">
                     <span>{{ form.errors.email }}</span>
                 </div>
@@ -32,7 +32,7 @@ function submit() {
 
             <div class="input-group">
                 <label>Пароль</label>
-                <input v-model="form.password" type="password" placeholder="••••••••" />
+                <input v-model="form.password" type="password" name="password" placeholder="••••••••" autocomplete="current-password"/>
                 <div v-if="form.errors.password" class="error-message">
                     <span>{{ form.errors.password }}</span>
                 </div>
