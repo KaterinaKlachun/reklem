@@ -185,6 +185,7 @@ export default {
 <style scoped>
 /* Основные стили (1920px и больше) */
 .payment-container {
+    font-family: regular;
     display: flex;
     justify-content: center;
     align-items: center;

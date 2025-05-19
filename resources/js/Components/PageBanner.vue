@@ -2,8 +2,21 @@
     <section class="page-banner">
         <div class="wrapper">
             <div class="breadcrumb-trail">
-                <Link href="/" class="breadcrumb-link">Главная /</Link>
-                <span class="breadcrumb-current">{{ currentPageName }}</span>
+                <template v-for="(crumb, index) in breadcrumbs" :key="index">
+                    <Link
+                        v-if="crumb.href"
+                        :href="crumb.href"
+                        class="breadcrumb-link"
+                    >
+                        {{ crumb.label }}
+                    </Link>
+                    <span
+                        v-else
+                        class="breadcrumb-current"
+                    >
+                        {{ crumb.label }}
+                    </span>
+                </template>
             </div>
 
             <div class="banner-content">
@@ -32,9 +45,9 @@ defineProps({
         type: String,
         required: true
     },
-    currentPageName: {
-        type: String,
-        required: true
+    breadcrumbs: {
+        type: Array,
+        default: () => []
     }
 });
 </script>
@@ -61,7 +74,7 @@ defineProps({
 }
 
 .breadcrumb-trail {
-    font-family: 'Inter', sans-serif;
+    font-family: medium;
     font-size: 0.95rem;
     color: #6c757d;
     margin-bottom: 1.5rem;
@@ -70,10 +83,11 @@ defineProps({
 }
 
 .breadcrumb-link {
+    font-family: medium;
     color: #6c757d;
     text-decoration: none;
     transition: all 0.3s ease;
-    font-weight: 500;
+    margin-right: 5px;
 }
 
 .breadcrumb-link:hover {
@@ -84,7 +98,7 @@ defineProps({
 .breadcrumb-current {
     color: #007b5e;
     font-weight: 600;
-    margin-left: 8px;
+    margin-left: 5px;
 }
 
 .banner-content {
@@ -95,13 +109,12 @@ defineProps({
 
 .banner-title {
     font-size: 3.2rem;
-    font-weight: 800;
+    font-family: bold;
     color: #212529;
     margin: 0;
     position: relative;
     display: inline-block;
     line-height: 1.2;
-    font-family: 'Inter', sans-serif;
     letter-spacing: -0.5px;
 }
 
@@ -122,7 +135,6 @@ defineProps({
     background: #00997a;
 }
 
-/* Геометрический фон */
 .banner-geo-shapes {
     position: absolute;
     inset: 0;
@@ -184,7 +196,7 @@ defineProps({
     }
 }
 
-/* Адаптив */
+/* Адаптивность */
 @media (max-width: 1024px) {
     .banner-title {
         font-size: 2.8rem;

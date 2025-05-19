@@ -1,9 +1,13 @@
 <template>
     <Head title="Новости" />
 
+    <!-- Баннер -->
     <PageBanner
         page-title="Новости компании"
-        current-page-name="Новости"
+        :breadcrumbs="[
+            { href: '/', label: 'Главная /' },
+            { label: 'Новости' }
+        ]"
     />
 
     <section class="wrapper">

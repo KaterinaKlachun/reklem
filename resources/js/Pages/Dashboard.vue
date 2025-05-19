@@ -1,6 +1,14 @@
 <template>
     <Head title="Личный кабинет" />
-    <PageBanner page-title="Личный кабинет" current-page-name="Личный кабинет" />
+
+    <PageBanner
+        page-title="Профиль"
+        :breadcrumbs="[
+            { href: '/', label: 'Главная /' },
+            { label: 'Личный кабинет' }
+        ]"
+    />
+
     <div class="dashboard-wrapper">
         <!-- Профиль -->
         <div class="profile-card" v-if="$page.props.auth.user">
@@ -249,7 +257,7 @@ onMounted(() => {
     max-width: 1200px;
     margin: 40px auto;
     padding: 0 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: regular;
 }
 
 /* Карточка профиля */

@@ -1,397 +1,551 @@
 <template>
-    <header>
-        <section class="wrapper">
-            <nav id="head">
-                <!-- Логотип -->
-                <div class="logo">
-                    <Link href="/"><img alt="Logo" src="@/assets/img/header/logo.svg" class="clickable" /></Link>
-                </div>
+    <header class="header">
+        <div class="header-container">
+            <!-- Логотип -->
+            <Link href="/" class="logo">
+                <img src="@/assets/img/header/logo.svg" alt="Logo" class="logo-image">
+            </Link>
 
-                <!-- Мобильное меню (бургер) -->
-                <div class="burger" @click="toggleMobileMenu" @mousedown="startBurgerPress" @mouseup="endBurgerPress" @mouseleave="endBurgerPress">
-                    <span :class="{ 'burger-pressed': isBurgerPressed }"></span>
-                    <span :class="{ 'burger-pressed': isBurgerPressed }"></span>
-                    <span :class="{ 'burger-pressed': isBurgerPressed }"></span>
-                </div>
-
-                <!-- Навигация -->
-                <ul class="nav-links" :class="{ 'mobile-active': isMobileMenuOpen }">
-                    <li><Link href="/about" @click="closeMobileMenu" class="nav-link"><p>О компании</p></Link></li>
-                    <li><Link href="/catalog" @click="closeMobileMenu" class="nav-link"><p>Каталог</p></Link></li>
-                    <li><Link href="/services" @click="closeMobileMenu" class="nav-link"><p>Услуги</p></Link></li>
-                    <li><Link href="/contacts" @click="closeMobileMenu" class="nav-link"><p>Контакты</p></Link></li>
-                    <li><Link href="/portfolio" @click="closeMobileMenu" class="nav-link"><p>Портфолио</p></Link></li>
-                    <li><Link href="/constructor" @click="closeMobileMenu" class="nav-link"><p>Конструктор</p></Link></li>
-
-                    <!-- Иконки: Личный кабинет / Корзина -->
-                    <li class="mobile-icons">
-                        <template v-if="$page.props.auth.user">
-                            <span class="inline-flex rounded-md">
-                                <Link
-                                    :href="route('dashboard')"
-                                    class="user-button"
-                                    @mousedown="startButtonPress('user')"
-                                    @mouseup="endButtonPress('user')"
-                                    @mouseleave="endButtonPress('user')"
-                                    :class="{ 'button-pressed': isUserButtonPressed }"
-                                >
-                                    {{ $page.props.auth.user.name }}
-                                </Link>
-                            </span>
-                        </template>
-
-                        <Link v-else href="/login" @click="closeMobileMenu" class="icon-link" @mousedown="startIconPress('user')" @mouseup="endIconPress('user')" @mouseleave="endIconPress('user')">
-                            <img src="@/assets/img/header/user.svg" alt="Личный кабинет" :class="{ 'icon-pressed': isUserIconPressed }" />
-                        </Link>
-
-                        <Link href="/cart" @click="closeMobileMenu" class="icon-link" @mousedown="startIconPress('cart')" @mouseup="endIconPress('cart')" @mouseleave="endIconPress('cart')">
-                            <img src="@/assets/img/header/shop.svg" alt="Корзина" :class="{ 'icon-pressed': isCartIconPressed }" />
+            <!-- Основное меню -->
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li class="nav-item" v-for="item in navItems" :key="item.path">
+                        <Link
+                            :href="item.path"
+                            class="nav-link"
+                            :class="{ 'active': $page.url.startsWith(item.path) }"
+                        >
+                            <span class="link-text">{{ item.title }}</span>
+                            <span class="link-underline"></span>
                         </Link>
                     </li>
                 </ul>
             </nav>
-        </section>
+
+            <!-- Иконки пользователя и корзины -->
+            <div class="user-actions">
+                <template v-if="$page.props.auth.user">
+                    <Link
+                        :href="route('dashboard')"
+                        class="user-profile"
+                        :title="$page.props.auth.user.name"
+                    >
+                        <div class="avatar">
+                            {{ getInitials($page.props.auth.user.name) }}
+                        </div>
+                        <span class="user-name">{{ getShortName($page.props.auth.user.name) }}</span>
+                    </Link>
+                </template>
+                <Link v-else href="/login" class="login-btn">
+                    <span>Войти</span>
+                </Link>
+
+                <Link href="/cart" class="cart-btn" :class="{ 'has-items': cartCount > 0 }">
+                    <img :src="cartIcon" alt="Корзина" />
+                </Link>
+
+            </div>
+
+            <!-- Мобильное меню -->
+            <button
+                class="mobile-menu-btn"
+                @click="toggleMobileMenu"
+                :class="{ 'active': isMobileMenuOpen }"
+                aria-label="Меню"
+            >
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </div>
+
+        <!-- Мобильное меню (выпадашка) -->
+        <Transition name="slide-down">
+            <div class="mobile-menu" v-show="isMobileMenuOpen">
+                <div class="mobile-menu-container">
+                    <ul class="mobile-nav-list">
+                        <li
+                            class="mobile-nav-item"
+                            v-for="item in navItems"
+                            :key="item.path"
+                            @click="closeMobileMenu"
+                        >
+                            <Link
+                                :href="item.path"
+                                class="mobile-nav-link"
+                                :class="{ 'active': $page.url.startsWith(item.path) }"
+                            >
+                                {{ item.title }}
+                            </Link>
+                        </li>
+                    </ul>
+
+                    <div class="mobile-user-actions">
+                        <template v-if="$page.props.auth.user">
+                            <Link
+                                :href="route('dashboard')"
+                                class="mobile-user-profile"
+                                @click="closeMobileMenu"
+                            >
+                                <div class="mobile-avatar">
+                                    {{ getInitials($page.props.auth.user.name) }}
+                                </div>
+                                <span>{{ $page.props.auth.user.name }}</span>
+                            </Link>
+                        </template>
+                        <Link
+                            v-else
+                            href="/login"
+                            class="mobile-login-btn"
+                            @click="closeMobileMenu"
+                        >
+                            <UserIcon class="icon" />
+                            <span>Войти в аккаунт</span>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        </Transition>
     </header>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { ref } from 'vue'
+import { Link } from '@inertiajs/vue3'
 
-const isMobileMenuOpen = ref(false);
-const isBurgerPressed = ref(false);
-const isUserIconPressed = ref(false);
-const isCartIconPressed = ref(false);
-const isUserButtonPressed = ref(false);
+const isMobileMenuOpen = ref(false)
+const cartCount = ref(3) // Замените на реальные данные
+
+// Статический импорт пути к иконке
+const cartIcon = new URL('@/assets/img/header/shop.svg', import.meta.url).href
+
+const navItems = [
+    { path: '/about', title: 'О компании' },
+    { path: '/catalog', title: 'Каталог' },
+    { path: '/services', title: 'Услуги' },
+    { path: '/contacts', title: 'Контакты' },
+    { path: '/portfolio', title: 'Портфолио' }
+]
+
+function getInitials(fullName) {
+    if (!fullName) return '👤'
+    return fullName.split(' ').map(n => n[0]).join('').toUpperCase()
+}
+
+function getShortName(fullName) {
+    if (!fullName) return ''
+    return fullName.split(' ')[0]
+}
 
 function toggleMobileMenu() {
-    isMobileMenuOpen.value = !isMobileMenuOpen.value;
+    isMobileMenuOpen.value = !isMobileMenuOpen.value
 }
 
 function closeMobileMenu() {
-    isMobileMenuOpen.value = false;
+    isMobileMenuOpen.value = false
 }
 
-function startBurgerPress() {
-    isBurgerPressed.value = true;
-}
-
-function endBurgerPress() {
-    isBurgerPressed.value = false;
-}
-
-function startIconPress(icon) {
-    if (icon === 'user') isUserIconPressed.value = true;
-    if (icon === 'cart') isCartIconPressed.value = true;
-}
-
-function endIconPress(icon) {
-    if (icon === 'user') isUserIconPressed.value = false;
-    if (icon === 'cart') isCartIconPressed.value = false;
-}
-
-function startButtonPress(button) {
-    if (button === 'user') isUserButtonPressed.value = true;
-}
-
-function endButtonPress(button) {
-    if (button === 'user') isUserButtonPressed.value = false;
-}
 </script>
 
 <style scoped>
-/* Базовые стили (1920px и больше) */
-header {
-    background-color: #f2f2f2;
-    border-bottom: solid #e5e5e5 2px;
+/* Базовые стили */
+.header {
+    font-family: regular;
+    background: #fff;
+    box-shadow: 0 2px 20px rgba(0, 123, 94, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-#head {
+.header-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 40px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 0;
     position: relative;
 }
 
-.logo img {
-    width: 100%;
-    max-width: 180px;
-    transition: transform 0.1s ease;
+/* Логотип */
+.logo {
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.nav-links {
-    list-style: none;
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.logo-image {
+    height: 40px;
+    width: auto;
+}
+
+/* Основная навигация */
+.main-nav {
     display: flex;
     align-items: center;
-    gap: 20px;
+}
+
+.nav-list {
+    display: flex;
+    gap: 2px;
+    list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.nav-links li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-links a {
-    text-decoration: none;
-}
-
-.nav-links p {
-    font-family: medium, Inter,serif;
-    font-size: 1rem;
-    color: black;
-    margin: 0;
-}
-
-.construct img {
-    width: 18px;
-    height: 18px;
-}
-
-.icons img {
-    width: 50px;
-    height: 50px;
-}
-
-/* Эффекты нажатия */
-.clickable:active {
-    transform: scale(0.95);
-}
-
-.burger-pressed {
-    background-color: #666 !important;
-    transform: scale(0.9);
+.nav-item {
+    position: relative;
 }
 
 .nav-link {
-    transition: transform 0.1s ease, color 0.1s ease;
-}
-
-.nav-link:active p {
-    color: #666;
-    transform: scale(0.95);
-}
-
-.icon-link img {
-    transition: transform 0.1s ease;
-}
-
-.icon-pressed {
-    transform: scale(0.85);
-}
-
-.user-button {
-    transition: all 0.1s ease;
-    border: 1px solid #ddd;
-    padding: 8px 16px;
-    border-radius: 4px;
-}
-
-.button-pressed {
-    transform: scale(0.95);
-    background-color: #f0f0f0;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-}
-
-/* Мобильное меню (скрыто на десктопе) */
-.burger {
-    display: none;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 16px;
+    display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 21px;
-    cursor: pointer;
-    z-index: 100;
+    align-items: center;
+    transition: color 0.3s ease;
+    position: relative;
 }
 
-.burger span {
+.nav-link:hover {
+    color: #00997a;
+}
+
+.nav-link.active {
+    color: #007b5e;
+    font-weight: 600;
+}
+
+.link-underline {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 16px;
+    height: 2px;
+    background: #FFA630;
+    border-radius: 2px;
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+
+.nav-link:hover .link-underline,
+.nav-link.active .link-underline {
+    transform: translateX(-50%) scaleX(1);
+    width: 24px;
+}
+
+/* Блок пользователя */
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.user-profile:hover {
+    transform: translateY(-2px);
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #007b5e, #00997a);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0, 123, 94, 0.2);
+}
+
+.user-name {
+    font-weight: 500;
+    color: #333;
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.login-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #007b5e, #00997a);
+    color: white;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 123, 94, 0.25);
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 123, 94, 0.35);
+    background: linear-gradient(135deg, #00997a, #007b5e);
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Корзина */
+.cart-btn {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f8f8;
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cart-btn:hover {
+    background: #eee;
+    transform: scale(1.1) rotate(-8deg);
+}
+
+.cart-counter {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #FFA630;
+    color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Мобильное меню */
+.mobile-menu-btn {
+    display: none;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+    padding: 0;
+}
+
+.bar {
     display: block;
-    width: 100%;
+    position: absolute;
     height: 3px;
-    background-color: #000;
+    width: 30px;
+    background: #007b5e;
+    border-radius: 2px;
+    left: 5px;
     transition: all 0.3s ease;
 }
 
+.bar:nth-child(1) {
+    top: 10px;
+}
+
+.bar:nth-child(2) {
+    top: 18px;
+}
+
+.bar:nth-child(3) {
+    top: 26px;
+}
+
+.mobile-menu-btn.active .bar:nth-child(1) {
+    top: 18px;
+    transform: rotate(45deg);
+}
+
+.mobile-menu-btn.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-btn.active .bar:nth-child(3) {
+    top: 18px;
+    transform: rotate(-45deg);
+}
+
+.mobile-menu {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    overflow-y: auto;
+    max-height: calc(100vh - 80px);
+}
+
+.mobile-menu-container {
+    padding: 20px 30px 40px;
+}
+
+.mobile-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.mobile-nav-item {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.mobile-nav-link {
+    display: block;
+    padding: 16px 0;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+    color: #007b5e;
+}
+
+.mobile-user-actions {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.mobile-user-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    padding: 12px 0;
+}
+
+.mobile-avatar {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #007b5e, #00997a);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.mobile-login-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #007b5e, #00997a);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.mobile-login-btn:hover {
+    background: linear-gradient(135deg, #00997a, #007b5e);
+}
+
+/* Анимации */
+.slide-down-enter-active,
+.slide-down-leave-active {
+    transition: all 0.5s ease;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
 /* Адаптивность */
-/* Планшеты и small ноутбуки: 771–1024 */
-@media screen and (max-width: 1024px) and (min-width: 771px) {
-    #head {
-        padding: 10px 30px;
-        gap: 20px;
+@media (max-width: 1200px) {
+    .header-container {
+        padding: 0 30px;
     }
 
-    .logo img {
-        max-width: 150px;
-    }
-
-    .nav-links {
-        gap: 15px;
-    }
-
-    .nav-links p {
-        font-size: 0.95rem;
-    }
-
-    .burger {
-        display: none; /* Бургер пока не нужен — меню в линию */
-    }
-
-    .mobile-icons {
-        display: flex;
-        gap: 15px;
-    }
-
-    .mobile-icons img {
-        width: 50px;
-        height: 50px;
+    .nav-link {
+        padding: 12px 15px;
     }
 }
 
-@media screen and (max-width: 768px) {
-    #head {
-        flex-wrap: wrap;
-        justify-content: space-between;
-        padding: 15px 20px; /* Добавили отступы слева/справа */
-    }
-
-    .burger {
-        display: flex;
-    }
-
-    .nav-links {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: #f2f2f2;
-        flex-direction: column;
-        align-items: stretch;
-        padding: 20px;
+@media (max-width: 992px) {
+    .main-nav {
         display: none;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        z-index: 99;
     }
 
-    .nav-links.mobile-active {
-        display: flex;
-    }
-
-    .nav-links li {
-        width: 100%;
-        padding: 12px 10px;
-        border-bottom: 1px solid #e5e5e5;
-        text-align: left;
-    }
-
-    .nav-links p {
-        font-size: 1rem;
-        margin: 0;
-    }
-
-    .logo img {
-        max-width: 120px;
-    }
-
-    .mobile-icons {
-        display: flex;
-        gap: 15px;
-        margin-top: 10px;
-        padding-left: 10px;
-    }
-
-    .mobile-icons img {
-        width: 50px;
-        height: 50px;
-    }
-}
-/* Мобилки и планшеты вертикально: до 770px */
-@media screen and (max-width: 770px) {
-    #head {
-        flex-wrap: wrap;
-        justify-content: space-between;
-        padding: 15px 20px;
-    }
-
-    .burger {
-        display: flex;
-    }
-
-    .nav-links {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: #f2f2f2;
-        flex-direction: column;
-        align-items: stretch;
-        padding: 20px;
+    .user-actions {
         display: none;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        z-index: 99;
     }
 
-    .nav-links.mobile-active {
-        display: flex;
+    .mobile-menu-btn {
+        display: block;
     }
 
-    .nav-links li {
-        width: 100%;
-        padding: 12px 10px;
-        border-bottom: 1px solid #e5e5e5;
-        text-align: left;
+    .header-container {
+        height: 70px;
+        padding: 0 20px;
     }
 
-    .nav-links p {
-        font-size: 1rem;
-        margin: 0;
-    }
-
-    .mobile-icons {
-        display: flex;
-        gap: 15px;
-        margin-top: 10px;
-        padding-left: 10px;
-    }
-
-    .mobile-icons img {
-        width: 50px;
-        height: 50px;
-    }
-
-    .logo img {
-        max-width: 120px;
+    .logo-image {
+        height: 35px;
     }
 }
 
-/* iPhone X и меньше */
-@media screen and (max-width: 480px) {
-    #head {
-        padding: 10px 15px;
+@media (max-width: 576px) {
+    .mobile-menu-container {
+        padding: 15px 20px 30px;
     }
 
-    .logo img {
-        max-width: 100px;
+    .mobile-nav-link {
+        font-size: 16px;
+        padding: 14px 0;
     }
 
-    .burger {
-        width: 25px;
-        height: 18px;
+    .mobile-avatar {
+        width: 44px;
+        height: 44px;
+        font-size: 14px;
     }
 
-    .burger span {
-        height: 2px;
-    }
-
-    .nav-links p {
-        font-size: 0.9rem;
-    }
-
-    .mobile-icons img {
-        width: 45px;
-        height: 45px;
+    .mobile-login-btn {
+        padding: 12px 16px;
+        font-size: 15px;
     }
 }
 </style>

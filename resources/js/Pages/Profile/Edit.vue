@@ -1,6 +1,14 @@
 <template>
     <Head title="Редактирование профиля" />
-    <PageBannerEdit page-title="Редактирование профиля" current-page-name="Редактирование профиля" />
+
+    <!-- Баннер -->
+    <PageBanner
+        page-title="Редактирование профиля"
+        :breadcrumbs="[
+            { href: '/dashboard', label: 'Редактирование профиля /' },
+            { label: 'Редактирование профиля' }
+        ]"
+    />
 
     <div class="profile-edit-wrapper">
         <div class="profile-grid">
@@ -35,7 +43,7 @@ import PhotoUpload from '@/Pages/Profile/Partials/PhotoUpload.vue';
 import UpdatePasswordForm from "@/Pages/Profile/Partials/UpdatePasswordForm.vue";
 import DeleteUserForm from "@/Pages/Profile/Partials/DeleteUserForm.vue";
 import UpdateProfileInformationForm from "@/Pages/Profile/Partials/UpdateProfileInformationForm.vue";
-import PageBannerEdit from "@/Components/PageBannerEdit.vue";
+import PageBanner from "@/Components/PageBanner.vue";
 
 const { mustVerifyEmail, status } = usePage().props;
 

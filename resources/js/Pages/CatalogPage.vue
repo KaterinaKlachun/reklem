@@ -1,9 +1,13 @@
 <template>
     <Head title="Каталог" />
 
+    <!-- Баннер -->
     <PageBanner
         page-title="Каталог"
-        current-page-name="Каталог"
+        :breadcrumbs="[
+            { href: '/', label: 'Главная /' },
+            { label: 'Каталог' }
+        ]"
     />
 
     <section class="wrapper">
@@ -108,6 +112,7 @@ onMounted(fetchProducts)
 <style scoped>
 
 .category-buttons {
+    font-family: regular;
     display: flex;
     justify-content: space-between;
     margin-top: 5%;
@@ -146,6 +151,7 @@ onMounted(fetchProducts)
 }
 
 .product-card {
+    font-family: regular;
     background-color: #fff;
     border: 1px solid #00997a;
     border-radius: 10px;

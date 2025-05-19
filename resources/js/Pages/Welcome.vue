@@ -58,7 +58,7 @@
     <!-- Services -->
     <section class="wrapper">
         <div class="modern-services">
-            <h2>Популярные услуги</h2>
+            <h2>Популярные <span>услуги</span></h2>
             <div class="services-grid">
                 <div class="service-card" v-for="(service, index) in services" :key="index">
                     <div class="service-icon">
@@ -403,7 +403,7 @@ export default {
 }
 
 .modern-about p {
-    font-family: 'regular', sans-serif;
+    font-family: regular;
     font-size: 18px;
     line-height: 1.6;
     margin-bottom: 32px;
@@ -488,11 +488,15 @@ export default {
 }
 
 .modern-services h2 {
-    font-family: 'bold', sans-serif;
+    font-family: bold;
     font-size: 42px;
     margin-bottom: 60px;
     color: #333;
-    text-align: center;
+}
+
+.modern-services h2 span {
+    text-decoration: underline 5px;
+    text-decoration-color: #FFA630;
 }
 
 .services-grid {

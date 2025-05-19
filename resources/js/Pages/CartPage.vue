@@ -1,9 +1,13 @@
 <template>
     <Head title="Корзина" />
 
+    <!-- Баннер -->
     <PageBanner
         page-title="Корзина"
-        current-page-name="Корзина"
+        :breadcrumbs="[
+            { href: '/', label: 'Главная /' },
+            { label: 'Корзина' }
+        ]"
     />
 
     <section class="cart">
@@ -205,6 +209,7 @@ export default {
 }
 
 .wrapper {
+    font-family: regular;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;

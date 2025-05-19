@@ -1,9 +1,13 @@
 <template>
     <Head title="Портфолио" />
 
+    <!-- Баннер -->
     <PageBanner
         page-title="Портфолио"
-        current-page-name="Наши работы"
+        :breadcrumbs="[
+            { href: '/', label: 'Главная /' },
+            { label: 'Наши работы' }
+        ]"
     />
 
     <section class="wrapper">
@@ -68,6 +72,7 @@ export default {
 <style scoped>
 
 .portfolio-intro {
+    font-family: regular;
     text-align: center;
     margin: 60px 0 40px;
 }
@@ -95,12 +100,12 @@ export default {
 }
 
 .product-card {
+    font-family: regular;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 20px;
 }
 
 .product-image {

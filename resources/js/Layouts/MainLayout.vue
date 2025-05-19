@@ -45,22 +45,26 @@ const showExtras = computed(() => {
 <style lang="css">
 /* Ваши существующие стили */
 @font-face {
-    font-family: "bold";
-    src: url("@/assets/font/Inter-SemiBold.woff2") format("woff2"),
-    url("@/assets/font/Inter-SemiBold.woff") format("woff");
+    font-family: 'bold';
+    src: url('@/assets/font/Tektur-Bold.ttf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
 }
 
 @font-face {
-    font-family: "medium";
-    src: url("@/assets/font/Inter-Medium.woff2") format("woff2"),
-    url("@/assets/font/Inter-Medium.woff") format("woff");
+    font-family: 'medium';
+    src: url('@/assets/font/Tektur-Medium.ttf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
 }
 
 @font-face {
-    font-family: "regular";
-    src: url("@/assets/font/Inter-Regular.woff2") format("woff2"),
-    url("@/assets/font/Inter-Regular.woff") format("woff");
+    font-family: 'regular';
+    src: url('@/assets/font/Tektur-Regular.ttf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
 }
+
 
 * {
     margin: 0;
@@ -73,7 +77,7 @@ html, body {
 }
 
 body {
-    font-family: 'regular';
+    font-family: regular;
     line-height: 1.6;
     background-color: white;
     display: flex;

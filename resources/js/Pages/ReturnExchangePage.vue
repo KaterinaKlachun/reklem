@@ -1,9 +1,13 @@
 <template>
     <Head title="Обмен и возврат" />
 
+    <!-- Баннер -->
     <PageBanner
         page-title="Информация об обмене и возврате"
-        current-page-name="Обмен и возврат"
+        :breadcrumbs="[
+            { href: '/', label: 'Главная /' },
+            { label: 'Обмен и возврат' }
+        ]"
     />
 
     <div class="wrapper">
@@ -64,7 +68,7 @@ export default {
 .return-exchange-page {
     margin: 0 auto;
     padding: 20px;
-    font-family: 'Inter', 'Arial', sans-serif;
+    font-family: regular;
     color: #2d3748;
     position: relative;
 }

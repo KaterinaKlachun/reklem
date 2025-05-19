@@ -1,9 +1,13 @@
 <template>
     <Head title="Отзывы" />
 
+    <!-- Баннер -->
     <PageBanner
         page-title="Отзывы клиентов"
-        current-page-name="Реальные мнения о нашей работе"
+        :breadcrumbs="[
+            { href: '/', label: 'Главная /' },
+            { label: 'Реальные мнения о нашей работе' }
+        ]"
     />
 
     <!-- Rating Summary Block -->

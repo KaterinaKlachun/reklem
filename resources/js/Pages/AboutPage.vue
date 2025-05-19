@@ -1,9 +1,13 @@
 <template>
     <Head title="О компании" />
 
+    <!-- Баннер -->
     <PageBanner
         page-title="Немного о нас"
-        current-page-name="О компании"
+        :breadcrumbs="[
+            { href: '/', label: 'Главная /' },
+            { label: 'О компании' }
+        ]"
     />
 
     <!-- About Section -->
@@ -118,8 +122,8 @@ export default {
 
 <style scoped>
 /* Base Styles */
-
 .section-title {
+    font-family: bold;
     font-size: 2rem;
     margin-bottom: 1rem;
     color: var(--primary);
@@ -141,6 +145,7 @@ export default {
 
 /* About Section */
 .about-section {
+    font-family: regular;
     padding: 80px 0;
 }
 
@@ -229,6 +234,7 @@ export default {
 
 /* Production Section */
 .production-section {
+    font-family: regular;
     padding: 80px 0;
 }
 
@@ -247,6 +253,7 @@ export default {
 
 /* History Section */
 .history-section {
+    font-family: regular;
     padding: 80px 0;
     background-color: var(--light-bg);
 }

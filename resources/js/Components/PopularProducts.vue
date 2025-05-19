@@ -34,6 +34,9 @@ function formatPrice(price) {
 </script>
 
 <style scoped>
+section{
+    font-family: regular;
+}
 /* Основные стили */
 .section-header h2 {
     font-size: 2.25rem;
@@ -72,7 +75,7 @@ function formatPrice(price) {
 
 .product-card {
     background: #fff;
-    border-radius: 12px;
+    border-radius: 45px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
@@ -81,11 +84,6 @@ function formatPrice(price) {
     flex-direction: column;
     width: calc(33.333% - 17px); /* 3 колонки с учетом gap */
     min-width: 150px;
-}
-
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .product-image-container {

@@ -1,7 +1,14 @@
 <template>
     <Head title="Продукт" />
 
-    <PageBannerProduct page-title="Наша продукция" current-page-name="Продукт" />
+    <!-- Баннер -->
+    <PageBanner
+        page-title="Наша продукция"
+        :breadcrumbs="[
+            { href: '/catalog', label: 'Каталог /' },
+            { label: 'Продукт' }
+        ]"
+    />
 
     <section v-if="product" class="product-wrapper">
         <div class="product-container">
@@ -93,10 +100,10 @@
 
 <script>
 import { Head, Link, usePage } from "@inertiajs/vue3";
-import PageBannerProduct from "@/Components/PageBannerProduct.vue";
+import PageBanner from "@/Components/PageBanner.vue";
 
 export default {
-    components: { Head, PageBannerProduct, Link },
+    components: {PageBanner, Head, Link },
     props: {
         product: Object,
     },
@@ -148,6 +155,7 @@ export default {
 
 <style scoped>
 .product-wrapper {
+    font-family: regular;
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;

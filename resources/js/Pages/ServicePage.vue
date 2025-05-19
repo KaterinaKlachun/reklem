@@ -1,51 +1,57 @@
 <template>
     <Head title="Услуги" />
 
-
+    <!-- Баннер -->
     <PageBanner
         page-title="Наши услуги"
-        current-page-name="Услуги"
+        :breadcrumbs="[
+            { href: '/', label: 'Главная /' },
+            { label: 'Услуги' }
+        ]"
     />
+
     <div class="services-2025">
         <div class="services-header">
             <h2>Наши услуги</h2>
             <p>Инновационные решения для вашего бренда</p>
         </div>
 
-        <div class="services-grid">
-            <div
-                v-for="(service, index) in services"
-                :key="service.id"
-                class="service-card"
-                :style="{'--accent-color': getAccentColor(index)}"
-                @mouseenter="flippedCard = service.id"
-                @mouseleave="flippedCard = null"
-            >
-                <div class="card-inner" :class="{ 'is-flipped': flippedCard === service.id }">
-                    <!-- Лицевая сторона -->
-                    <div class="card-face card-front">
-                        <h3>{{ service.title }}</h3>
-                        <p class="service-summary">{{ service.shortDescription }}</p>
-                        <ul class="features-list">
-                            <li v-for="(feature, i) in service.advantages" :key="i">
-                                {{ feature.title }}
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Обратная сторона -->
-                    <div class="card-face card-back">
-                        <div class="back-header">
-                            <h4>{{ service.title }}</h4>
-                            <p class="back-description">{{ service.description }}</p>
+        <div class="wrapper">
+            <div class="services-grid">
+                <div
+                    v-for="(service, index) in services"
+                    :key="service.id"
+                    class="service-card"
+                    :style="{'--accent-color': getAccentColor(index)}"
+                    @mouseenter="flippedCard = service.id"
+                    @mouseleave="flippedCard = null"
+                >
+                    <div class="card-inner" :class="{ 'is-flipped': flippedCard === service.id }">
+                        <!-- Лицевая сторона -->
+                        <div class="card-face card-front">
+                            <h3>{{ service.title }}</h3>
+                            <p class="service-summary">{{ service.shortDescription }}</p>
+                            <ul class="features-list">
+                                <li v-for="(feature, i) in service.advantages" :key="i">
+                                    {{ feature.title }}
+                                </li>
+                            </ul>
                         </div>
-                        <div class="back-scrollable">
-                            <div class="back-features">
-                                <div v-for="(feature, i) in service.advantages" :key="i" class="back-feature">
-                                    <div class="feature-number">{{ i+1 }}</div>
-                                    <div class="feature-content">
-                                        <h5>{{ feature.title }}</h5>
-                                        <p>{{ feature.text }}</p>
+
+                        <!-- Обратная сторона -->
+                        <div class="card-face card-back">
+                            <div class="back-header">
+                                <h4>{{ service.title }}</h4>
+                                <p class="back-description">{{ service.description }}</p>
+                            </div>
+                            <div class="back-scrollable">
+                                <div class="back-features">
+                                    <div v-for="(feature, i) in service.advantages" :key="i" class="back-feature">
+                                        <div class="feature-number">{{ i+1 }}</div>
+                                        <div class="feature-content">
+                                            <h5>{{ feature.title }}</h5>
+                                            <p>{{ feature.text }}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -54,6 +60,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -80,7 +87,7 @@ const getAccentColor = (index) => {
     max-width: 1440px;
     margin: 0 auto;
     padding: 100px 40px;
-    font-family: 'Inter', -apple-system, sans-serif;
+    font-family: regular;
 }
 
 .services-header {

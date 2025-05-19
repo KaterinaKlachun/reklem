@@ -1,9 +1,13 @@
 <template>
     <Head title="Контакты" />
 
+    <!-- Баннер -->
     <PageBanner
         page-title="Контакты"
-        current-page-name="Свяжитесь с нами"
+        :breadcrumbs="[
+            { href: '/', label: 'Главная /' },
+            { label: 'Свяжитесь с нами' }
+        ]"
     />
 
     <!-- Contact Info Section -->
@@ -167,18 +171,19 @@ export default {
 }
 
 body {
-    font-family: 'Inter', sans-serif;
     color: var(--dark-text);
     line-height: 1.6;
 }
 
 .wrapper {
+    font-family: regular;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
 h1, h2, h3 {
+    font-family: regular;
     font-weight: 700;
     line-height: 1.2;
 }

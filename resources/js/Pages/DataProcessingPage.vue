@@ -1,10 +1,16 @@
 <template>
     <Head title="Политика обработки данных" />
+
+    <!-- Баннер -->
     <PageBanner
         page-title="Политика обработки персональных данных"
-        current-page-name="Обработка данных"
+        :breadcrumbs="[
+            { href: '/', label: 'Главная /' },
+            { label: 'Обработка данных' }
+        ]"
     />
 
+    <!-- Содержимое страницы -->
     <div class="data-processing-page">
         <!-- Hero Section -->
         <div class="hero-section">
@@ -107,22 +113,25 @@
         <!-- Security Section -->
         <div class="security-section">
             <div class="security-content">
-                <h2><i class="fas fa-shield-alt"></i> Технологии защиты</h2>
+                <h2><img src="@/assets/img/icons/check.svg" class="icon">
+                    Технологии защиты</h2>
                 <p>Мы используем передовые методы для безопасности ваших данных:</p>
                 <div class="tech-badges">
           <span v-for="tech in techStack" :key="tech">
-            <i class="fas fa-check-circle"></i> {{ tech }}
+            <img src="@/assets/img/icons/path_small.svg" class="icon"> {{ tech }}
           </span>
                 </div>
             </div>
             <div class="security-visual">
-                <div class="lock-animation"></div>
+                <div class="lock-animation">
+                    <img src="@/assets/img/icons/lock_bold.svg" class="icon">
+                </div>
             </div>
         </div>
 
         <!-- Final Section -->
         <div class="final-section">
-            <h2><i class="fas fa-gavel"></i> Заключительные положения</h2>
+            <h2>Заключительные положения</h2>
             <p>Настоящая политика регулируется законодательством РФ. Все споры решаются сначала переговорами, а при невозможности согласия - в судебном порядке.</p>
             <p>Политика действует бессрочно до замены новой версией.</p>
         </div>
@@ -192,9 +201,6 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
-
 :root {
     --primary: #007b5e;
     --primary-light: #00997a;
@@ -214,15 +220,15 @@ export default {
 }
 
 .icon{
-    width: 48px;
-    height: 48px;
+    width: 24px;
+    height: 24px;
 }
 
 .data-processing-page {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px 60px;
-    font-family: 'Inter', sans-serif;
+    font-family: regular;
     color: var(--dark);
     line-height: 1.6;
 }
@@ -357,12 +363,6 @@ export default {
     border: 1px solid var(--light-gray);
 }
 
-.principle-card:hover {
-    transform: translateY(-5px) !important;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    border-color: var(--primary);
-}
-
 @keyframes fadeIn {
     to {
         opacity: 1;
@@ -397,23 +397,9 @@ export default {
 }
 
 .policy-section {
-    background: var(--white);
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     margin-bottom: 40px;
-    transition: transform 0.3s ease;
-    border: 1px solid var(--light-gray);
-}
-
-.policy-section:hover {
-    transform: translateY(-5px);
-}
-
-.policy-section.accent {
-    background: linear-gradient(135deg, var(--primary), var(--primary-light));
-    color: var(--white);
-    border: none;
 }
 
 .policy-section.accent .section-header h2,
@@ -447,7 +433,6 @@ export default {
 
 .policy-point {
     margin-bottom: 25px;
-    padding-left: 45px;
     position: relative;
 }
 
@@ -573,11 +558,6 @@ export default {
     transition: all 0.3s ease;
 }
 
-.tech-badges span:hover {
-    background: rgba(0, 123, 94, 0.2);
-    transform: translateY(-2px);
-}
-
 .tech-badges i {
     font-size: 0.9rem;
     color: var(--primary);
@@ -600,16 +580,6 @@ export default {
     justify-content: center;
     align-items: center;
     animation: pulse 3s infinite ease-in-out;
-}
-
-.lock-animation::before {
-    content: '\f023';
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    font-size: 4rem;
-    color: var(--primary);
-    position: absolute;
-    animation: float 4s infinite ease-in-out;
 }
 
 /* Final Section */
