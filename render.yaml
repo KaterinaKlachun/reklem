@@ -14,8 +14,6 @@ services:
         value: false
       - key: APP_URL
         value: https://reklem.onrender.com
-      - key: FRONTEND_URL
-        value: https://reklem.onrender.com
       - key: ASSET_URL
         value: https://reklem.onrender.com
       - key: DB_CONNECTION

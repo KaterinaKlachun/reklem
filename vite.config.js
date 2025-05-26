@@ -3,8 +3,10 @@ import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
 
+const ASSET_URL = process.env.ASSET_URL || '';
+
 export default defineConfig({
-    base: '/build/',
+    base: ASSET_URL + '/build/',
     plugins: [
         laravel({
             input: 'resources/js/app.js',
@@ -19,7 +21,6 @@ export default defineConfig({
             },
         }),
     ],
-
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'resources/js'),
