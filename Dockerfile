@@ -10,7 +10,8 @@ COPY . /var/www
 RUN composer install --no-dev --optimize-autoloader
 ARG ASSET_URL
 ENV ASSET_URL=${ASSET_URL}
-RUN npm install && npm run build
+RUN npm install
+RUN npm ci && npm run build
 
 # Кешируем конфиги Laravel
 RUN php artisan config:clear &&     php artisan config:cache &&     php artisan view:cache &&     php artisan route:cache
