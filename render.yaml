@@ -1,15 +1,28 @@
 services:
   - type: web
-    name: reklem
-    env: docker
-    dockerfilePath: ./Dockerfile
-    buildCommand: ""
-    startCommand: "php-fpm"
+    name: reklem-laravel-app
+    env: php
+    plan: free
+    buildCommand: |
+      composer install --no-dev --optimize-autoloader
+      npm install
+      npm run build
+      php artisan config:cache
+      php artisan migrate --force
+    startCommand: php artisan serve --host 0.0.0.0 --port 10000
     envVars:
       - key: APP_ENV
         value: production
       - key: APP_KEY
         generateValue: true
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        value: https://reklem-laravel-app.onrender.com
+      - key: FRONTEND_URL
+        value: https://reklem-laravel-app.onrender.com
+
+      # DB (Supabase)
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_HOST
@@ -22,3 +35,9 @@ services:
         value: postgres.mgjyxgaiyngflmlfzoju
       - key: DB_PASSWORD
         value: root
+
+      # Session / Queue
+      - key: SESSION_DRIVER
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
