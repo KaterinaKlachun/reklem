@@ -13,6 +13,7 @@ WORKDIR /var/www
 COPY . /var/www
 
 RUN composer install --no-dev --optimize-autoloader
+RUN php artisan config:clear && php artisan config:cache
 RUN npm install && npm run build
 
 # Кешируем конфиги Laravel
