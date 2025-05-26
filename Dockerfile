@@ -1,4 +1,4 @@
-# Используем официальный PHP-образ с нужными расширениями
+# Используем официальный PHP-образ
 FROM php:8.2-fpm
 
 # Устанавливаем зависимости PHP и системные пакеты
@@ -12,25 +12,19 @@ RUN apt-get update && apt-get install -y \
 # Устанавливаем Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Устанавливаем рабочую директорию
+# Рабочая директория
 WORKDIR /var/www
 
-# Копируем только файлы Composer для кэширования слоёв
-COPY composer.json composer.lock ./
-
-# Копируем artisan, чтобы composer install не упал
-COPY artisan artisan
+# Копируем весь проект (и artisan, и bootstrap, и vendor/* если есть)
+COPY . .
 
 # Устанавливаем зависимости Laravel
 RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader
 
-# Копируем всё остальное
-COPY . .
-
-# Устанавливаем Node-зависимости и билдим фронтенд
+# Ставим зависимости Node и билдим ассеты
 RUN npm ci && npm run build
 
-# Кешируем конфигурации Laravel
+# Кешируем конфиги Laravel
 RUN php artisan config:clear \
  && php artisan route:clear \
  && php artisan view:clear \
@@ -38,17 +32,17 @@ RUN php artisan config:clear \
  && php artisan route:cache \
  && php artisan view:cache
 
-# Устанавливаем правильные права
+# Ставим права
 RUN chown -R www-data:www-data /var/www
 
-# Копируем конфиг Nginx
+# Конфиг Nginx
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
-# Меняем сокет на порт для php-fpm
+# Меняем сокет на порт
 RUN sed -i 's|listen = /run/php/php-fpm.sock|listen = 9000|' /usr/local/etc/php-fpm.d/www.conf
 
-# Открываем порт 80
+# Порт
 EXPOSE 80
 
-# Запускаем и PHP, и Nginx
+# Запускаем PHP-FPM и Nginx
 CMD php-fpm -D && nginx -g "daemon off;"
