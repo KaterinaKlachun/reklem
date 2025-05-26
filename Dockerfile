@@ -15,6 +15,12 @@ COPY . /var/www
 RUN composer install --no-dev --optimize-autoloader
 RUN npm install && npm run build
 
+# Кешируем конфиги Laravel
+RUN php artisan config:clear && \
+    php artisan config:cache && \
+    php artisan view:cache && \
+    php artisan route:cache
+
 RUN chown -R www-data:www-data /var/www
 
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
