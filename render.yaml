@@ -36,7 +36,7 @@ services:
       - key: DB_PASSWORD
         value: root
 
-      # Session / Queue
+      # Session
       - key: SESSION_DRIVER
         value: database
       - key: QUEUE_CONNECTION
