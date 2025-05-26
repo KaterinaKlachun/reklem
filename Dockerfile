@@ -34,6 +34,8 @@ RUN php artisan config:clear \
 
 # Ставим права
 RUN chown -R www-data:www-data /var/www
+RUN chmod -R 775 storage bootstrap/cache && \
+    chown -R www-data:www-data storage bootstrap/cache
 
 # Конфиг Nginx
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
