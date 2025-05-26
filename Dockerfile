@@ -1,4 +1,3 @@
-
 FROM php:8.2-fpm
 
 RUN apt-get update && apt-get install -y \
@@ -24,4 +23,4 @@ EXPOSE 80
 
 RUN sed -i 's|listen = /run/php/php-fpm.sock|listen = 9000|' /usr/local/etc/php-fpm.d/www.conf
 
-CMD ["sh", "-c", "service nginx start && php-fpm"]
+CMD php-fpm -D && nginx -g "daemon off;"
