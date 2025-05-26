@@ -22,4 +22,6 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 
+RUN sed -i 's|listen = /run/php/php-fpm.sock|listen = 9000|' /usr/local/etc/php-fpm.d/www.conf
+
 CMD ["sh", "-c", "service nginx start && php-fpm"]
