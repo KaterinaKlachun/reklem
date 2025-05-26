@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: reklem_app_prod
+    container_name: reklem_app_prod
+    restart: always
+    environment:
+      APP_ENV: production
+      APP_DEBUG: false
+      APP_URL: https://your-domain.com
+    volumes:
+      - .:/var/www
+    depends_on:
+      - postgres
+    networks:
+      - reklem
+
+  nginx:
+    image: nginx:alpine
+    container_name: reklem_nginx_prod
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/prod.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - reklem
+
+  postgres:
+    image: postgres:16
+    restart: always
+    container_name: reklem_postgres_prod
+    environment:
+      POSTGRES_DB: your_db
+      POSTGRES_USER: your_user
+      POSTGRES_PASSWORD: your_password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - reklem
+
+volumes:
+  pgdata:
+
+networks:
+  reklem:

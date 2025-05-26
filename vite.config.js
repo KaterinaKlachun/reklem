@@ -4,6 +4,8 @@ import vue from '@vitejs/plugin-vue';
 import path from 'path';
 
 export default defineConfig({
+    base: '/build/', // важно для корректной работы ссылок в продакшене
+
     plugins: [
         laravel({
             input: 'resources/js/app.js',
@@ -18,6 +20,14 @@ export default defineConfig({
             },
         }),
     ],
+    build: {
+        outDir: 'public/build', // куда складывается прод-результат
+        rollupOptions: {
+            input: {
+                app: path.resolve(__dirname, 'resources/js/app.js'),
+            },
+        },
+    },
     server: {
         proxy: {
             '/api': 'http://localhost:8000',
