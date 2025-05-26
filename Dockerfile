@@ -8,6 +8,8 @@ WORKDIR /var/www
 COPY . /var/www
 
 RUN composer install --no-dev --optimize-autoloader
+ARG ASSET_URL
+ENV ASSET_URL=${ASSET_URL}
 RUN npm install && npm run build
 
 # Кешируем конфиги Laravel

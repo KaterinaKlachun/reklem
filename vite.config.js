@@ -25,12 +25,9 @@ export default defineConfig({
         alias: {
             '@': path.resolve(__dirname, 'resources/js'),
             '~fonts': path.resolve(__dirname, 'public/assets/font'),
-        }
+        },
     },
     optimizeDeps: {
-        include: [
-            'vue',
-            '@inertiajs/vue3',
-        ],
+        include: ['vue', '@inertiajs/vue3'],
     },
 });
