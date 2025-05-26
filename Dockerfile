@@ -17,12 +17,11 @@ WORKDIR /var/www
 # 👇 Сначала копируем package.json и composer.json — чтобы кэшировать слои
 COPY composer.json composer.lock package.json package-lock.json ./
 
-# Устанавливаем зависимости
-RUN composer install --no-dev --optimize-autoloader
-RUN npm ci
-
-# 👇 Потом копируем всё остальное
+# Сначала копируем всё
 COPY . .
+
+# Потом уже устанавливаем зависимости
+RUN composer install --no-dev --optimize-autoloader
 
 # Билдим ассеты
 ARG ASSET_URL
