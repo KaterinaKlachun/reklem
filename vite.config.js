@@ -18,14 +18,7 @@ export default defineConfig({
             },
         }),
     ],
-    server: {
-        proxy: {
-            '/api': 'http://localhost:8000',
-        },
-        hmr: {
-            host: 'localhost',
-        },
-    },
+
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'resources/js'),
