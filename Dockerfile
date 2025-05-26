@@ -18,7 +18,7 @@ RUN npm install && npm run build
 
 RUN chown -R www-data:www-data /var/www
 
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 
