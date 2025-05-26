@@ -6,7 +6,7 @@ import path from 'path';
 const ASSET_URL = process.env.ASSET_URL || '';
 
 export default defineConfig({
-    base: `${ASSET_URL}/build/`,
+    base: ASSET_URL + '/build/',
     plugins: [
         laravel({
             input: 'resources/js/app.js',
@@ -25,6 +25,12 @@ export default defineConfig({
         alias: {
             '@': path.resolve(__dirname, 'resources/js'),
             '~fonts': path.resolve(__dirname, 'public/assets/font'),
-        },
+        }
+    },
+    optimizeDeps: {
+        include: [
+            'vue',
+            '@inertiajs/vue3',
+        ],
     },
 });

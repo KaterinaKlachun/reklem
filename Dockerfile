@@ -1,11 +1,6 @@
 FROM php:8.2-fpm
 
-RUN apt-get update && apt-get install -y \
-    git curl zip unzip libpng-dev libjpeg-dev libfreetype6-dev libonig-dev libxml2-dev libzip-dev libpq-dev \
-    nginx nodejs npm \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo pdo_pgsql pdo_mysql mbstring zip exif pcntl gd bcmath \
-    && apt-get clean
+RUN apt-get update && apt-get install -y     git curl zip unzip libpng-dev libjpeg-dev libfreetype6-dev libonig-dev libxml2-dev libzip-dev libpq-dev     nginx nodejs npm     && docker-php-ext-configure gd --with-freetype --with-jpeg     && docker-php-ext-install pdo pdo_pgsql pdo_mysql mbstring zip exif pcntl gd bcmath     && apt-get clean
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -13,14 +8,10 @@ WORKDIR /var/www
 COPY . /var/www
 
 RUN composer install --no-dev --optimize-autoloader
-RUN php artisan config:clear && php artisan config:cache
 RUN npm install && npm run build
 
 # Кешируем конфиги Laravel
-RUN php artisan config:clear && \
-    php artisan config:cache && \
-    php artisan view:cache && \
-    php artisan route:cache
+RUN php artisan config:clear &&     php artisan config:cache &&     php artisan view:cache &&     php artisan route:cache
 
 RUN chown -R www-data:www-data /var/www
 
