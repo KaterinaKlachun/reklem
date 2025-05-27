@@ -29,8 +29,8 @@ export default defineConfig({
         }),
     ],
     build: {
-        outDir: 'public/build', // куда складывается прод-результат
-        manifest: 'manifest.json',
+        outDir: 'public/build',
+        manifest: true,
         rollupOptions: {
             input: {
                 app: path.resolve(__dirname, 'resources/js/app.js'),
