@@ -8,7 +8,10 @@ export default defineConfig({
 
     plugins: [
         laravel({
-            input: 'resources/js/app.js',
+            input: [
+                'resources/js/app.js',
+                'resources/js/Pages/**/*.vue'
+            ],
             refresh: true,
             buildDirectory: 'build',
         }),

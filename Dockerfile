@@ -67,7 +67,17 @@ RUN cp .env.example .env && \
     php artisan key:generate --force && \
     php artisan config:cache && \
     php artisan route:cache && \
-    php artisan view:cache
+    php artisan view:cache && \
+    php artisan storage:link
+
+# Проверка наличия манифеста Vite
+RUN if [ ! -f public/build/manifest.json ]; then \
+    echo "Vite manifest not found, rebuilding assets..." && \
+    npm install && \
+    npm run build && \
+    npm cache clean --force && \
+    rm -rf node_modules; \
+    fi
 
 # Открытие порта
 EXPOSE 80
