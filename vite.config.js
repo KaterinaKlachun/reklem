@@ -26,7 +26,7 @@ export default defineConfig({
     ],
     build: {
         outDir: 'public/build', // куда складывается прод-результат
-        manifest: 'manifest.json',
+        manifest: true,
         rollupOptions: {
             input: {
                 app: path.resolve(__dirname, 'resources/js/app.js'),
@@ -35,9 +35,9 @@ export default defineConfig({
                 manualChunks: {
                     'vendor': ['vue', '@inertiajs/vue3'],
                 },
-                entryFileNames: 'assets/[name].js',
-                chunkFileNames: 'assets/[name].js',
-                assetFileNames: 'assets/[name].[ext]'
+                entryFileNames: 'assets/[name].[hash].js',
+                chunkFileNames: 'assets/[name].[hash].js',
+                assetFileNames: 'assets/[name].[hash].[ext]'
             },
         },
         assetsDir: 'assets',

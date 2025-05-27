@@ -32,12 +32,6 @@ RUN npm install && \
     npm cache clean --force && \
     rm -rf node_modules
 
-# Проверка и создание манифеста если его нет
-RUN if [ ! -f public/build/manifest.json ]; then \
-    echo "Creating manifest.json..." && \
-    echo '{"resources/js/app.js":{"file":"assets/app.js","src":"resources/js/app.js","isEntry":true}}' > public/build/manifest.json; \
-    fi
-
 # Проверка наличия манифеста
 RUN ls -la public/build/ && \
     cat public/build/manifest.json
