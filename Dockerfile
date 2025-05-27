@@ -8,6 +8,18 @@ COPY package*.json ./
 COPY vite.config.js ./
 COPY resources ./resources
 COPY public ./public
+COPY composer.json composer.lock ./
+
+# Установка Composer и PHP для генерации Ziggy
+RUN apt-get update && apt-get install -y \
+    php \
+    php-xml \
+    php-mbstring \
+    php-zip \
+    unzip \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && composer install --no-dev --no-scripts \
+    && php artisan ziggy:generate
 
 # Установка зависимостей и сборка
 RUN npm install && \
