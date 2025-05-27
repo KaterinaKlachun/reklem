@@ -14,7 +14,7 @@ services:
           - key: APP_DEBUG
             value: false
           - key: DB_CONNECTION
-            value: mysql
+            value: postgres
           - key: DB_HOST
             value: your-db-host.render.com
           - key: DB_PORT

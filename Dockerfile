@@ -1,51 +1,20 @@
 FROM php:8.2-fpm
 
-# Установка зависимостей
+# Установка системных зависимостей и расширений PHP
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    locales \
-    zip \
-    jpegoptim optipng pngquant gifsicle \
-    vim \
-    unzip \
-    git \
-    curl
-
-# Установка расширений PHP
-RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
+    git curl zip unzip libpng-dev libjpeg-dev libfreetype6-dev libonig-dev libxml2-dev libzip-dev libpq-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_pgsql pdo_mysql mbstring zip exif pcntl gd bcmath \
+    && apt-get clean
 
 # Установка Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # Установка рабочей директории
 WORKDIR /var/www
 
-# Копирование файлов проекта
-COPY . .
+# Копирование файлов проекта (если нужно) — обычно volume используется в compose
+# COPY . /var/www
 
-# Установка зависимостей проекта
-RUN composer install --no-dev --optimize-autoloader
-
-# Генерация ключа приложения
-RUN php artisan key:generate
-
-# Кеширование конфигурации и маршрутов
-RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
-
-# Установка прав доступа
+# Установка прав
 RUN chown -R www-data:www-data /var/www
-
-# Установка Nginx
-RUN apt-get install -y nginx
-
-# Копирование конфигурации Nginx
-COPY ./nginx/default.conf /etc/nginx/sites-available/default
-
-# Экспонирование портов
-EXPOSE 80
-
-# Запуск Nginx и PHP-FPM
-CMD service nginx start && php-fpm
