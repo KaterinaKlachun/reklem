@@ -32,6 +32,10 @@ RUN npm install && \
     npm cache clean --force && \
     rm -rf node_modules
 
+# Проверка наличия манифеста
+RUN ls -la public/build/ && \
+    cat public/build/manifest.json
+
 # Основной этап
 FROM php:8.2-fpm
 
@@ -96,6 +100,10 @@ RUN cp .env.example .env && \
     php artisan route:cache && \
     php artisan view:cache && \
     php artisan storage:link
+
+# Проверка наличия манифеста в финальном образе
+RUN ls -la /var/www/public/build/ && \
+    cat /var/www/public/build/manifest.json
 
 # Открытие порта
 EXPOSE 80

@@ -39,6 +39,7 @@ export default defineConfig({
         },
         assetsDir: 'assets',
         emptyOutDir: true,
+        sourcemap: true,
     },
     server: {
         proxy: {
