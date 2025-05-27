@@ -46,5 +46,7 @@ COPY docker/php/local.ini /usr/local/etc/php/conf.d/local.ini
 # Открытие порта
 EXPOSE 9000
 
+CMD php artisan serve --host=0.0.0.0 --port=9000
+
 # Запуск PHP-FPM
 CMD ["php-fpm"]
