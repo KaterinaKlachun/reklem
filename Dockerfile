@@ -35,6 +35,11 @@ RUN npm install && \
 # Создание директории build если её нет
 RUN mkdir -p public/build
 
+# Создание базового манифеста если его нет
+RUN if [ ! -f public/build/manifest.json ]; then \
+    echo '{"resources/js/app.js":{"file":"assets/app.js","src":"resources/js/app.js","isEntry":true}}' > public/build/manifest.json; \
+    fi
+
 # Проверка наличия манифеста и ассетов
 RUN ls -la public/build/ && \
     ls -la public/build/assets/ && \
