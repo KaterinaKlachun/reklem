@@ -27,8 +27,16 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Установка рабочей директории
 WORKDIR /var/www
 
+# Создание необходимых директорий и установка базовых прав
+RUN mkdir -p /var/log/php \
+    && mkdir -p /var/www/storage/logs \
+    && mkdir -p /var/www/bootstrap/cache \
+    && touch /var/log/php/php_errors.log \
+    && chown -R www-data:www-data /var/log/php \
+    && chmod -R 755 /var/log/php
+
 # Копирование файлов проекта
-COPY . /var/www
+COPY --chown=www-data:www-data . /var/www
 
 # Установка зависимостей PHP
 RUN composer install --no-dev --optimize-autoloader
@@ -39,17 +47,14 @@ RUN npm install && \
     npm cache clean --force && \
     rm -rf node_modules
 
-# Создание директории для логов и установка прав
-RUN mkdir -p /var/log/php && \
-    touch /var/log/php/php_errors.log && \
-    chown -R www-data:www-data /var/log/php
-
-# Установка прав
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage \
+# Установка прав на директории Laravel
+RUN chmod -R 755 /var/www/storage \
     && chmod -R 755 /var/www/bootstrap/cache \
     && chmod -R 755 /var/www/public/build \
-    && chmod -R 777 /var/www/storage/logs
+    && chmod -R 775 /var/www/storage/logs \
+    && chown -R www-data:www-data /var/www/storage \
+    && chown -R www-data:www-data /var/www/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/public/build
 
 # Копирование конфигурации PHP
 COPY docker/php/local.ini /usr/local/etc/php/conf.d/local.ini
