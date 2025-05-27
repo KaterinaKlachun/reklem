@@ -34,12 +34,16 @@ COPY . /var/www
 RUN composer install --no-dev --optimize-autoloader
 
 # Установка зависимостей Node.js и сборка фронтенда
-RUN npm install && npm run build
+RUN npm install && \
+    npm run build && \
+    npm cache clean --force && \
+    rm -rf node_modules
 
 # Установка прав
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage \
-    && chmod -R 755 /var/www/bootstrap/cache
+    && chmod -R 755 /var/www/bootstrap/cache \
+    && chmod -R 755 /var/www/public/build
 
 # Копирование конфигурации PHP
 COPY docker/php/local.ini /usr/local/etc/php/conf.d/local.ini

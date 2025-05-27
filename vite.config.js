@@ -10,6 +10,7 @@ export default defineConfig({
         laravel({
             input: 'resources/js/app.js',
             refresh: true,
+            buildDirectory: 'build',
         }),
         vue({
             template: {
@@ -22,11 +23,19 @@ export default defineConfig({
     ],
     build: {
         outDir: 'public/build', // куда складывается прод-результат
+        manifest: true,
         rollupOptions: {
             input: {
                 app: path.resolve(__dirname, 'resources/js/app.js'),
             },
+            output: {
+                manualChunks: {
+                    'vendor': ['vue', '@inertiajs/vue3'],
+                },
+            },
         },
+        assetsDir: 'assets',
+        emptyOutDir: true,
     },
     server: {
         proxy: {
