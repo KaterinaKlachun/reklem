@@ -5,6 +5,7 @@ services:
       dockerfilePath: ./Dockerfile
       plan: starter
       healthCheckPath: /
+      port: 80
       envVars:
           - key: APP_ENV
             value: production

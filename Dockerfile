@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     nodejs \
     npm \
+    nginx \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo pdo_pgsql pdo_mysql mbstring zip exif pcntl gd bcmath \
     && apt-get clean \
@@ -43,10 +44,11 @@ RUN chown -R www-data:www-data /var/www \
 # Копирование конфигурации PHP
 COPY docker/php/local.ini /usr/local/etc/php/conf.d/local.ini
 
+# Копирование конфигурации Nginx
+COPY docker/nginx/default.conf /etc/nginx/sites-available/default
+
 # Открытие порта
-EXPOSE 9000
+EXPOSE 80
 
-CMD php artisan serve --host=0.0.0.0 --port=9000
-
-# Запуск PHP-FPM
-CMD ["php-fpm"]
+# Запуск Nginx и PHP-FPM
+CMD service nginx start && php-fpm
