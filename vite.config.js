@@ -4,7 +4,7 @@ import vue from '@vitejs/plugin-vue';
 import path from 'path';
 
 export default defineConfig({
-    base: '/build/', // важно для корректной работы ссылок в продакшене
+    base: 'https://reklem.onrender.com/build/',
 
     plugins: [
         laravel({
