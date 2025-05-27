@@ -7,7 +7,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const baseUrl = isProduction ? 'https://reklem.onrender.com' : 'http://localhost';
 
 export default defineConfig({
-    base: isProduction ? `${baseUrl}/build/` : '/build/',
+    base: '/build/',
 
     plugins: [
         laravel({
