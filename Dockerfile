@@ -28,20 +28,16 @@ RUN php artisan ziggy:generate
 
 # Установка зависимостей Node.js и сборка
 RUN npm install && \
-    npm run build && \
+    NODE_ENV=production npm run build && \
     npm cache clean --force && \
     rm -rf node_modules
 
 # Создание директории build если её нет
 RUN mkdir -p public/build
 
-# Создание базового манифеста если его нет
-RUN if [ ! -f public/build/manifest.json ]; then \
-    echo '{"resources/js/app.js":{"file":"assets/app.js","src":"resources/js/app.js","isEntry":true}}' > public/build/manifest.json; \
-    fi
-
-# Проверка наличия манифеста
+# Проверка наличия манифеста и ассетов
 RUN ls -la public/build/ && \
+    ls -la public/build/assets/ && \
     cat public/build/manifest.json
 
 # Основной этап
@@ -109,8 +105,9 @@ RUN cp .env.example .env && \
     php artisan view:cache && \
     php artisan storage:link
 
-# Проверка наличия манифеста в финальном образе
+# Проверка наличия манифеста и ассетов в финальном образе
 RUN ls -la /var/www/public/build/ && \
+    ls -la /var/www/public/build/assets/ && \
     cat /var/www/public/build/manifest.json
 
 # Открытие порта
