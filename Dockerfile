@@ -62,20 +62,22 @@ COPY docker/php/local.ini /usr/local/etc/php/conf.d/local.ini
 # Копирование конфигурации Nginx
 COPY docker/nginx/default.conf /etc/nginx/sites-available/default
 
-# Создание .env файла если его нет
-RUN if [ ! -f .env ]; then \
-    cp .env.example .env && \
-    php artisan key:generate; \
-    fi
-
-# Очистка кэша
-RUN php artisan config:clear && \
-    php artisan cache:clear && \
-    php artisan view:clear && \
-    php artisan route:clear
+# Создание .env файла и настройка приложения
+RUN cp .env.example .env && \
+    php artisan key:generate --force && \
+    php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache
 
 # Открытие порта
 EXPOSE 80
 
+# Создание скрипта для запуска
+RUN echo '#!/bin/bash\n\
+service nginx start\n\
+php-fpm\n\
+' > /usr/local/bin/start.sh && \
+    chmod +x /usr/local/bin/start.sh
+
 # Запуск Nginx и PHP-FPM
-CMD service nginx start && php-fpm
+CMD ["/usr/local/bin/start.sh"]
