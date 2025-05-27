@@ -1,29 +1,36 @@
-# Этап сборки Node.js
-FROM node:20 AS node
+# Этап сборки
+FROM php:8.2-cli AS builder
+
+# Установка системных зависимостей
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    zip \
+    unzip \
+    nodejs \
+    npm \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Установка Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
-# Копирование файлов для сборки фронтенда
-COPY package*.json ./
-COPY vite.config.js ./
-COPY resources ./resources
-COPY public ./public
-COPY composer.json composer.lock ./
+# Копирование файлов проекта
+COPY . .
 
-# Установка Composer и PHP для генерации Ziggy
-RUN apt-get update && apt-get install -y \
-    php \
-    php-xml \
-    php-mbstring \
-    php-zip \
-    unzip \
-    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && composer install --no-dev --no-scripts \
-    && php artisan ziggy:generate
+# Установка зависимостей PHP
+RUN composer install --no-dev --optimize-autoloader
 
-# Установка зависимостей и сборка
+# Генерация Ziggy
+RUN php artisan ziggy:generate
+
+# Установка зависимостей Node.js и сборка
 RUN npm install && \
-    npm run build
+    npm run build && \
+    npm cache clean --force && \
+    rm -rf node_modules
 
 # Основной этап
 FROM php:8.2-fpm
@@ -62,8 +69,8 @@ RUN mkdir -p /var/log/php \
 # Копирование файлов проекта
 COPY . /var/www
 
-# Копирование собранных ассетов из этапа node
-COPY --from=node /app/public/build /var/www/public/build
+# Копирование собранных ассетов из этапа сборки
+COPY --from=builder /app/public/build /var/www/public/build
 
 # Установка прав
 RUN chown -R www-data:www-data /var/www \
