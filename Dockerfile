@@ -30,7 +30,8 @@ COPY . .
 
 # Установка зависимостей
 RUN composer install --no-dev --optimize-autoloader --no-interaction \
-    && npm install --production \
+    && npm install \
+    && npm install -g vite \
     && npm run build \
     && php artisan config:cache \
     && php artisan route:cache \
