@@ -60,7 +60,7 @@ export default defineConfig({
         alias: {
             '@': path.resolve(__dirname, 'resources/js'),
             '~fonts': path.resolve(__dirname, 'public/assets/font'),
-            'ziggy': path.resolve(__dirname, 'vendor/tightenco/ziggy/dist/vue.es.js'),
+            'ziggy': path.resolve(__dirname, 'vendor/tightenco/ziggy/dist/index.esm.js'),
         }
     },
     optimizeDeps: {

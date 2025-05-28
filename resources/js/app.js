@@ -3,7 +3,7 @@ import './bootstrap';
 
 import { createInertiaApp } from '@inertiajs/vue3';
 import { createApp, h } from 'vue';
-import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import { ZiggyVue } from 'ziggy';
 import MainLayout from './Layouts/MainLayout.vue'; // импортируй layout
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
