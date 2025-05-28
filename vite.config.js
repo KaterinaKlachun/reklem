@@ -17,6 +17,7 @@ export default defineConfig({
             ],
             refresh: true,
             buildDirectory: 'build',
+            publicDirectory: 'public',
         }),
         vue({
             template: {
@@ -28,7 +29,7 @@ export default defineConfig({
         }),
     ],
     build: {
-        manifest: true,
+        manifest: 'manifest.json',
         outDir: 'public/build',
         rollupOptions: {
             input: {
