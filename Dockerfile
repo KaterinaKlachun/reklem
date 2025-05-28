@@ -39,10 +39,13 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction \
 
 # Настройка прав доступа
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache \
-    && chmod -R 755 /var/www/html/public \
-    && chmod 644 /var/www/html/public/index.php
+    && find /var/www/html -type d -exec chmod 755 {} \; \
+    && find /var/www/html -type f -exec chmod 644 {} \; \
+    && chmod -R 775 /var/www/html/storage \
+    && chmod -R 775 /var/www/html/bootstrap/cache \
+    && chmod 755 /var/www/html/public \
+    && chmod 644 /var/www/html/public/index.php \
+    && chmod 644 /var/www/html/public/.htaccess
 
 # Настройка Apache
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
