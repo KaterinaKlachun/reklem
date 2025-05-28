@@ -52,6 +52,9 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
     && a2enmod rewrite \
     && service apache2 restart
 
+# Проверка наличия файлов
+RUN ls -la /var/www/html/public/
+
 EXPOSE 8080
 
 # Запуск Apache
