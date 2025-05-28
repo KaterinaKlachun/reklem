@@ -38,14 +38,15 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction \
 
 # Проверка сборки
 RUN ls -la /var/www/html/public/build/ \
-    && ls -la /var/www/html/public/build/.vite/ \
-    && cat /var/www/html/public/build/.vite/manifest.json
+    && ls -la /var/www/html/public/build/assets/ \
+    && cat /var/www/html/public/build/manifest.json
 
 # Настройка прав доступа
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
     && chmod -R 775 /var/www/html/storage \
     && chmod -R 775 /var/www/html/bootstrap/cache \
+    && chmod -R 755 /var/www/html/public/build \
     && chmod 644 /var/www/html/.htaccess \
     && chmod 644 /var/www/html/public/.htaccess
 

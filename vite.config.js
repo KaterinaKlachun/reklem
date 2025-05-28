@@ -17,7 +17,6 @@ export default defineConfig({
             ],
             refresh: true,
             buildDirectory: 'build',
-            publicDirectory: 'public',
         }),
         vue({
             template: {
@@ -29,8 +28,8 @@ export default defineConfig({
         }),
     ],
     build: {
-        outDir: 'public/build',
         manifest: true,
+        outDir: 'public/build',
         rollupOptions: {
             input: {
                 app: path.resolve(__dirname, 'resources/js/app.js'),
