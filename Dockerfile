@@ -1,16 +1,24 @@
 FROM php:8.2-apache
 
-# Установка необходимых расширений PHP
+# Установка необходимых расширений PHP и зависимостей
 RUN apt-get update && apt-get install -y \
     libpq-dev \
-    && docker-php-ext-install pdo pdo_pgsql
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    && docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath
 
 # Установка Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Установка Node.js
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs
+    && apt-get install -y nodejs \
+    && npm install -g npm@latest
 
 # Настройка Apache
 RUN a2enmod rewrite
@@ -21,13 +29,17 @@ WORKDIR /var/www/html
 COPY . .
 
 # Установка зависимостей
-RUN composer install --no-dev --optimize-autoloader \
-    && npm install \
-    && npm run build
+RUN composer install --no-dev --optimize-autoloader --no-interaction \
+    && npm install --production \
+    && npm run build \
+    && php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
 
 # Настройка прав доступа
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage
+    && chmod -R 755 /var/www/html/storage \
+    && chmod -R 755 /var/www/html/bootstrap/cache
 
 EXPOSE 8080
 
