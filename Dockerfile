@@ -28,14 +28,17 @@ COPY apache.conf /etc/apache2/sites-available/000-default.conf
 WORKDIR /var/www/html
 COPY . .
 
-# Установка зависимостей
+# Установка зависимостей и сборка
 RUN composer install --no-dev --optimize-autoloader --no-interaction \
     && npm install \
-    && npm install -g vite \
     && npm run build \
     && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache
+
+# Проверка сборки
+RUN ls -la /var/www/html/public/build/ \
+    && cat /var/www/html/public/build/manifest.json
 
 # Настройка прав доступа
 RUN chown -R www-data:www-data /var/www/html \
@@ -44,12 +47,6 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/bootstrap/cache \
     && chmod 644 /var/www/html/.htaccess \
     && chmod 644 /var/www/html/public/.htaccess
-
-# Проверка конфигурации
-RUN ls -la /var/www/html/ \
-    && ls -la /var/www/html/public/ \
-    && cat /var/www/html/.htaccess \
-    && cat /var/www/html/public/.htaccess
 
 # Настройка Apache
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
