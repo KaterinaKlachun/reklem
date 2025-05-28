@@ -1,1 +1,1 @@
-web: php artisan serve --port=$PORT --host=0.0.0.0 
+web: sh -c 'php-fpm -D && nginx -c /app/nginx.conf -g "daemon off;"' 

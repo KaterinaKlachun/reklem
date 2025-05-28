@@ -1,7 +1,7 @@
 services:
   - type: web
     name: reklem
-    env: php
+    env: nginx
     buildCommand: |
       composer install --no-dev --optimize-autoloader
       npm install
@@ -9,7 +9,8 @@ services:
       php artisan config:cache
       php artisan route:cache
       php artisan view:cache
-    startCommand: php artisan serve --port=$PORT --host=0.0.0.0
+      sed -i "s/{{port}}/$PORT/g" nginx.conf
+    startCommand: sh -c 'php-fpm -D && nginx -c /app/nginx.conf -g "daemon off;"'
     envVars:
       - key: APP_NAME
         value: Reklem
