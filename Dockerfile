@@ -38,7 +38,8 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction \
 
 # Проверка сборки
 RUN ls -la /var/www/html/public/build/ \
-    && cat /var/www/html/public/build/manifest.json
+    && ls -la /var/www/html/public/build/.vite/ \
+    && cat /var/www/html/public/build/.vite/manifest.json
 
 # Настройка прав доступа
 RUN chown -R www-data:www-data /var/www/html \
