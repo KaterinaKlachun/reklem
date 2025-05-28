@@ -40,7 +40,14 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction \
 # Настройка прав доступа
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache
+    && chmod -R 755 /var/www/html/bootstrap/cache \
+    && chmod -R 755 /var/www/html/public \
+    && chmod 644 /var/www/html/public/index.php
+
+# Настройка Apache
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
+    && a2enmod rewrite \
+    && service apache2 restart
 
 EXPOSE 8080
 
