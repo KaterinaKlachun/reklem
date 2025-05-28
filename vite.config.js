@@ -11,13 +11,9 @@ export default defineConfig({
 
     plugins: [
         laravel({
-            input: [
-                'resources/js/app.js',
-                'resources/js/Pages/**/*.vue'
-            ],
+            input: ['resources/js/app.js'],
             refresh: true,
             buildDirectory: 'build',
-            publicDirectory: 'public',
         }),
         vue({
             template: {
@@ -29,7 +25,7 @@ export default defineConfig({
         }),
     ],
     build: {
-        manifest: 'manifest.json',
+        manifest: true,
         outDir: 'public/build',
         rollupOptions: {
             input: {

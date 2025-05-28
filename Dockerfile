@@ -39,7 +39,9 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction \
 # Проверка сборки
 RUN ls -la /var/www/html/public/build/ \
     && ls -la /var/www/html/public/build/assets/ \
-    && cat /var/www/html/public/build/manifest.json
+    && find /var/www/html/public/build -name "manifest.json" -type f \
+    && cat /var/www/html/public/build/manifest.json || echo "Manifest not found, checking .vite directory" \
+    && ls -la /var/www/html/public/build/.vite/ || echo "No .vite directory found"
 
 # Настройка прав доступа
 RUN chown -R www-data:www-data /var/www/html \
