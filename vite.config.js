@@ -16,8 +16,8 @@ export default defineConfig({
         vue({
             template: {
                 transformAssetUrls: {
-                    base: 'https://reklem.onrender.com/build/',
-                    includeAbsolute: true,
+                    base: null,
+                    includeAbsolute: false,
                 },
             },
         }),
@@ -34,10 +34,12 @@ export default defineConfig({
                     'vendor': ['vue', '@inertiajs/vue3'],
                 },
                 assetFileNames: (assetInfo) => {
-                    if (assetInfo.name.endsWith('.css')) {
-                        return 'assets/[name]-[hash][extname]';
+                    const info = assetInfo.name.split('.');
+                    const ext = info[info.length - 1];
+                    if (/\.(css|js)$/.test(assetInfo.name)) {
+                        return `assets/[name]-[hash].${ext}`;
                     }
-                    return 'assets/[name]-[hash][extname]';
+                    return `assets/[name]-[hash].${ext}`;
                 },
             },
         },
@@ -51,11 +53,10 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '/api': 'https://reklem.onrender.com',
+            '/api': 'http://localhost:8000',
         },
         hmr: {
-            host: 'reklem.onrender.com',
-            protocol: 'wss',
+            host: 'localhost',
         },
     },
     resolve: {
