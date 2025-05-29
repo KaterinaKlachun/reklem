@@ -34,12 +34,10 @@ export default defineConfig({
                     'vendor': ['vue', '@inertiajs/vue3'],
                 },
                 assetFileNames: (assetInfo) => {
-                    const info = assetInfo.name.split('.');
-                    const ext = info[info.length - 1];
-                    if (/\.(css|js)$/.test(assetInfo.name)) {
-                        return `assets/[name]-[hash].${ext}`;
+                    if (assetInfo.name.endsWith('.css')) {
+                        return 'assets/[name]-[hash][extname]';
                     }
-                    return `assets/[name]-[hash].${ext}`;
+                    return 'assets/[name]-[hash][extname]';
                 },
             },
         },
