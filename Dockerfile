@@ -30,14 +30,22 @@ COPY apache.conf /etc/apache2/sites-available/000-default.conf
 WORKDIR /var/www/html
 COPY . .
 
-# Установка зависимостей и сборка ассетов
+# Установка зависимостей и сборка
 RUN composer install --no-dev --optimize-autoloader --no-interaction \
     && npm install \
+    && rm -rf public/build \
+    && mkdir -p public/build \
     && npm run build \
     && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache \
-    && php artisan storage:link
+    && php artisan storage:link \
+    && ls -la public/build \
+    && ls -la public/build/.vite \
+    && cp -r public/build/.vite/* public/build/ \
+    && rm -rf public/build/.vite \
+    && ls -la public/build \
+    && cat public/build/manifest.json
 
 # Настройка прав доступа
 RUN chown -R www-data:www-data /var/www/html \

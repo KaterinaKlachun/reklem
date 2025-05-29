@@ -11,6 +11,7 @@ export default defineConfig({
             input: ['resources/js/app.js'],
             refresh: true,
             buildDirectory: 'build',
+            publicDirectory: 'public',
         }),
         vue({
             template: {
@@ -36,6 +37,11 @@ export default defineConfig({
         },
         assetsDir: 'assets',
         emptyOutDir: true,
+        copyPublicDir: true,
+        write: true,
+        sourcemap: false,
+        minify: true,
+        target: 'es2015',
     },
     server: {
         proxy: {
