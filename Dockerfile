@@ -21,9 +21,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && npm install -g npm@latest
 
 # Настройка Apache
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
-    && a2enmod rewrite \
-    && service apache2 restart
+RUN a2enmod rewrite
+COPY apache.conf /etc/apache2/sites-available/000-default.conf
 
 # Копирование файлов проекта
 WORKDIR /var/www/html
@@ -36,25 +35,24 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction \
     && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache \
-    && php artisan storage:link
-
-# Проверка сборки
-RUN ls -la /var/www/html/public/build/ \
-    && ls -la /var/www/html/public/build/assets/ \
-    && find /var/www/html/public/build -name "manifest.json" -type f \
-    && cat /var/www/html/public/build/manifest.json || echo "Manifest not found, checking .vite directory" \
-    && ls -la /var/www/html/public/build/.vite/ || echo "No .vite directory found"
+    && php artisan storage:link \
+    && cp public/build/.vite/manifest.json public/build/manifest.json
 
 # Настройка прав доступа
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 777 /var/www/html \
-    && chmod -R 777 /var/www/html/storage \
-    && chmod -R 777 /var/www/html/bootstrap/cache \
-    && chmod -R 777 /var/www/html/public/build \
-    && chmod 777 /var/www/html/.htaccess \
-    && chmod 777 /var/www/html/public/.htaccess
+    && chmod -R 755 /var/www/html \
+    && chmod -R 775 /var/www/html/storage \
+    && chmod -R 775 /var/www/html/bootstrap/cache \
+    && chmod -R 755 /var/www/html/public/build \
+    && chmod 644 /var/www/html/.htaccess \
+    && chmod 644 /var/www/html/public/.htaccess
 
-EXPOSE 8080
+# Настройка Apache
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
+    && a2enmod rewrite \
+    && service apache2 restart
+
+EXPOSE 10000
 
 # Запуск Apache
 CMD ["apache2-foreground"]
