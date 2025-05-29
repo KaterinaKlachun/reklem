@@ -45,12 +45,12 @@ RUN ls -la /var/www/html/public/build/ \
 
 # Настройка прав доступа
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html \
-    && chmod -R 775 /var/www/html/storage \
-    && chmod -R 775 /var/www/html/bootstrap/cache \
-    && chmod -R 755 /var/www/html/public/build \
-    && chmod 644 /var/www/html/.htaccess \
-    && chmod 644 /var/www/html/public/.htaccess
+    && chmod -R 777 /var/www/html \
+    && chmod -R 777 /var/www/html/storage \
+    && chmod -R 777 /var/www/html/bootstrap/cache \
+    && chmod -R 777 /var/www/html/public/build \
+    && chmod 777 /var/www/html/.htaccess \
+    && chmod 777 /var/www/html/public/.htaccess
 
 # Настройка Apache
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
