@@ -13,7 +13,6 @@ export default defineConfig({
         laravel({
             input: ['resources/js/app.js'],
             refresh: true,
-            buildDirectory: 'build',
         }),
         vue({
             template: {
@@ -35,14 +34,10 @@ export default defineConfig({
                 manualChunks: {
                     'vendor': ['vue', '@inertiajs/vue3'],
                 },
-                entryFileNames: 'assets/[name].[hash].js',
-                chunkFileNames: 'assets/[name].[hash].js',
-                assetFileNames: 'assets/[name].[hash].[ext]'
             },
         },
         assetsDir: 'assets',
         emptyOutDir: true,
-        sourcemap: true,
     },
     server: {
         proxy: {

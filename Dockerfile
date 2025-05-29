@@ -34,7 +34,8 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction \
     && npm run build \
     && php artisan config:cache \
     && php artisan route:cache \
-    && php artisan view:cache
+    && php artisan view:cache \
+    && php artisan storage:link
 
 # Проверка сборки
 RUN ls -la /var/www/html/public/build/ \
@@ -45,19 +46,10 @@ RUN ls -la /var/www/html/public/build/ \
 
 # Настройка прав доступа
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 777 /var/www/html \
-    && chmod -R 777 /var/www/html/storage \
-    && chmod -R 777 /var/www/html/bootstrap/cache \
-    && chmod -R 777 /var/www/html/public/build \
-    && chmod 777 /var/www/html/.htaccess \
-    && chmod 777 /var/www/html/public/.htaccess
-
-# Настройка Apache
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
-    && a2enmod rewrite \
-    && service apache2 restart
-
-EXPOSE 8080
-
-# Запуск Apache
-CMD ["apache2-foreground"]
+    && chmod -R 755 /var/www/html \
+    && chmod -R 775 /var/www/html/storage \
+    && chmod -R 775 /var/www/html/bootstrap/cache \
+    && chmod -R 755 /var/www/html/public/build \
+    && chmod 644 /var/www/html/.htaccess \
+    && chmod 644 /var/www/html/public/.htaccess
+# ... existing code ...
