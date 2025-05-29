@@ -33,6 +33,12 @@ export default defineConfig({
                 manualChunks: {
                     'vendor': ['vue', '@inertiajs/vue3'],
                 },
+                assetFileNames: (assetInfo) => {
+                    if (assetInfo.name.endsWith('.css')) {
+                        return 'assets/[name]-[hash][extname]';
+                    }
+                    return 'assets/[name]-[hash][extname]';
+                },
             },
         },
         assetsDir: 'assets',
