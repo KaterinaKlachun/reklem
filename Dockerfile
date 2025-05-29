@@ -50,7 +50,12 @@ RUN chown -R www-data:www-data /var/www/html \
 # Настройка Apache
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
     && a2enmod rewrite \
+    && a2dissite 000-default \
+    && a2ensite 000-default \
     && service apache2 restart
+
+# Отключаем порт 80
+RUN sed -i 's/Listen 80/Listen 10000/g' /etc/apache2/ports.conf
 
 EXPOSE 10000
 
