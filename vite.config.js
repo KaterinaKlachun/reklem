@@ -16,8 +16,8 @@ export default defineConfig({
         vue({
             template: {
                 transformAssetUrls: {
-                    base: null,
-                    includeAbsolute: false,
+                    base: 'https://reklem.onrender.com/build/',
+                    includeAbsolute: true,
                 },
             },
         }),
@@ -53,10 +53,11 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '/api': 'http://localhost:8000',
+            '/api': 'https://reklem.onrender.com',
         },
         hmr: {
-            host: 'localhost',
+            host: 'reklem.onrender.com',
+            protocol: 'wss',
         },
     },
     resolve: {
