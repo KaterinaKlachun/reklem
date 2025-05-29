@@ -37,8 +37,7 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction \
     && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache \
-    && php artisan storage:link \
-    && cp public/build/.vite/manifest.json public/build/manifest.json
+    && php artisan storage:link
 
 # Настройка прав доступа
 RUN chown -R www-data:www-data /var/www/html \

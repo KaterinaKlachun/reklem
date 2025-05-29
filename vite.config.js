@@ -3,11 +3,8 @@ import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
 
-const isProduction = process.env.NODE_ENV === 'production';
-const baseUrl = isProduction ? 'https://reklem.onrender.com' : 'http://localhost';
-
 export default defineConfig({
-    base: '/build/',
+    base: 'https://reklem.onrender.com/build/',
 
     plugins: [
         laravel({
