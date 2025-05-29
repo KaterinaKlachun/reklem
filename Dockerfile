@@ -22,6 +22,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 
 # Настройка Apache
 RUN a2enmod rewrite \
+    && a2enmod headers \
     && sed -i 's/Listen 80/Listen 10000/g' /etc/apache2/ports.conf \
     && rm -f /etc/apache2/sites-enabled/* \
     && rm -f /etc/apache2/sites-available/* \
