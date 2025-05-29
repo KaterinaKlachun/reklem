@@ -24,7 +24,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 RUN a2enmod rewrite \
     && sed -i 's/Listen 80/Listen 10000/g' /etc/apache2/ports.conf \
     && rm -f /etc/apache2/sites-enabled/* \
-    && rm -f /etc/apache2/sites-available/*
+    && rm -f /etc/apache2/sites-available/* \
+    && echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 COPY apache.conf /etc/apache2/sites-available/000-default.conf
 
@@ -59,9 +60,7 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod 644 /var/www/html/public/.htaccess
 
 # Настройка Apache
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
-    && a2ensite 000-default \
-    && service apache2 reload
+RUN a2ensite 000-default
 
 EXPOSE 10000
 
