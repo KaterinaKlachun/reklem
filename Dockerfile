@@ -21,7 +21,9 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && npm install -g npm@latest
 
 # Настройка Apache
-RUN a2enmod rewrite
+RUN a2enmod rewrite \
+    && sed -i 's/Listen 80/Listen 10000/g' /etc/apache2/ports.conf
+
 COPY apache.conf /etc/apache2/sites-available/000-default.conf
 
 # Копирование файлов проекта
@@ -49,13 +51,9 @@ RUN chown -R www-data:www-data /var/www/html \
 
 # Настройка Apache
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
-    && a2enmod rewrite \
     && a2dissite 000-default \
     && a2ensite 000-default \
     && service apache2 restart
-
-# Отключаем порт 80
-RUN sed -i 's/Listen 80/Listen 10000/g' /etc/apache2/ports.conf
 
 EXPOSE 10000
 
