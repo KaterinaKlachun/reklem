@@ -4,10 +4,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: 'unsafe-inline' 'unsafe-eval'; style-src 'self' https: 'unsafe-inline'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data: blob:; font-src 'self' https: data:; connect-src 'self' https: wss: http:; style-src-elem 'self' https: 'unsafe-inline'; script-src-elem 'self' https: 'unsafe-inline' 'unsafe-eval';">
-        <meta http-equiv="X-Content-Type-Options" content="nosniff">
-        <meta http-equiv="X-XSS-Protection" content="1; mode=block">
-        <meta name="referrer" content="strict-origin-when-cross-origin">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
