@@ -59,9 +59,11 @@ const form = useForm({
     password_confirmation: '',
 })
 
-function submit() {
+async function submit() {
+    await axios.get('/sanctum/csrf-cookie') // ← обязательный шаг
     form.post(route('register'))
 }
+
 </script>
 
 <style scoped>

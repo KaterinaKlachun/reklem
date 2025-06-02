@@ -7,7 +7,8 @@ const form = useForm({
     remember: false,
 })
 
-function submit() {
+async function submit() {
+    await axios.get('/sanctum/csrf-cookie') // ← это обязательно
     form.post(route('login'))
 }
 </script>
