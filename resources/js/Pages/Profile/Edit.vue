@@ -10,6 +10,12 @@
         ]"
     />
 
+    <template>
+        <div v-if="$page.props.status" class="flash-message">
+            {{ $page.props.status }}
+        </div>
+    </template>
+
     <div class="profile-edit-wrapper">
         <div class="profile-grid">
             <!-- Левая колонка -->
@@ -57,6 +63,25 @@ const onPhotoUploadError = (errors) => {
 </script>
 
 <style scoped>
+.flash-message {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    background: #38a169;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    animation: fadeOut 5s ease forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; display: none; }
+}
+
 /* Базовые переменные */
 :root {
     --primary: #007b5e;

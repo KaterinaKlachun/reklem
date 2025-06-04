@@ -45,9 +45,8 @@ class ProfileController extends Controller
     /**
      * Upload profile photo.
      */
-    public function updateProfilePhoto(Request $request)
+    public function updateProfilePhoto(Request $request): RedirectResponse
     {
-        try {
             // Валидация файла
             $request->validate([
                 'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:1024', // до 1MB
@@ -71,18 +70,7 @@ class ProfileController extends Controller
             $user->profile_photo_path = $path;
             $user->save();
 
-            return response()->json([
-                'success' => true,
-                'path' => Storage::url($path), // Для отображения
-                'message' => 'Фото профиля обновлено'
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Ошибка: ' . $e->getMessage()
-            ], 500);
-        }
+            return Redirect::route('profile.edit')->with('status', 'Фото профиля обновлено');
     }
 
     /**
