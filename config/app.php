@@ -8,7 +8,7 @@ return [
 
     'debug' => (bool) env('APP_DEBUG', false),
 
-    'url' => env('APP_URL', 'https://reklem.onrender.com'),
+    'url' => env('APP_URL', 'https://reklempub.onrender.com'),
 
     'asset_url' => env('ASSET_URL'),
 
