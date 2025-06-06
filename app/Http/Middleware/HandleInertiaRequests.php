@@ -4,14 +4,10 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Illuminate\Support\Facades\Session;
 
 class HandleInertiaRequests extends Middleware
 {
-    /**
-     * The root template that is loaded on the first page visit.
-     *
-     * @var string
-     */
     protected $rootView = 'app';
 
     public function version(Request $request): ?string
@@ -19,19 +15,20 @@ class HandleInertiaRequests extends Middleware
         return parent::version($request);
     }
 
-    /**
-     * Define the props that are shared by default.
-     *
-     * @return array<string, mixed>
-     */
     public function share(Request $request): array
     {
         return [
             ...parent::share($request),
+
             'auth' => [
                 'user' => fn () => $request->user() ? $request->user()->fresh() : null,
             ],
-            'csrf_token' => fn () => csrf_token(), // 👈 добавляем CSRF-токен
+
+            'csrf_token' => fn () => csrf_token(),
+
+            // ✅ Добавляем флеш-сообщения для модального окна
+            'photoStatus' => fn () => Session::get('photoStatus'),
+            'photoMessage' => fn () => Session::get('photoMessage'),
         ];
     }
 }
