@@ -1,7 +1,8 @@
 <template>
+    <!-- SEO: Заголовок страницы -->
     <Head title="Редактирование профиля" />
 
-    <!-- Баннер -->
+    <!-- Баннер с навигацией -->
     <PageBanner
         page-title="Редактирование профиля"
         :breadcrumbs="[
@@ -12,7 +13,7 @@
 
     <div class="profile-edit-wrapper">
         <div class="profile-grid">
-            <!-- Левая колонка -->
+            <!-- Левая колонка: фото + форма информации -->
             <div class="profile-column">
                 <div class="photo-section">
                     <h2 class="section-header">ВАШ ПРОФИЛЬ</h2>
@@ -26,33 +27,67 @@
                 <UpdateProfileInformationForm :must-verify-email="mustVerifyEmail" :status="status" />
             </div>
 
-            <!-- Правая колонка -->
+            <!-- Правая колонка: пароль + удаление -->
             <div class="profile-column">
                 <UpdatePasswordForm />
                 <DeleteUserForm />
             </div>
         </div>
     </div>
+
+    <!-- Модальное окно с сообщением (успех/ошибка) -->
+    <ModalMessage
+        v-if="showModal"
+        :status="modalStatus"
+        :message="modalMessage"
+        @close="closeModal"
+    />
 </template>
 
 <script setup>
-import { usePage } from '@inertiajs/vue3';
-import { Head } from '@inertiajs/vue3';
+// Импорт базовых зависимостей
+import { ref, watch } from 'vue';
+import { usePage, Head } from '@inertiajs/vue3';
 import { Inertia } from '@inertiajs/inertia';
+
+// Импорт компонентов
 import PhotoUpload from '@/Pages/Profile/Partials/PhotoUpload.vue';
 import UpdatePasswordForm from "@/Pages/Profile/Partials/UpdatePasswordForm.vue";
 import DeleteUserForm from "@/Pages/Profile/Partials/DeleteUserForm.vue";
 import UpdateProfileInformationForm from "@/Pages/Profile/Partials/UpdateProfileInformationForm.vue";
 import PageBanner from "@/Components/PageBanner.vue";
+import ModalMessage from "@/Components/ModalMessage.vue"; // модалка для уведомлений
 
+// Получение props от сервера
 const { mustVerifyEmail, status } = usePage().props;
 
+// Обработка успешной загрузки фото
 const onPhotoUploadSuccess = () => {
-    Inertia.reload({ only: ['auth'] });
+    Inertia.reload({ only: ['auth'] }); // Обновляем auth-данные пользователя
 };
 
+// Обработка ошибки при загрузке фото
 const onPhotoUploadError = (errors) => {
     console.error('Ошибка загрузки фото:', errors);
+};
+
+// Реактивные переменные для модального окна
+const showModal = ref(false);
+const modalMessage = ref('');
+const modalStatus = ref('');
+
+// Отслеживание сообщений от сервера
+watch(() => usePage().props.photoStatus, (newStatus) => {
+    if (newStatus) {
+        showModal.value = true;
+        modalStatus.value = newStatus;
+        modalMessage.value = usePage().props.photoMessage || '';
+    }
+});
+
+// Закрытие модального окна
+const closeModal = () => {
+    showModal.value = false;
 };
 </script>
 
@@ -60,23 +95,14 @@ const onPhotoUploadError = (errors) => {
 /* Базовые переменные */
 :root {
     --primary: #007b5e;
-    --primary-light: #00997a;
     --accent: #FFA630;
-    --accent-light: #FFC266;
     --light-bg: #f2f2f2;
     --white: #ffffff;
     --text-dark: #212121;
-    --text-medium: #616161;
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
-    --shadow-lg: 0 8px 24px rgba(0, 123, 94, 0.15);
-    --transition: all 0.2s ease;
 }
 
-/* Креативная типографика */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap');
-
-/* Основные стили */
+/* Основная разметка */
 .profile-edit-wrapper {
     width: 100%;
     padding: 2rem 0;
@@ -100,14 +126,11 @@ const onPhotoUploadError = (errors) => {
 }
 
 .section-header {
-    font-family: 'Montserrat', sans-serif;
     font-weight: 900;
     font-size: 1.8rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
     color: var(--primary);
     margin-bottom: 2rem;
-    padding-bottom: 1rem;
     border-bottom: 3px solid var(--accent);
 }
 
@@ -120,47 +143,9 @@ const onPhotoUploadError = (errors) => {
 }
 
 /* Адаптив */
-@media (max-width: 1200px) {
-    .profile-grid {
-        gap: 2rem;
-        max-width: 1000px;
-    }
-}
-
 @media (max-width: 992px) {
     .profile-grid {
         grid-template-columns: 1fr;
-        max-width: 800px;
-    }
-
-    .section-header {
-        font-size: 1.6rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .profile-grid {
-        padding: 0 1.5rem;
-        gap: 2rem;
-    }
-
-    .photo-section {
-        padding: 2rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .profile-grid {
-        padding: 0 1rem;
-        gap: 1.5rem;
-    }
-
-    .section-header {
-        font-size: 1.4rem;
-    }
-
-    .photo-section {
-        padding: 1.5rem;
     }
 }
 </style>

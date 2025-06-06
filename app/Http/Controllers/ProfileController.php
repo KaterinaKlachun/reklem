@@ -48,7 +48,6 @@ class ProfileController extends Controller
     public function updateProfilePhoto(Request $request)
     {
         try {
-            // Валидация файла
             $request->validate([
                 'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:1024', // до 1MB
             ]);
@@ -56,32 +55,26 @@ class ProfileController extends Controller
             $user = $request->user();
             $file = $request->file('photo');
 
-            // Удаление старого файла, если есть
             if ($user->profile_photo_path && Storage::disk('public')->exists($user->profile_photo_path)) {
                 Storage::disk('public')->delete($user->profile_photo_path);
             }
 
-            // Генерация уникального имени файла
             $filename = 'user_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
-
-            // Сохранение файла
             $path = $file->storeAs('profile-photos', $filename, 'public');
 
-            // ОБНОВЛЕНИЕ МОДЕЛИ вручную
             $user->profile_photo_path = $path;
             $user->save();
 
-            return response()->json([
-                'success' => true,
-                'path' => Storage::url($path), // Для отображения
-                'message' => 'Фото профиля обновлено'
+            return Redirect::route('profile.edit')->with([
+                'photoStatus' => 'success',
+                'photoMessage' => 'Фото профиля обновлено',
             ]);
 
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Ошибка: ' . $e->getMessage()
-            ], 500);
+            return Redirect::route('profile.edit')->with([
+                'photoStatus' => 'error',
+                'photoMessage' => 'Ошибка: ' . $e->getMessage(),
+            ]);
         }
     }
 
