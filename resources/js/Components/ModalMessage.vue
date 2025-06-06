@@ -19,11 +19,11 @@ defineProps(['status', 'message']);
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 50;
+    z-index: 999;
 }
 
 .modal-content {
@@ -37,15 +37,17 @@ defineProps(['status', 'message']);
 
 .success {
     color: green;
+    margin-bottom: 1rem;
 }
 
 .error {
     color: red;
+    margin-bottom: 1rem;
 }
 
 button {
-    margin-top: 1rem;
-    background-color: var(--primary);
+    margin-top: 1.5rem;
+    background-color: #007b5e;
     color: white;
     padding: 0.5rem 1rem;
     border: none;

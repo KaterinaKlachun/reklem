@@ -49,7 +49,7 @@ class ProfileController extends Controller
     {
         try {
             $request->validate([
-                'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:1024', // до 1MB
+                'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:1024',
             ]);
 
             $user = $request->user();
@@ -65,15 +65,23 @@ class ProfileController extends Controller
             $user->profile_photo_path = $path;
             $user->save();
 
-            return Redirect::route('profile.edit')->with([
+            // ВОТ ЭТО: отрисовать ту же страницу с нужными props
+            return Inertia::render('Profile/Edit', [
+                'user' => $user,
+                'mustVerifyEmail' => $user->hasVerifiedEmail(),
+                'status' => 'updated',
                 'photoStatus' => 'success',
-                'photoMessage' => 'Фото профиля обновлено',
+                'photoMessage' => 'Фото профиля успешно обновлено',
+                'profile_photo_path' => Storage::url($user->profile_photo_path),
             ]);
-
         } catch (\Exception $e) {
-            return Redirect::route('profile.edit')->with([
+            return Inertia::render('Profile/Edit', [
+                'user' => $request->user(),
+                'mustVerifyEmail' => $request->user()->hasVerifiedEmail(),
+                'status' => 'error',
                 'photoStatus' => 'error',
-                'photoMessage' => 'Ошибка: ' . $e->getMessage(),
+                'photoMessage' => 'Ошибка загрузки фото: ' . $e->getMessage(),
+                'profile_photo_path' => $request->user()->profile_photo_path ? Storage::url($request->user()->profile_photo_path) : null,
             ]);
         }
     }
