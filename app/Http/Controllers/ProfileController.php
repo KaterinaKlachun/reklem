@@ -45,7 +45,7 @@ class ProfileController extends Controller
     /**
      * Upload profile photo.
      */
-    public function updateProfilePhoto(Request $request)
+    public function updateProfilePhoto(Request $request): RedirectResponse
     {
         try {
             $request->validate([
@@ -65,23 +65,16 @@ class ProfileController extends Controller
             $user->profile_photo_path = $path;
             $user->save();
 
-            // ВОТ ЭТО: отрисовать ту же страницу с нужными props
-            return Inertia::render('Profile/Edit', [
-                'user' => $user,
-                'mustVerifyEmail' => $user->hasVerifiedEmail(),
-                'status' => 'updated',
+            // ✅ ПРАВИЛЬНО: редирект с флеш-сообщением
+            return redirect()->route('profile.edit')->with([
                 'photoStatus' => 'success',
                 'photoMessage' => 'Фото профиля успешно обновлено',
-                'profile_photo_path' => Storage::url($user->profile_photo_path),
             ]);
+
         } catch (\Exception $e) {
-            return Inertia::render('Profile/Edit', [
-                'user' => $request->user(),
-                'mustVerifyEmail' => $request->user()->hasVerifiedEmail(),
-                'status' => 'error',
+            return redirect()->route('profile.edit')->with([
                 'photoStatus' => 'error',
-                'photoMessage' => 'Ошибка загрузки фото: ' . $e->getMessage(),
-                'profile_photo_path' => $request->user()->profile_photo_path ? Storage::url($request->user()->profile_photo_path) : null,
+                'photoMessage' => 'Ошибка загрузки: ' . $e->getMessage(),
             ]);
         }
     }
