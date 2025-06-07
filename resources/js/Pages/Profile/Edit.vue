@@ -5,7 +5,7 @@
     <PageBanner
         page-title="Редактирование профиля"
         :breadcrumbs="[
-            { href: '/dashboard', label: 'Редактирование профиля /' },
+            { href: '/dashboard', label: 'Личный кабинет /' },
             { label: 'Редактирование профиля' }
         ]"
     />
