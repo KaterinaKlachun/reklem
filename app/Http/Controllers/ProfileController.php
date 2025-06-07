@@ -71,11 +71,9 @@ class ProfileController extends Controller
             $user->profile_photo_path = $path;
             $user->save();
 
-            return response()->json([
-                'success' => true,
-                'path' => Storage::url($path), // Для отображения
-                'message' => 'Фото профиля обновлено'
-            ]);
+            return Redirect::route('profile.edit')
+                ->with('photoStatus', 'success')
+                ->with('photoMessage', 'Фото профиля обновлено');
 
         } catch (\Exception $e) {
             return response()->json([

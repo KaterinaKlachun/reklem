@@ -33,21 +33,60 @@
             </div>
         </div>
     </div>
+
+    <!-- Модальное окно с сообщением после загрузки фото -->
+    <ModalMessage
+        v-if="showModal"
+        :status="modalStatus"
+        :message="modalMessage"
+        @close="closeModal"
+    />
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
 import { usePage } from '@inertiajs/vue3';
-import { Head } from '@inertiajs/vue3';
 import { Inertia } from '@inertiajs/inertia';
+
+// Компоненты
+import { Head } from '@inertiajs/vue3';
+import PageBanner from "@/Components/PageBanner.vue";
 import PhotoUpload from '@/Pages/Profile/Partials/PhotoUpload.vue';
 import UpdatePasswordForm from "@/Pages/Profile/Partials/UpdatePasswordForm.vue";
 import DeleteUserForm from "@/Pages/Profile/Partials/DeleteUserForm.vue";
 import UpdateProfileInformationForm from "@/Pages/Profile/Partials/UpdateProfileInformationForm.vue";
-import PageBanner from "@/Components/PageBanner.vue";
+import ModalMessage from '@/Components/ModalMessage.vue';
 
-const { mustVerifyEmail, status } = usePage().props;
+// Получаем Inertia props
+const page = usePage();
+const { mustVerifyEmail, status } = page.props;
 
-const onPhotoUploadSuccess = () => {
+// Модалка: реактивные переменные
+const showModal = ref(false);
+const modalStatus = ref('');
+const modalMessage = ref('');
+
+// Показать сообщение, если оно пришло после загрузки фото
+onMounted(() => {
+    const { photoStatus, photoMessage } = page.props;
+    if (photoStatus) {
+        showModal.value = true;
+        modalStatus.value = photoStatus;
+        modalMessage.value = photoMessage || 'Фото успешно загружено';
+    }
+});
+
+const closeModal = () => {
+    showModal.value = false;
+};
+
+// Обработка событий из PhotoUpload
+const onPhotoUploadSuccess = (message) => {
+    modalStatus.value = 'success';
+    modalMessage.value = message || 'Фото успешно загружено';
+    showModal.value = true;
+
+    // Перезагрузим пользователя (например, аватар)
     Inertia.reload({ only: ['auth'] });
 };
 

@@ -53,6 +53,7 @@ function submit() {
 <style scoped>
 /* Основные стили */
 .auth-container {
+    font-family: regular;
     max-width: 480px;
     margin: 2rem auto;
     padding: 2.5rem;
@@ -67,12 +68,14 @@ function submit() {
 }
 
 .auth-header h2 {
+    font-family: bold;
     color: #007b5e;
     font-size: 1.8rem;
     margin-bottom: 0.5rem;
 }
 
 .auth-header p {
+    font-family: medium;
     color: #666;
     font-size: 1rem;
 }

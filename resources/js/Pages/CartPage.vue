@@ -12,88 +12,104 @@
 
     <section class="cart">
         <div class="wrapper">
-            <div class="cart-container" v-if="cartItems.length > 0">
-                <div class="cart-items">
-                    <div v-for="item in cartItems" :key="item.id" class="cart-item">
-                        <div class="item-image-wrapper">
-                            <img
-                                :src="fullImageUrl(item.product.image_url)"
-                                :alt="item.product.name"
-                                class="item-image"
-                                @error="handleImageError"
-                            />
-                        </div>
-                        <div class="item-content">
-                            <div class="item-header">
-                                <h3 class="item-title">{{ item.product.name }}</h3>
-                                <button @click="removeItem(item.id)" class="remove-item">
-                                    <img
-                                        src="@/assets/img/icons/close.svg"
-                                        alt="Удалить"
-                                        class="icon icon-close"
-                                    >
-                                </button>
+            <!-- Показываем корзину, если есть товары -->
+            <template v-if="cartItems.length > 0">
+                <div class="cart-container">
+                    <div class="cart-items">
+                        <div v-for="item in cartItems" :key="item.id" class="cart-item">
+                            <div class="item-image-wrapper">
+                                <img
+                                    :src="fullImageUrl(item.product.image_url)"
+                                    :alt="item.product.name"
+                                    class="item-image"
+                                    @error="handleImageError"
+                                />
                             </div>
-                            <p class="item-color">Цвет: {{ item.color }}</p>
-
-                            <!-- Выбор услуги -->
-                            <div class="item-service">
-                                <label for="service">Услуга:</label>
-                                <select v-model="item.service_type" @change="updateService(item)">
-                                    <option value="">Без услуги</option>
-                                    <option
-                                        v-for="service in availableServices(item.product.name)"
-                                        :key="service.id"
-                                        :value="service.name"
-                                    >
-                                        {{ service.label }} ({{ service.price }} ₽)
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="item-footer">
-                                <div class="quantity-control">
-                                    <button @click="updateQuantity(item.id, item.quantity - 1)" class="quantity-btn">
+                            <div class="item-content">
+                                <div class="item-header">
+                                    <h3 class="item-title">{{ item.product.name }}</h3>
+                                    <button @click="removeItem(item.id)" class="remove-item">
                                         <img
-                                            src="@/assets/img/icons/minus.svg"
-                                            alt="Уменьшить"
-                                            class="icon icon-minus"
-                                        >
-                                    </button>
-                                    <span class="quantity-value">{{ item.quantity }}</span>
-                                    <button @click="updateQuantity(item.id, item.quantity + 1)" class="quantity-btn">
-                                        <img
-                                            src="@/assets/img/icons/plus.svg"
-                                            alt="Увеличить"
-                                            class="icon icon-plus"
+                                            src="@/assets/img/icons/close.svg"
+                                            alt="Удалить"
+                                            class="icon icon-close"
                                         >
                                     </button>
                                 </div>
-                                <p class="item-price">
-                                    {{ item.product.price * item.quantity }} ₽
-                                    <template v-if="item.service_price">
-                                        + Услуга: {{ item.service_price * item.quantity }} ₽
-                                    </template>
-                                </p>
+                                <p class="item-color">Цвет: {{ item.color }}</p>
+
+                                <div class="item-service">
+                                    <label for="service">Услуга:</label>
+                                    <select v-model="item.service_type" @change="updateService(item)">
+                                        <option value="">Без услуги</option>
+                                        <option
+                                            v-for="service in availableServices(item.product.name)"
+                                            :key="service.id"
+                                            :value="service.name"
+                                        >
+                                            {{ service.label }} ({{ service.price }} ₽)
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="item-footer">
+                                    <div class="quantity-control">
+                                        <button @click="updateQuantity(item.id, item.quantity - 1)" class="quantity-btn">
+                                            <img
+                                                src="@/assets/img/icons/minus.svg"
+                                                alt="Уменьшить"
+                                                class="icon icon-minus"
+                                            >
+                                        </button>
+                                        <span class="quantity-value">{{ item.quantity }}</span>
+                                        <button @click="updateQuantity(item.id, item.quantity + 1)" class="quantity-btn">
+                                            <img
+                                                src="@/assets/img/icons/plus.svg"
+                                                alt="Увеличить"
+                                                class="icon icon-plus"
+                                            >
+                                        </button>
+                                    </div>
+                                    <p class="item-price">
+                                        {{ item.product.price * item.quantity }} ₽
+                                        <template v-if="item.service_price">
+                                            + Услуга: {{ item.service_price * item.quantity }} ₽
+                                        </template>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="cart-summary">
-                    <div class="summary-row">
-                        <span>Товары:</span>
-                        <span>{{ cartItems.reduce((acc, item) => acc + item.quantity, 0) }} шт.</span>
+                    <div class="cart-summary">
+                        <div class="summary-row">
+                            <span>Товары:</span>
+                            <span>{{ cartItems.reduce((acc, item) => acc + item.quantity, 0) }} шт.</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Итого:</span>
+                            <span class="total-price">{{ totalPrice }} ₽</span>
+                        </div>
+                        <button @click="submitOrder" class="checkout-button">
+                            Оформить заказ
+                        </button>
                     </div>
-                    <div class="summary-row total">
-                        <span>Итого:</span>
-                        <span class="total-price">{{ totalPrice }} ₽</span>
-                    </div>
-                    <button @click="submitOrder" class="checkout-button">
-                        Оформить заказ
-                    </button>
                 </div>
-            </div>
+            </template>
+
+            <!-- Показываем блок "Корзина пуста", если нет товаров -->
+            <template v-else>
+                <div class="empty-cart">
+                    <h2 class="empty-title">Ваша корзина пуста</h2>
+                    <p class="empty-text">Вы ещё не добавили товары. Самое время это исправить!</p>
+                    <Link href="/" class="continue-shopping">
+                        <span>Вернуться на главную</span>
+                        <svg class="icon-arrow" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                            <path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z" />
+                        </svg>
+                    </Link>
+                </div>
+            </template>
         </div>
     </section>
 </template>
@@ -299,9 +315,11 @@ export default {
 }
 
 .icon-arrow {
-    width: 16px;
-    height: 16px;
-    filter: invert(24%) sepia(99%) saturate(1190%) hue-rotate(144deg) brightness(93%) contrast(101%);
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    vertical-align: middle; /* 💡 ВЫРАВНИВАЕТ по центру текста */
+    transition: fill 0.2s;
 }
 
 .remove-item {
@@ -420,10 +438,6 @@ export default {
 .empty-cart {
     text-align: center;
     padding: 40px 0;
-}
-
-.empty-icon {
-    margin-bottom: 20px;
 }
 
 .empty-title {
