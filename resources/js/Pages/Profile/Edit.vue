@@ -89,10 +89,26 @@ const closeModal = () => {
 </script>
 
 <style scoped>
+/* Базовые переменные */
+:root {
+    --primary: #007b5e;
+    --primary-light: #00997a;
+    --accent: #FFA630;
+    --accent-light: #FFC266;
+    --light-bg: #f2f2f2;
+    --white: #ffffff;
+    --text-dark: #212121;
+    --text-medium: #616161;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 24px rgba(0, 123, 94, 0.15);
+    --transition: all 0.2s ease;
+}
+
 .profile-edit-wrapper {
     width: 100%;
     padding: 2rem 0;
-    background-color: #f2f2f2;
+    background-color: var(--light-bg);
     min-height: calc(100vh - 120px);
 }
 
@@ -115,24 +131,63 @@ const closeModal = () => {
     font-weight: 900;
     font-size: 1.8rem;
     text-transform: uppercase;
-    color: #007b5e;
+    letter-spacing: 1px;
+    color: var(--primary);
     margin-bottom: 2rem;
-    border-bottom: 3px solid #FFA630;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid var(--accent);
 }
 
 .photo-section {
-    background-color: white;
+    background-color: var(--white);
     border-radius: 16px;
     padding: 2.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-sm);
     border: 2px solid rgba(0, 123, 94, 0.1);
 }
 
 /* Адаптив */
+@media (max-width: 1200px) {
+    .profile-grid {
+        gap: 2rem;
+        max-width: 1000px;
+    }
+}
+
 @media (max-width: 992px) {
     .profile-grid {
         grid-template-columns: 1fr;
+        max-width: 800px;
+    }
+
+    .section-header {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-grid {
         padding: 0 1.5rem;
+        gap: 2rem;
+    }
+
+    .photo-section {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .profile-grid {
+        padding: 0 1rem;
+        gap: 1.5rem;
+    }
+
+    .section-header {
+        font-size: 1.4rem;
+    }
+
+    .photo-section {
+        padding: 1.5rem;
     }
 }
 </style>
