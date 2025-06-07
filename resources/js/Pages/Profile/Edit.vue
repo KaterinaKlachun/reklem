@@ -1,12 +1,11 @@
 <template>
-    <!-- SEO: заголовок страницы -->
     <Head title="Редактирование профиля" />
 
-    <!-- Хлебные крошки / заголовок -->
+    <!-- Баннер -->
     <PageBanner
         page-title="Редактирование профиля"
         :breadcrumbs="[
-            { href: '/dashboard', label: 'Личный кабинет /' },
+            { href: '/dashboard', label: 'Редактирование профиля /' },
             { label: 'Редактирование профиля' }
         ]"
     />
@@ -16,7 +15,7 @@
             <!-- Левая колонка -->
             <div class="profile-column">
                 <div class="photo-section">
-                    <h2 class="section-header">Ваш профиль</h2>
+                    <h2 class="section-header">ВАШ ПРОФИЛЬ</h2>
                     <PhotoUpload
                         route-name="profile.photo.update"
                         @success="onPhotoUploadSuccess"
@@ -35,7 +34,7 @@
         </div>
     </div>
 
-    <!-- Модальное окно -->
+    <!-- Модальное окно с сообщением после загрузки фото -->
     <ModalMessage
         v-if="showModal"
         :status="modalStatus"
@@ -45,46 +44,54 @@
 </template>
 
 <script setup>
-// Импорт необходимых зависимостей
-import { ref } from 'vue';
-import { usePage, Head } from '@inertiajs/vue3';
+import { ref, onMounted } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 import { Inertia } from '@inertiajs/inertia';
 
-// Импорт компонентов
+// Компоненты
+import { Head } from '@inertiajs/vue3';
+import PageBanner from "@/Components/PageBanner.vue";
 import PhotoUpload from '@/Pages/Profile/Partials/PhotoUpload.vue';
-import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm.vue';
-import DeleteUserForm from '@/Pages/Profile/Partials/DeleteUserForm.vue';
-import UpdateProfileInformationForm from '@/Pages/Profile/Partials/UpdateProfileInformationForm.vue';
-import PageBanner from '@/Components/PageBanner.vue';
+import UpdatePasswordForm from "@/Pages/Profile/Partials/UpdatePasswordForm.vue";
+import DeleteUserForm from "@/Pages/Profile/Partials/DeleteUserForm.vue";
+import UpdateProfileInformationForm from "@/Pages/Profile/Partials/UpdateProfileInformationForm.vue";
 import ModalMessage from '@/Components/ModalMessage.vue';
 
-// Получаем props от Inertia (сервер передаёт их в render)
+// Получаем Inertia props
 const page = usePage();
-const { mustVerifyEmail, status, photoStatus, photoMessage } = page.props;
+const { mustVerifyEmail, status } = page.props;
 
-// Обработка результата загрузки фото
+// Модалка: реактивные переменные
 const showModal = ref(false);
 const modalStatus = ref('');
 const modalMessage = ref('');
 
-// Отображаем модалку сразу, если есть статус от сервера
-if (photoStatus) {
-    showModal.value = true;
-    modalStatus.value = photoStatus;
-    modalMessage.value = photoMessage || '';
-}
+// Показать сообщение, если оно пришло после загрузки фото
+onMounted(() => {
+    const { photoStatus, photoMessage } = page.props;
+    if (photoStatus) {
+        showModal.value = true;
+        modalStatus.value = photoStatus;
+        modalMessage.value = photoMessage || 'Фото успешно загружено';
+    }
+});
 
-// Обработка событий от компонента загрузки фото
-const onPhotoUploadSuccess = () => {
-    Inertia.reload({ only: ['auth'] }); // Можно убрать, если auth не нужен
+const closeModal = () => {
+    showModal.value = false;
+};
+
+// Обработка событий из PhotoUpload
+const onPhotoUploadSuccess = (message) => {
+    modalStatus.value = 'success';
+    modalMessage.value = message || 'Фото успешно загружено';
+    showModal.value = true;
+
+    // Перезагрузим пользователя (например, аватар)
+    Inertia.reload({ only: ['auth'] });
 };
 
 const onPhotoUploadError = (errors) => {
     console.error('Ошибка загрузки фото:', errors);
-};
-
-const closeModal = () => {
-    showModal.value = false;
 };
 </script>
 
@@ -105,6 +112,10 @@ const closeModal = () => {
     --transition: all 0.2s ease;
 }
 
+/* Креативная типографика */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap');
+
+/* Основные стили */
 .profile-edit-wrapper {
     width: 100%;
     padding: 2rem 0;
@@ -128,6 +139,7 @@ const closeModal = () => {
 }
 
 .section-header {
+    font-family: 'Montserrat', sans-serif;
     font-weight: 900;
     font-size: 1.8rem;
     text-transform: uppercase;

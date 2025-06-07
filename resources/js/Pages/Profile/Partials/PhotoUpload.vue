@@ -103,8 +103,9 @@ const submit = () => {
 
     form.post(route(props.routeName), {
         preserveScroll: true,
-        onSuccess: () => {
-            emit('success');
+        onSuccess: (page) => {
+            const message = page?.props?.flash?.message || 'Фото успешно загружено';
+            emit('success', message);
             form.reset();
             file.value = null;
         },

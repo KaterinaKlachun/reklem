@@ -45,37 +45,41 @@ class ProfileController extends Controller
     /**
      * Upload profile photo.
      */
-    public function updateProfilePhoto(Request $request): RedirectResponse
+    public function updateProfilePhoto(Request $request)
     {
         try {
+            // Валидация файла
             $request->validate([
-                'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:1024',
+                'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:1024', // до 1MB
             ]);
 
             $user = $request->user();
             $file = $request->file('photo');
 
+            // Удаление старого файла, если есть
             if ($user->profile_photo_path && Storage::disk('public')->exists($user->profile_photo_path)) {
                 Storage::disk('public')->delete($user->profile_photo_path);
             }
 
+            // Генерация уникального имени файла
             $filename = 'user_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+
+            // Сохранение файла
             $path = $file->storeAs('profile-photos', $filename, 'public');
 
+            // ОБНОВЛЕНИЕ МОДЕЛИ вручную
             $user->profile_photo_path = $path;
             $user->save();
 
-            // ✅ ПРАВИЛЬНО: редирект с флеш-сообщением
-            return redirect()->route('profile.edit')->with([
-                'photoStatus' => 'success',
-                'photoMessage' => 'Фото профиля успешно обновлено',
-            ]);
+            return Redirect::route('profile.edit')
+                ->with('photoStatus', 'success')
+                ->with('photoMessage', 'Фото профиля обновлено');
 
         } catch (\Exception $e) {
-            return redirect()->route('profile.edit')->with([
-                'photoStatus' => 'error',
-                'photoMessage' => 'Ошибка загрузки: ' . $e->getMessage(),
-            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Ошибка: ' . $e->getMessage()
+            ], 500);
         }
     }
 
