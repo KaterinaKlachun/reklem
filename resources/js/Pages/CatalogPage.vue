@@ -243,6 +243,11 @@ onMounted(fetchProducts)
 
 /* Адаптивные стили для планшетов (1024px и меньше) */
 @media (max-width: 1024px) {
+    .wrapper{
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
     .category-buttons {
         display: flex;
         overflow-x: auto;
@@ -315,6 +320,11 @@ onMounted(fetchProducts)
 
 /* Адаптивные стили для мобильных устройств (768px и меньше) */
 @media (max-width: 768px) {
+    .wrapper{
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
     .category-buttons {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -359,6 +369,11 @@ onMounted(fetchProducts)
 
 /* Адаптивные стили для маленьких мобильных устройств (480px и меньше) */
 @media (max-width: 480px) {
+    .wrapper{
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
     .category-buttons {
         gap: 10px;
         padding: 0 10px;
