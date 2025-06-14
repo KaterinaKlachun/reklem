@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
@@ -63,6 +64,26 @@ class ReviewController extends Controller
             'averageRating' => $averageRating,
             'totalReviews' => $totalReviews,
             'ratingCounts' => $ratingCounts,
+            'canReview' => Auth::check(),
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'title' => 'required|string|max:255',
+            'text' => 'required|string|min:10',
+        ]);
+
+        $review = Review::create([
+            'name' => Auth::user()->name,
+            'rating' => $request->rating,
+            'title' => $request->title,
+            'text' => $request->text,
+            'date' => now(),
+        ]);
+
+        return redirect()->back()->with('success', 'Отзыв успешно добавлен');
     }
 }
