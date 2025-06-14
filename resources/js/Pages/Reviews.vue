@@ -41,6 +41,13 @@
         </div>
     </section>
 
+    <!-- Add Review Form -->
+    <section class="add-review-section" v-if="canReview">
+        <div class="wrapper">
+            <ReviewForm />
+        </div>
+    </section>
+
     <!-- Reviews Filter -->
     <section class="reviews-filter">
         <div class="wrapper filter-container">
@@ -118,10 +125,11 @@
 
 <script>
 import PageBanner from '@/Components/PageBanner.vue'
+import ReviewForm from '@/Components/ReviewForm.vue'
 import {Head, router} from '@inertiajs/vue3'
 
 export default {
-    components: {Head, PageBanner },
+    components: {Head, PageBanner, ReviewForm},
 
     props: {
         reviews: Object,
@@ -138,6 +146,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        canReview: {
+            type: Boolean,
+            default: false
+        }
     },
 
     data() {
@@ -231,6 +243,7 @@ export default {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    font-family: regular;
 }
 
 /* Rating Summary Block */
@@ -253,6 +266,7 @@ export default {
     background: #f9f9f9;
     border-radius: 8px;
     flex: 1;
+    font-family: bold;
 }
 
 .rating-value {
@@ -520,5 +534,11 @@ export default {
         flex: 1;
         text-align: center;
     }
+}
+
+.add-review-section {
+    padding: 30px 0;
+    background: #f9f9f9;
+    border-bottom: 1px solid #f2f2f2;
 }
 </style>

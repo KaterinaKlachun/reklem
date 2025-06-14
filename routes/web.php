@@ -45,6 +45,7 @@ Route::get('/news', [NewsController::class, 'index']);
 Route::get('/about', [AboutController::class, 'index']);
 Route::get('/contacts', [ContactController::class, 'index']);
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
+Route::post('/reviews', [ReviewController::class, 'store'])->middleware('auth')->name('reviews.store');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.front.show'); // ✅ изменено имя маршрута
 Route::get('/portfolio', [PortfolioController::class, 'index']);
 Route::get('/services', [ServiceController::class, 'index']);
