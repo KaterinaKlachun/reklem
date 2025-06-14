@@ -12,10 +12,16 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {{-- Favicon --}}
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+
+    {{-- Meta-теги для SEO и соцсетей --}}
+    <meta name="description" content="Reklem — сервис для создания и размещения рекламы быстро и просто.">
+    <meta property="og:title" content="Reklem — Рекламный сайт">
+    <meta property="og:description" content="Создай и управляй рекламой онлайн.">
+    <meta property="og:image" content="{{ asset('preview.png') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta name="theme-color" content="#ffffff">
 
     <!-- Scripts -->
     @routes
