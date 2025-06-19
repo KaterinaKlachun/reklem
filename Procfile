@@ -1,0 +1,1 @@
+web: sh -c 'php-fpm -D && nginx -c /app/nginx.conf -g "daemon off;"' 

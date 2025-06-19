@@ -3,18 +3,12 @@ import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
 
-const isProduction = process.env.NODE_ENV === 'production';
-const baseUrl = isProduction ? 'https://reklem.onrender.com' : 'http://localhost';
-
 export default defineConfig({
-    base: '/build/',
+    base: 'https://reklem.onrender.com/build/',
 
     plugins: [
         laravel({
-            input: [
-                'resources/js/app.js',
-                'resources/js/Pages/**/*.vue'
-            ],
+            input: ['resources/js/app.js'],
             refresh: true,
             buildDirectory: 'build',
             publicDirectory: 'public',
@@ -29,8 +23,8 @@ export default defineConfig({
         }),
     ],
     build: {
-        outDir: 'public/build',
         manifest: true,
+        outDir: 'public/build',
         rollupOptions: {
             input: {
                 app: path.resolve(__dirname, 'resources/js/app.js'),
@@ -39,14 +33,23 @@ export default defineConfig({
                 manualChunks: {
                     'vendor': ['vue', '@inertiajs/vue3'],
                 },
-                entryFileNames: 'assets/[name].[hash].js',
-                chunkFileNames: 'assets/[name].[hash].js',
-                assetFileNames: 'assets/[name].[hash].[ext]'
+                assetFileNames: (assetInfo) => {
+                    const info = assetInfo.name.split('.');
+                    const ext = info[info.length - 1];
+                    if (/\.(css|js)$/.test(assetInfo.name)) {
+                        return `assets/[name]-[hash].${ext}`;
+                    }
+                    return `assets/[name]-[hash].${ext}`;
+                },
             },
         },
         assetsDir: 'assets',
         emptyOutDir: true,
-        sourcemap: true,
+        copyPublicDir: true,
+        write: true,
+        sourcemap: false,
+        minify: true,
+        target: 'es2015',
     },
     server: {
         proxy: {

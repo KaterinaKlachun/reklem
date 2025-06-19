@@ -742,6 +742,11 @@ export default {
 
 /* Адаптив от 1440 до 1025px */
 @media screen and (max-width: 1440px) {
+    .wrapper{
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
     .banner-content {
         gap: 40px;
     }
@@ -775,6 +780,11 @@ export default {
 
 /* Планшеты: 1024 до 768px */
 @media screen and (max-width: 1024px) {
+    .wrapper{
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
     .banner-content {
         flex-direction: column-reverse;
         text-align: center;
@@ -826,6 +836,11 @@ export default {
 
 /* Мобилки: 767px и меньше */
 @media screen and (max-width: 767px) {
+    .wrapper{
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
     .modern-banner {
         min-height: auto;
         padding: 60px 0;
