@@ -64,8 +64,11 @@
                 </div>
                 <div v-else class="orders-grid">
                     <div v-for="order in activeOrders" :key="order.id" class="order-card">
-                        <div class="order-header">
-                            <div class="order-number">Заказ #{{ order.id }}</div>
+                        <div class="order-header-row">
+                            <div>
+                                <div class="order-number">Заказ #{{ order.id }}</div>
+                                <div class="order-date">{{ formatDate(order.created_at) }}</div>
+                            </div>
                             <div class="order-status" :class="'status-' + order.status">
                                 {{ getStatusText(order.status) }}
                             </div>
@@ -74,7 +77,7 @@
                         <div class="order-timeline">
                             <div class="timeline-step" :class="{'active': order.status === 'pending'}">
                                 <div class="timeline-dot"></div>
-                                <div class="timeline-label">Оформлен</div>
+                                <div class="timeline-label">В обработке</div>
                             </div>
                             <div class="timeline-step" :class="{'active': order.status === 'active'}">
                                 <div class="timeline-dot"></div>
@@ -137,6 +140,21 @@
                         <div class="order-header">
                             <div class="order-number">Заказ #{{ order.id }}</div>
                             <div class="order-date">{{ formatDate(order.created_at) }}</div>
+                        </div>
+
+                        <div class="order-timeline">
+                            <div class="timeline-step" :class="{'active': order.status === 'pending'}">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-label">В обработке</div>
+                            </div>
+                            <div class="timeline-step" :class="{'active': order.status === 'active'}">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-label">В пути</div>
+                            </div>
+                            <div class="timeline-step" :class="{'active': order.status === 'completed'}">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-label">Доставлен</div>
+                            </div>
                         </div>
 
                         <div class="order-products">
@@ -458,14 +476,26 @@ onMounted(() => {
     border-left: 4px solid var(--primary);
 }
 
-.order-header {
+.order-header-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 15px;
     padding-bottom: 15px;
     border-bottom: 1px solid rgba(0, 123, 94, 0.1);
 }
+
+.order-header-row .order-number {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.order-header-row .order-date {
+    font-size: 14px;
+    color: var(--text-medium);
+}
+
 
 .order-number {
     font-weight: 700;
